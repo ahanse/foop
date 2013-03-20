@@ -1,6 +1,7 @@
 
 package multisnakeserver;
  
+import multisnakeglobal.IConnectionState;
 import multisnakeglobal.IGameData;
 import multisnakeglobal.KeyChange;
 /**
@@ -8,9 +9,8 @@ import multisnakeglobal.KeyChange;
  * @author hanse
  */
 public interface IPlayer {
-    public enum playerStatus {NOTREADY, READY, DISCONNECTED};
-    
-    playerStatus getStatus();
+ 
+    IConnectionState getStatus();
     String getNick();
     KeyChange getChangedKeys();
     void setId(int id);
