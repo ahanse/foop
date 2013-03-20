@@ -9,8 +9,7 @@ package multisnakeglobal;
  * @author Benedikt
  */
 
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 public interface IGameData extends java.io.Serializable{
     List<ISnake> getSnakes();
