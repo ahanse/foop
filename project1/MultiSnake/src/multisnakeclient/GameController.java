@@ -4,6 +4,7 @@
  */
 package multisnakeclient;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,6 +29,8 @@ public class GameController {
         view.addOptionsListener(new OptionsListener());
         view.addHelpListener(new HelpListener());
         view.addExitListener(new ExitListener());
+        // image testing - ignore this
+        view.addDrawImageListener(new DrawImageListener());
         view.addBackToMenuListener(new BackToMenuListener());
     }
     
@@ -63,6 +66,14 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
+        }
+    }
+    
+    // image testing - ignore this
+    class DrawImageListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.viewDrawImage(Color.BLUE,Color.RED);
         }
     }
     

@@ -7,7 +7,9 @@ package multisnakeclient;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -39,6 +41,7 @@ public class GameView extends JFrame {
         menuButtonList.add(new JButton("Options"));
         menuButtonList.add(new JButton("Help"));
         menuButtonList.add(new JButton("Exit"));
+        menuButtonList.add(new JButton("Draw image"));
         backToMenuButton = new JButton("Back to Menu");
         
         viewMainMenu();
@@ -49,7 +52,6 @@ public class GameView extends JFrame {
     }
     
     public void drawContent() {
-        this.add(contentPanel);
         this.revalidate();
         this.repaint();
     }
@@ -74,6 +76,7 @@ public class GameView extends JFrame {
             contentPanel.add(button);
             y += (defaultWindowSize.getHeight()-100)/numberOfButtons;
         }
+        this.add(contentPanel);
         // redraw frame
         drawContent();
     }
@@ -133,8 +136,82 @@ public class GameView extends JFrame {
         // create a panel
         contentPanel = new JPanel();
         contentPanel.setSize(defaultWindowSize);
-        contentPanel.add(new JLabel("Options Screen"));
+        contentPanel.add(new JLabel("Help Screen"));
         String text = "Auf einer rechteckigen Anordnung von Feldern befinden sich Schlangen in mehreren unterschiedlichen Farben, deren Köpfe sich bei jedem Spielzug (nach einem vorgegebenen Takt) um ein Feld nach links, rechts, oben oder unten bewegen. Der Schlangenkörper (von dem jeder Teil genauso wie der Kopf ein Feld belegt) folgt der Bewegungslinie des Schlangenkopfs. Jeder Mitspieler steuert die Bewegungsrichtung des Kopfs seiner Schlange, die anderen Schlangen werden vom Computer gesteuert. Treffen unterschiedlich gefärbte Schlangenköpfe aufeinander, frisst die Schlange mit höherer Priorität jene mit niedrigerer Priorität, wobei die Priorität von der Farbe abhängt. Der Rumpf der gefressenen Schlange wird (Zug für Zug) zu einem Teil der fressenden Schlange, wodurch sich die fressende Schlange verlängert. Ein Spieler, dessen Schlange gefressen wird, scheidet aus dem Spiel aus. Trifft ein Schlangenkopf auf den Rumpf einer andersfarbigen Schlange, frisst sie den Rest der Schlange unabhängig von der Priorität, während die teilweise gefressene Schlange entsprechend kürzer wird. Gleichfarbige Schlangen können sich nicht fressen; wenn sie aufeinandertreffen stoppen sie ihre Bewegung, sodass sich nie zwei Schlangen auf demselben Feld befinden können.Anfangs besteht jede Schlange nur aus einem Kopf. Ziel jeden Spielers (auch des Computers) ist es so lange wie möglich zu werden und andersfarbige Schlangen zu eliminieren. Ein Spiel ist zu Ende wenn alle verbliebenen Schlangen dieselbe Farbe haben. Der Spieler dieser Farbe (oder der Computer falls kein Spieler übrig ist) hat mit einer der Länge der längsten verbliebenen Schlange entsprechenden Punktezahl gewonnen.";
+        JTextArea textArea = new JTextArea(cutStringByLength(text,70));
+        textArea.setEditable(false);
+        contentPanel.add(textArea);
+        // insert back to menu button
+        insertBackButton("Back To Menu",150,30);
+        
+        this.add(contentPanel);
+        // redraw frame
+        drawContent();
+    }
+    
+    // some image testing - ignore this!
+    public final void viewDrawImage(Color color1,Color color2){
+        // reset framecontent
+        reset();
+        // create a panel
+        contentPanel = new JPanel();
+        contentPanel.setSize(defaultWindowSize);
+        contentPanel.add(new JLabel("Draw Image Screen"));
+        
+        int width = 200;
+        int height = 200;
+        
+        Random randomGenerator = new Random();
+        int randomInt = randomGenerator.nextInt(10);
+        
+        BufferedImage img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+        
+        for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if(x%5==0 || y%5==0)
+                        img.setRGB(x, y, color1.getRGB());
+                    else
+                        img.setRGB(x, y, color2.getRGB());
+                }
+            }
+        
+        
+        //this.add(contentPanel);
+        DrawSomething draw = new DrawSomething(img);
+        contentPanel.add(draw);
+        // insert back to menu button
+        insertBackButton("Back To Menu",150,30);
+        this.add(contentPanel);
+        // redraw frame
+        drawContent();
+    }
+    
+    // some further image testing - ignore this!
+    public class DrawSomething extends JPanel {
+
+        private BufferedImage canvas;
+
+        public DrawSomething(BufferedImage img) {
+            canvas = img;
+            //fillCanvas(Color.BLUE);
+            //drawRect(Color.RED, 0, 0, width/2, height/2);
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(canvas.getWidth(), canvas.getHeight());
+        }
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.drawImage(canvas, null, null);
+        }
+    }
+    
+    // inserts line breaks into a string
+    private String cutStringByLength(String text, int n) {
         int i=0;
         Boolean check = false;
         String newText = "";
@@ -144,7 +221,7 @@ public class GameView extends JFrame {
             }
             else
                 check = false;
-            if((i>=70 && ch==' ') || (i>=50 && ch=='.') || (i>=55 && ch==',')){
+            if((i>=n-5 && ch==' ') || (i>=n-20 && ch=='.') || (i>=n-15 && ch==',')){
                 if(ch=='.' ||  ch==',')
                     check = true;
                 newText += "\n";
@@ -152,14 +229,7 @@ public class GameView extends JFrame {
             }
             i++;
         }
-        JTextArea textArea = new JTextArea(newText);
-        textArea.setEditable(false);
-        contentPanel.add(textArea);
-        // insert back to menu button
-        insertBackButton("Back To Menu",150,30);
-        this.add(contentPanel);
-        // redraw frame
-        drawContent();
+        return newText;
     }
     
     private void insertBackButton(String title,int width,int height){
@@ -187,6 +257,10 @@ public class GameView extends JFrame {
     
     void addExitListener(ActionListener mal) {
         menuButtonList.get(4).addActionListener(mal);
+    }
+    
+    void addDrawImageListener(ActionListener mal) {
+        menuButtonList.get(5).addActionListener(mal);
     }
     
     void addBackToMenuListener(ActionListener mal) {
