@@ -11,5 +11,6 @@ package multisnakeglobal;
 public enum GameState {
     STARTED,
     PAUSED,
-    RUNNING
+    RUNNING,
+    FINISHED
 }
