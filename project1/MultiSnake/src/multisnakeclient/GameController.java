@@ -34,12 +34,14 @@ public class GameController {
     class StartServerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            view.viewNewServer();
         }
     }
     
     class JoinGameListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            view.viewJoinGame();
         }
     }
     

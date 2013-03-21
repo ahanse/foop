@@ -78,6 +78,38 @@ public class GameView extends JFrame {
         drawContent();
     }
     
+    // shows the join game screen in frame
+    public final void viewNewServer(){
+        // reset framecontent
+        reset();
+        // create a panel
+        contentPanel = new JPanel();
+        // insert back to menu button
+        insertBackButton("Back To Menu",150,30);
+        // do smthing with panel
+        contentPanel.add(new JLabel("New Server Screen"));
+        
+        this.add(contentPanel);
+        // redraw frame
+        drawContent();
+    }
+    
+    // shows the join game screen in frame
+    public final void viewJoinGame(){
+        // reset framecontent
+        reset();
+        // create a panel
+        contentPanel = new JPanel();
+        // insert back to menu button
+        insertBackButton("Back To Menu",150,30);
+        // do smthing with panel
+        contentPanel.add(new JLabel("Join Game Screen"));
+        
+        this.add(contentPanel);
+        // redraw frame
+        drawContent();
+    }
+    
     // shows the options in frame
     public final void viewOptions(){
         // reset framecontent
@@ -87,6 +119,8 @@ public class GameView extends JFrame {
         // insert back to menu button
         insertBackButton("Back To Menu",150,30);
         // do smthing with panel
+        contentPanel.add(new JLabel("Options Screen"));
+        
         this.add(contentPanel);
         // redraw frame
         drawContent();
@@ -99,6 +133,7 @@ public class GameView extends JFrame {
         // create a panel
         contentPanel = new JPanel();
         contentPanel.setSize(defaultWindowSize);
+        contentPanel.add(new JLabel("Options Screen"));
         String text = "Auf einer rechteckigen Anordnung von Feldern befinden sich Schlangen in mehreren unterschiedlichen Farben, deren Köpfe sich bei jedem Spielzug (nach einem vorgegebenen Takt) um ein Feld nach links, rechts, oben oder unten bewegen. Der Schlangenkörper (von dem jeder Teil genauso wie der Kopf ein Feld belegt) folgt der Bewegungslinie des Schlangenkopfs. Jeder Mitspieler steuert die Bewegungsrichtung des Kopfs seiner Schlange, die anderen Schlangen werden vom Computer gesteuert. Treffen unterschiedlich gefärbte Schlangenköpfe aufeinander, frisst die Schlange mit höherer Priorität jene mit niedrigerer Priorität, wobei die Priorität von der Farbe abhängt. Der Rumpf der gefressenen Schlange wird (Zug für Zug) zu einem Teil der fressenden Schlange, wodurch sich die fressende Schlange verlängert. Ein Spieler, dessen Schlange gefressen wird, scheidet aus dem Spiel aus. Trifft ein Schlangenkopf auf den Rumpf einer andersfarbigen Schlange, frisst sie den Rest der Schlange unabhängig von der Priorität, während die teilweise gefressene Schlange entsprechend kürzer wird. Gleichfarbige Schlangen können sich nicht fressen; wenn sie aufeinandertreffen stoppen sie ihre Bewegung, sodass sich nie zwei Schlangen auf demselben Feld befinden können.Anfangs besteht jede Schlange nur aus einem Kopf. Ziel jeden Spielers (auch des Computers) ist es so lange wie möglich zu werden und andersfarbige Schlangen zu eliminieren. Ein Spiel ist zu Ende wenn alle verbliebenen Schlangen dieselbe Farbe haben. Der Spieler dieser Farbe (oder der Computer falls kein Spieler übrig ist) hat mit einer der Länge der längsten verbliebenen Schlange entsprechenden Punktezahl gewonnen.";
         int i=0;
         Boolean check = false;
