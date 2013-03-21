@@ -14,5 +14,9 @@ public class MultiSnakeClient {
      */
     public static void main(String[] args) {
         System.out.println("Ich bin der Client!");
+        // create menu
+        MainMenuWindow menu = new MainMenuWindow("MultiSnake TestGUI Client",400,400);
+        // make it visible
+        menu.setVisible(true);
     }
 }
