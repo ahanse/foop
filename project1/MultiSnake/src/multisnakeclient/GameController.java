@@ -73,7 +73,7 @@ public class GameController {
     class DrawImageListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            view.viewDrawImage(Color.BLUE,Color.RED);
+            view.viewDrawImage(Color.BLUE,Color.RED,300,300);
         }
     }
     
