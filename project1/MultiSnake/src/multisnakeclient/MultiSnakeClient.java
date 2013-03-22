@@ -15,7 +15,7 @@ public class MultiSnakeClient {
     public static void main(String[] args) {
         System.out.println("Ich bin der Client!");
         GameModel model = new GameModel();
-        GameView view = new GameView(model,500,500);
+        GameView view = new GameView(model,model.getWindowWidth(),model.getWindowHeight());
         GameController controller = new GameController(model,view);
         view.setVisible(true);
     }

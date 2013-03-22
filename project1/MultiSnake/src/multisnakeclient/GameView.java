@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *
@@ -150,8 +149,7 @@ public class GameView extends JFrame {
         drawContent();
     }
 
-    // some image testing - ignore this!
-    public final void viewDrawImage(Color color1, Color color2, int width, int height) {
+    public void drawImage(BufferedImage img, int x, int y) {
         // reset framecontent
         reset();
         // create a panel
@@ -162,72 +160,18 @@ public class GameView extends JFrame {
         contentPanel.setLayout(null);
         label.setBounds((int) (contentPanel.getWidth() - label.getMinimumSize().getWidth()) / 2, 0, (int) label.getMinimumSize().getWidth(), 50);
         contentPanel.add(label);
-
-        // let a slide of images be created
-        ImageProcedure img = new ImageProcedure(200, color1, color2, width, height);
-        img.setBounds((contentPanel.getWidth() - width) / 2, 50, width, height);
-        contentPanel.add(img);
+        ImageIcon picture = new ImageIcon(img);
+        JLabel images = new JLabel();
+        images.setIcon(picture);
+        images.setBounds(x, y, img.getWidth(), img.getHeight());
+        contentPanel.add(images);
+        revalidate();
+        repaint();
         // insert back to menu button
         insertBackButton("Back To Menu", 150, 30);
         this.add(contentPanel);
         // redraw frame
         drawContent();
-    }
-
-    // some testing on dynamic image generation
-    public class ImageProcedure extends JPanel {
-
-        private int i = 0;
-        private Color color1, color2;
-        private Timer timer;
-        private JLabel images = new JLabel();
-        private ImageIcon picture;
-        private Boolean reached = false;
-        private int width = 0;
-        private int height = 0;
-        private ActionListener action = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-
-                if (i <= 40 && !reached) {
-                    i++;
-                } else {
-                    i--;
-                    reached = true;
-                }
-                BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-                for (int x = 0; x < width; x++) {
-                    for (int y = 0; y < height; y++) {
-                        if (Math.max(Math.abs(width / 2 - x),Math.abs(height / 2 - y)) <= height/i) {
-                            img.setRGB(x, y, color1.getRGB());
-                        }
-                        else {
-                            img.setRGB(x, y, color2.getRGB());
-                        }
-                    }
-                }
-
-                picture = new ImageIcon(img);
-                images.setIcon(picture);
-                if (i == 1 && reached) {
-                    reached = false;
-                    //timer.stop();
-                }
-                revalidate();
-                repaint();
-            }
-        };
-
-        public ImageProcedure(int intTimer, Color color1, Color color2, int width, int height) {
-            this.color1 = color1;
-            this.color2 = color2;
-            this.width = width;
-            this.height = height;
-            add(images);
-            timer = new Timer(intTimer, action);
-            timer.start();
-        }
     }
 
     // inserts line breaks into a string
