@@ -89,6 +89,20 @@ public class GameController {
                 }
             }
             view.drawImage(model.createGameBoard(imgMatrix),50,50);
+            /* old Code, experiment with int
+            int n = 2; int m = 100;
+            java.util.Random generator = new java.util.Random();
+            int[][][][] imgMatrix = new int[n][m][][];
+            for(int i=0;i<n;i++) {
+                for(int j=0;j<m;j++) {
+                    imgMatrix[i][j] = model.createOneColorRectangleInt(30,30,model.componentToARGB(generator.nextInt(255),generator.nextInt(255),generator.nextInt(255),255),1,model.componentToARGB(0,0,0,255));
+                }
+            }
+            int[][] matrix1 = model.createOneColorRectangleInt(30,30,model.componentToARGB(generator.nextInt(255),generator.nextInt(255),generator.nextInt(255),255),1,model.componentToARGB(0,0,0,255));
+            int[][] matrix2 = model.createOneColorRectangleInt(30,30,model.componentToARGB(generator.nextInt(255),generator.nextInt(255),generator.nextInt(255),255),1,model.componentToARGB(0,0,0,255));
+            int[][] matrix = model.attachImagesYInt(matrix1,matrix2);
+            view.drawImage(model.intMatrixToImage(model.createGameBoardInt(imgMatrix)),50,50);
+            */
         }
     }
     

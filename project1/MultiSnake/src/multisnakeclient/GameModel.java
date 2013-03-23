@@ -92,6 +92,27 @@ public class GameModel {
         return createOneColorRectangle(this.parcelLength, this.parcelLength, argbcolor, borderLength, borderColor);
     }
     
+    
+    /* old Code, experiment with int
+    // creates a rectangle of height and length in one color (ARGB)
+    public int[][] createOneColorRectangleInt(int width, int height, int argbcolor, int borderLength, int borderColor) {
+        int[][] rect = new int[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                //if(Math.max(Math.abs((width-1) / 2 - x),Math.abs((height-1) / 2 - y)) > (width-1)/2-borderLength)
+                if (Math.abs(width - x) <= borderLength || Math.abs(height - y) <= borderLength || x < borderLength || y < borderLength) //tmp[i]=argbcolor;
+                {
+                    rect[x][y]=borderColor;
+                } else //tmp[i]=borderColor;
+                {
+                    rect[x][y]=argbcolor;
+                }
+            }
+        }
+        return rect;
+    }
+    */
+    
     // takes a Matrix of rectangles and conjoins them to one image
     public BufferedImage createGameBoard(BufferedImage[][] imgMatrix) {
         BufferedImage tmp;
@@ -106,6 +127,22 @@ public class GameModel {
         }
         return tmp2;
     }
+    
+    /* old Code, experiment with int
+    // takes a Matrix of rectangles and conjoins them to one image
+    public int[][] createGameBoardInt(int[][][][] imgMatrix) {
+        int[][] tmp;
+        int[][] tmp2 = new int[0][0];
+        for (int[][][] imgList : imgMatrix) {
+            tmp = new int[0][0];
+            for (int[][] img : imgList) {
+                tmp = attachImagesXInt(tmp,img);
+            }
+            tmp2 = attachImagesYInt(tmp2,tmp);
+        }
+        return tmp2;
+    }
+    * */
 
     // attaches a BufferedImage to the right of another one
     public BufferedImage attachImagesX(BufferedImage img1, BufferedImage img2) {
@@ -121,6 +158,32 @@ public class GameModel {
             return img2;
         }
     }
+    
+    /* old Code, experiment with int
+     // attaches a BufferedImage to the right of another one
+    public int[][] attachImagesXInt(int[][] img1, int[][] img2) {
+        if (img1.length > 0) {
+            int m[][] = new int[img1.length+img2.length][];
+            System.arraycopy(img1, 0, m, 0, img1.length);
+            System.arraycopy(img2, 0, m, img1.length, img2.length);
+            return m;
+        } else {
+            return img2;
+        }
+    }
+    
+    
+    // converts a matrix of color ints to a BufferedImage
+    public BufferedImage intMatrixToImage(int[][] intMatrix) {
+        BufferedImage ret = new BufferedImage(intMatrix.length,intMatrix[0].length,BufferedImage.TYPE_4BYTE_ABGR);
+        for(int i=0;i<intMatrix.length;i++){
+            for(int j=0;j<intMatrix[i].length;j++) {
+                ret.setRGB(i,j,intMatrix[i][j]);
+            }
+        }
+        return ret;
+    }
+    */
 
     // attaches a BufferedImage under another one
     public BufferedImage attachImagesY(BufferedImage img1, BufferedImage img2) {
@@ -136,6 +199,22 @@ public class GameModel {
             return img2;
         }
     }
+    
+    /* old Code, experiment with int
+    // attaches a BufferedImage to the bottom of another one
+    public int[][] attachImagesYInt(int[][] img1, int[][] img2) {
+        if (img1.length > 0) {
+            int m[][] = new int[img1.length+img2.length][img1.length+img2.length];
+            for(int i=0;i<Math.max(img1.length, img2.length);i++){
+                System.arraycopy(img1[i], 0, m[i], 0, img1[i].length);
+                System.arraycopy(img2[i], 0, m[i], img1[i].length, img2[i].length);
+            }
+            return m;
+        } else {
+            return img2;
+        }
+    }
+    */
 
     // converts component based argb values to an argb value to use BufferedImage.setRGB
     public int componentToARGB(int red, int green, int blue, int transparency) {
