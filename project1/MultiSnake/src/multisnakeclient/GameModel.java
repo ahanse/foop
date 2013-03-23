@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.io.*;
@@ -88,9 +87,8 @@ public class GameModel {
         if(!"".equals(capt)) {
             Graphics g = rect.getGraphics();
             g.setFont(new Font("bla",Font.PLAIN,width));
-            Color c = new Color(argbcolor);
             // make the color of the String dependent on the background brightness
-            c = brightness(c) < 130 ? Color.WHITE : Color.BLACK;
+            Color c = brightness(argbcolor) < 130 ? Color.WHITE : Color.BLACK;
             g.setColor(c);
             // calculate the dimensions of the font to center it
             FontMetrics fm = g.getFontMetrics();
@@ -111,9 +109,10 @@ public class GameModel {
         return createRectangle(this.parcelLength, this.parcelLength, argbcolor, borderLength, borderColor, "");
     }
     
-    // calculates the brightness of a color
-    private static int brightness(Color c)
+    // calculates the brightness of a color (between 0..255)
+    private static int brightness(int argbcolor)
     {
+       Color c = new Color(argbcolor);
        return (int)Math.sqrt(
           c.getRed() * c.getRed() * .241 + 
           c.getGreen() * c.getGreen() * .691 + 

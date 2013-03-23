@@ -168,7 +168,7 @@ public class GameView extends JFrame {
         revalidate();
         repaint();
         // insert back to menu button
-        insertBackButton("Back To Menu", 150, 30);
+        insertBackButton("Back To Menu", 130, 30);
         this.add(contentPanel);
         // redraw frame
         drawContent();
