@@ -79,16 +79,21 @@ public class GameController {
             // create a matrix of n*m random rectangles using the methods of model
             // they seem to be pretty inefficient overall ^^
             // to transport the color ints instead of BufferedImages seems better
-            // should be easy to modify the function in model to this 
-            int n = 20; int m = 30;
+            // should be easy to modify the function in model to this
+            long start = System.nanoTime();  
+            int n = 30; int m = 30;
             java.util.Random generator = new java.util.Random();
             java.awt.image.BufferedImage[][] imgMatrix = new java.awt.image.BufferedImage[n][m];
             for(int i=0;i<n;i++) {
                 for(int j=0;j<m;j++) {
-                    imgMatrix[i][j] = model.createOneColorRectangle(model.componentToARGB(generator.nextInt(255),generator.nextInt(255),generator.nextInt(255),255),1,model.componentToARGB(0,0,0,255));
+                    imgMatrix[i][j] = model.createRectangle(20,20,model.componentToARGB(generator.nextInt(255),generator.nextInt(255),generator.nextInt(255),255),1,model.componentToARGB(0,0,0,255),"");
                 }
             }
-            view.drawImage(model.createGameBoard(imgMatrix),50,50);
+            java.awt.image.BufferedImage img = model.createRectangle(20,20,model.componentToARGB(generator.nextInt(255),generator.nextInt(255),generator.nextInt(255),255),1,model.componentToARGB(0,0,0,255),"5");
+            view.drawImage(img,50,50);
+            //view.drawImage(model.createGameBoard(imgMatrix),50,50);
+            long elapsedTime = (System.nanoTime() - start);
+            System.out.printf("The time taken was "+((double) elapsedTime)/(1000000000)+" s\n");
             /* old Code, experiment with int
             int n = 2; int m = 100;
             java.util.Random generator = new java.util.Random();

@@ -4,7 +4,12 @@
  */
 package multisnakeclient;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.io.*;
 
@@ -65,9 +70,8 @@ public class GameModel {
     }
 
     // creates a rectangle of height and length in one color (ARGB)
-    public BufferedImage createOneColorRectangle(int width, int height, int argbcolor, int borderLength, int borderColor) {
+    public BufferedImage createRectangle(int width, int height, int argbcolor, int borderLength, int borderColor, String capt) {
         BufferedImage rect = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-        int[] tmp = new int[width * height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 //if(Math.max(Math.abs((width-1) / 2 - x),Math.abs((height-1) / 2 - y)) > (width-1)/2-borderLength)
@@ -80,18 +84,41 @@ public class GameModel {
                 }
             }
         }
+        // if string is handled over, draw it in the rectangle. centered.
+        if(!"".equals(capt)) {
+            Graphics g = rect.getGraphics();
+            g.setFont(new Font("bla",Font.PLAIN,width));
+            Color c = new Color(argbcolor);
+            // make the color of the String dependent on the background brightness
+            c = brightness(c) < 130 ? Color.WHITE : Color.BLACK;
+            g.setColor(c);
+            // calculate the dimensions of the font to center it
+            FontMetrics fm = g.getFontMetrics();
+            Rectangle2D textsize = fm.getStringBounds(capt, g);
+            int xPos = (int) ((width - textsize.getWidth()) / 2);
+            int yPos = (int) ((height - textsize.getHeight()) / 2 + fm.getAscent());
+            g.drawString(capt,xPos,yPos);
+        }
         //rect.setRGB(0,0,width,height,tmp,0,1);
         return rect;
     }
 
-    public BufferedImage createOneColorRectangle(int argbcolor) {
-        return createOneColorRectangle(this.parcelLength, this.parcelLength, argbcolor, 0, 0);
+    public BufferedImage createRectangle(int argbcolor) {
+        return createRectangle(this.parcelLength, this.parcelLength, argbcolor, 0, 0, "");
     }
 
-    public BufferedImage createOneColorRectangle(int argbcolor, int borderLength, int borderColor) {
-        return createOneColorRectangle(this.parcelLength, this.parcelLength, argbcolor, borderLength, borderColor);
+    public BufferedImage createRectangle(int argbcolor, int borderLength, int borderColor) {
+        return createRectangle(this.parcelLength, this.parcelLength, argbcolor, borderLength, borderColor, "");
     }
     
+    // calculates the brightness of a color
+    private static int brightness(Color c)
+    {
+       return (int)Math.sqrt(
+          c.getRed() * c.getRed() * .241 + 
+          c.getGreen() * c.getGreen() * .691 + 
+          c.getBlue() * c.getBlue() * .068);
+    }
     
     /* old Code, experiment with int
     // creates a rectangle of height and length in one color (ARGB)
