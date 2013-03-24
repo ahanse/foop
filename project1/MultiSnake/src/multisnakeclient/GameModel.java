@@ -5,12 +5,12 @@
 package multisnakeclient;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
+import multisnakeglobal.IGameData;
+import multisnakeglobal.ISnake;
+import multisnakeglobal.Point;
 
 /**
  *
@@ -23,21 +23,75 @@ public class GameModel {
 
     // basic options for display
     // length of one parcel on the game board
-    private int parcelLength = 0;
+    private int parcelLength;
     // proportions of program window
-    private int windowWidth = 0;
-    private int windowHeight = 0;
-    private static String filename = "options.dat";
+    private int windowWidth;
+    private int windowHeight;
+    private static int[] COLORPOOL;
+    private static String FILENAME = "options.dat";
+    private ImageProceedingData currentImage;
 
     public GameModel() {
-        readOptions(filename);
+        readOptions();
+        COLORPOOL = new int[]{
+            componentToARGB(0, 0, 128, 255),
+            componentToARGB(0, 191, 255, 255),
+            componentToARGB(0, 100, 0, 255),
+            componentToARGB(85, 107, 47, 255),
+            componentToARGB(0, 255, 0, 255),
+            componentToARGB(255, 255, 0, 255),
+            componentToARGB(184, 134, 11, 255),
+            componentToARGB(178, 34, 34, 255),
+            componentToARGB(255, 0, 0, 255),
+            componentToARGB(255, 20, 147, 255),
+            componentToARGB(255, 106, 106, 255)};
+    }
+
+    /**
+     * @return the currentImage
+     */
+    public ImageProceedingData getCurrentImage() {
+        return currentImage;
+    }
+
+    public ImageProceedingData simulateData(int numOfXTiles, int numOfYTiles) {
+        currentImage = new ImageProceedingData(numOfXTiles, numOfYTiles);
+        int numOfSnakes = 5;
+        int m = 0;
+        ArrayList<ArrayList<Point>> snakes = new ArrayList<ArrayList<Point>>();
+        for (int i = 0; i < 5; i++) {
+            snakes.add(new ArrayList<Point>());
+        }
+        Random randomGenerator = new Random();
+        for (int i = 0; i < numOfXTiles; i++) {
+            for (int j = 0; j < numOfYTiles; j++) {
+                m = randomGenerator.nextInt(5);
+                if (randomGenerator.nextInt(100) % 4 == 0) {
+                    snakes.get(m).add(new Point(i, j));
+                }
+            }
+        }
+        for (int i = 0; i < numOfSnakes; i++) {
+            currentImage.addRectangleFromList(snakes.get(i), i, new Color(COLORPOOL[i]));
+        }
+        return currentImage;
+    }
+
+    // save GameData to a propper format
+    public void saveGameData(IGameData data) {
+        currentImage = new ImageProceedingData(data.getDimensions().getX(), data.getDimensions().getY());
+        int i = 0;
+        for (ISnake snake : data.getSnakes()) {
+            getCurrentImage().addRectangleFromSnake(snake, new Color(COLORPOOL[i]));
+            i++;
+        }
     }
 
     // reads the options in this class from a file and sets them
-    public final void readOptions(String filename) {
+    public final void readOptions() {
         try {
             //open file to read from
-            FileInputStream saveFile = new FileInputStream(filename);
+            FileInputStream saveFile = new FileInputStream(FILENAME);
             //create an ObjectInputStream to get objects from save file
             ObjectInputStream save = new ObjectInputStream(saveFile);
 
@@ -50,12 +104,12 @@ public class GameModel {
         } catch (Exception e) {
         }
     }
-    
+
     // saves the options in this class to a file
-    public final void saveOptions(String filename) {
+    public final void saveOptions() {
         try {
             //open a file to write to
-            FileOutputStream saveFile = new FileOutputStream(filename);
+            FileOutputStream saveFile = new FileOutputStream(FILENAME);
             //create an ObjectOutputStream to put objects into save file
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
             // write on Stream
@@ -68,182 +122,16 @@ public class GameModel {
         }
     }
 
-    // creates a rectangle of height and length in one color (ARGB)
-    public BufferedImage createRectangle(int width, int height, int argbcolor, int borderLength, int borderColor, String capt) {
-        BufferedImage rect = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                //if(Math.max(Math.abs((width-1) / 2 - x),Math.abs((height-1) / 2 - y)) > (width-1)/2-borderLength)
-                if (Math.abs(width - x) <= borderLength || Math.abs(height - y) <= borderLength || x < borderLength || y < borderLength) //tmp[i]=argbcolor;
-                {
-                    rect.setRGB(x, y, borderColor);
-                } else //tmp[i]=borderColor;
-                {
-                    rect.setRGB(x, y, argbcolor);
-                }
-            }
-        }
-        // if string is handled over, draw it in the rectangle. centered.
-        if(!"".equals(capt)) {
-            Graphics g = rect.getGraphics();
-            g.setFont(new Font("bla",Font.PLAIN,width));
-            // make the color of the String dependent on the background brightness
-            Color c = brightness(argbcolor) < 130 ? Color.WHITE : Color.BLACK;
-            g.setColor(c);
-            // calculate the dimensions of the font to center it
-            FontMetrics fm = g.getFontMetrics();
-            Rectangle2D textsize = fm.getStringBounds(capt, g);
-            int xPos = (int) ((width - textsize.getWidth()) / 2);
-            int yPos = (int) ((height - textsize.getHeight()) / 2 + fm.getAscent());
-            g.drawString(capt,xPos,yPos);
-        }
-        //rect.setRGB(0,0,width,height,tmp,0,1);
-        return rect;
-    }
-
-    public BufferedImage createRectangle(int argbcolor) {
-        return createRectangle(this.parcelLength, this.parcelLength, argbcolor, 0, 0, "");
-    }
-
-    public BufferedImage createRectangle(int argbcolor, int borderLength, int borderColor) {
-        return createRectangle(this.parcelLength, this.parcelLength, argbcolor, borderLength, borderColor, "");
-    }
-    
     // calculates the brightness of a color (between 0..255)
-    private static int brightness(int argbcolor)
-    {
-       Color c = new Color(argbcolor);
-       return (int)Math.sqrt(
-          c.getRed() * c.getRed() * .241 + 
-          c.getGreen() * c.getGreen() * .691 + 
-          c.getBlue() * c.getBlue() * .068);
+    public int brightness(Color c) {
+        return (int) Math.sqrt(
+                c.getRed() * c.getRed() * .241
+                + c.getGreen() * c.getGreen() * .691
+                + c.getBlue() * c.getBlue() * .068);
     }
-    
-    /* old Code, experiment with int
-    // creates a rectangle of height and length in one color (ARGB)
-    public int[][] createOneColorRectangleInt(int width, int height, int argbcolor, int borderLength, int borderColor) {
-        int[][] rect = new int[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                //if(Math.max(Math.abs((width-1) / 2 - x),Math.abs((height-1) / 2 - y)) > (width-1)/2-borderLength)
-                if (Math.abs(width - x) <= borderLength || Math.abs(height - y) <= borderLength || x < borderLength || y < borderLength) //tmp[i]=argbcolor;
-                {
-                    rect[x][y]=borderColor;
-                } else //tmp[i]=borderColor;
-                {
-                    rect[x][y]=argbcolor;
-                }
-            }
-        }
-        return rect;
-    }
-    */
-    
-    // takes a Matrix of rectangles and conjoins them to one image
-    public BufferedImage createGameBoard(BufferedImage[][] imgMatrix) {
-        BufferedImage tmp;
-        BufferedImage tmp2 = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
-        for (BufferedImage[] imgList : imgMatrix) {
-            tmp = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
-            for (BufferedImage img : imgList) {
-                tmp = attachImagesX(tmp,img);
-            }
-            tmp2 = attachImagesY(tmp2,tmp);
-
-        }
-        return tmp2;
-    }
-    
-    /* old Code, experiment with int
-    // takes a Matrix of rectangles and conjoins them to one image
-    public int[][] createGameBoardInt(int[][][][] imgMatrix) {
-        int[][] tmp;
-        int[][] tmp2 = new int[0][0];
-        for (int[][][] imgList : imgMatrix) {
-            tmp = new int[0][0];
-            for (int[][] img : imgList) {
-                tmp = attachImagesXInt(tmp,img);
-            }
-            tmp2 = attachImagesYInt(tmp2,tmp);
-        }
-        return tmp2;
-    }
-    * */
-
-    // attaches a BufferedImage to the right of another one
-    public BufferedImage attachImagesX(BufferedImage img1, BufferedImage img2) {
-        if (img1.getWidth() > 1) {
-            BufferedImage resultImage = new BufferedImage(img1.getWidth()
-                    + img2.getWidth(), img1.getHeight(),
-                    BufferedImage.TYPE_INT_RGB);
-            Graphics g = resultImage.getGraphics();
-            g.drawImage(img1, 0, 0, null);
-            g.drawImage(img2, img1.getWidth(), 0, null);
-            return resultImage;
-        } else {
-            return img2;
-        }
-    }
-    
-    /* old Code, experiment with int
-     // attaches a BufferedImage to the right of another one
-    public int[][] attachImagesXInt(int[][] img1, int[][] img2) {
-        if (img1.length > 0) {
-            int m[][] = new int[img1.length+img2.length][];
-            System.arraycopy(img1, 0, m, 0, img1.length);
-            System.arraycopy(img2, 0, m, img1.length, img2.length);
-            return m;
-        } else {
-            return img2;
-        }
-    }
-    
-    
-    // converts a matrix of color ints to a BufferedImage
-    public BufferedImage intMatrixToImage(int[][] intMatrix) {
-        BufferedImage ret = new BufferedImage(intMatrix.length,intMatrix[0].length,BufferedImage.TYPE_4BYTE_ABGR);
-        for(int i=0;i<intMatrix.length;i++){
-            for(int j=0;j<intMatrix[i].length;j++) {
-                ret.setRGB(i,j,intMatrix[i][j]);
-            }
-        }
-        return ret;
-    }
-    */
-
-    // attaches a BufferedImage under another one
-    public BufferedImage attachImagesY(BufferedImage img1, BufferedImage img2) {
-        if (img1.getHeight() > 1) {
-            BufferedImage resultImage = new BufferedImage(img1.getWidth(),
-                    img1.getHeight() + img2.getHeight(),
-                    BufferedImage.TYPE_INT_RGB);
-            Graphics g = resultImage.getGraphics();
-            g.drawImage(img1, 0, 0, null);
-            g.drawImage(img2, 0, img1.getHeight(), null);
-            return resultImage;
-        } else {
-            return img2;
-        }
-    }
-    
-    /* old Code, experiment with int
-    // attaches a BufferedImage to the bottom of another one
-    public int[][] attachImagesYInt(int[][] img1, int[][] img2) {
-        if (img1.length > 0) {
-            int m[][] = new int[img1.length+img2.length][img1.length+img2.length];
-            for(int i=0;i<Math.max(img1.length, img2.length);i++){
-                System.arraycopy(img1[i], 0, m[i], 0, img1[i].length);
-                System.arraycopy(img2[i], 0, m[i], img1[i].length, img2[i].length);
-            }
-            return m;
-        } else {
-            return img2;
-        }
-    }
-    */
 
     // converts component based argb values to an argb value to use BufferedImage.setRGB
-    public int componentToARGB(int red, int green, int blue, int transparency) {
+    public final int componentToARGB(int red, int green, int blue, int transparency) {
         return (transparency << 24) | (red << 16) | (green << 8) | blue;
     }
 

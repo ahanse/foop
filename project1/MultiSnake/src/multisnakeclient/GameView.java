@@ -7,8 +7,8 @@ package multisnakeclient;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import multisnakeclient.GameModel.*;
 
 /**
  *
@@ -30,9 +30,11 @@ public class GameView extends JFrame {
         defaultWindowSize = new Dimension(width, height);
         this.setTitle("MultiSnake Client GUI Test");
         this.setSize(defaultWindowSize);
-        this.setLocation(100, 100);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        //this.pack();
+        contentPanel = new JPanel();
 
         // init ALL buttons
         menuButtonList = new ArrayList<JButton>();
@@ -149,29 +151,88 @@ public class GameView extends JFrame {
         drawContent();
     }
 
-    public void drawImage(BufferedImage img, int x, int y) {
-        // reset framecontent
+    public void drawImage() {
         reset();
-        // create a panel
-        contentPanel = new JPanel();
-        contentPanel.setSize(defaultWindowSize);
-        JLabel label = new JLabel("Draw Image Screen");
-        //set the Layout
-        contentPanel.setLayout(null);
-        label.setBounds((int) (contentPanel.getWidth() - label.getMinimumSize().getWidth()) / 2, 0, (int) label.getMinimumSize().getWidth(), 50);
-        contentPanel.add(label);
-        ImageIcon picture = new ImageIcon(img);
-        JLabel images = new JLabel();
-        images.setIcon(picture);
-        images.setBounds(x, y, img.getWidth(), img.getHeight());
-        contentPanel.add(images);
-        revalidate();
-        repaint();
-        // insert back to menu button
-        insertBackButton("Back To Menu", 130, 30);
-        this.add(contentPanel);
-        // redraw frame
-        drawContent();
+        this.add(new ImageTemplateJPanel());
+        this.pack();
+    }
+
+    // Swing Program Template
+    @SuppressWarnings("serial")
+    public class ImageTemplateJPanel extends JPanel {
+        
+        public static final int CANVAS_WIDTH = 500;
+        public static final int CANVAS_HEIGHT = 500;
+        public static final int BOARDER = 1;
+        // ......
+
+        // private variables of GUI components
+        // ......
+        /**
+         * Constructor to setup the GUI components
+         */
+        public ImageTemplateJPanel() {
+            setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+            JButton btn = new JButton("back");
+            this.setLayout(null);
+            btn.setBounds(300, 300, 120, 20);
+            //this.add(btn);
+            // "this" JPanel container sets layout
+            // setLayout(new ....Layout());
+
+            // Allocate the UI components
+            // .....
+
+            // "this" JPanel adds components
+            // add(....)
+
+            // Source object adds listener
+            // .....
+        }
+
+        /**
+         * Custom painting codes on this JPanel
+         */
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            ImageProceedingData img = model.getCurrentImage();
+            // paint background
+            int tileLength = model.getParcelLength();
+            g.setColor(Color.WHITE);
+            g.clearRect(0, 0, tileLength * img.getNumOfXFields(), tileLength * img.getNumOfYFields());
+            // initiate some help variables
+            RectangleData currentSnake;
+            int firstRectX = 0;
+            int firstRectY = 0;
+            multisnakeglobal.Point currentCoords;
+            // until no data left, iteration over snakes
+            while (!img.isEmpty()) {
+                // read data of next snake in line
+                currentSnake = img.getNextRectangleData();
+                // read coords of the current snake
+                currentCoords = currentSnake.getNextCoord();
+                // save the first coords
+                firstRectX = (currentCoords.getX()) * tileLength;
+                firstRectY = (currentCoords.getY()) * tileLength;
+                // set color
+                g.setColor(Color.WHITE);
+                // fill first tile of the snake on board including a boarder
+                g.fillRect(firstRectX, firstRectY, tileLength, tileLength);
+                g.setColor(currentSnake.getColor());
+                g.fillRect(firstRectX + BOARDER, firstRectY + BOARDER, tileLength - 2 * BOARDER, tileLength - 2 * BOARDER);
+                // iterate over remaining coords of the snaketiles
+                currentCoords = currentSnake.getNextCoord();
+                while ((currentCoords.getX() != -1) && (currentCoords.getY() != -1)) {
+                    // copy the first tile of the snake to the new tile position
+                    g.copyArea(firstRectX, firstRectY, tileLength, tileLength, currentCoords.getX() * tileLength - firstRectX, currentCoords.getY() * tileLength - firstRectY);
+                    currentCoords = currentSnake.getNextCoord();
+                }
+                // add number to head of the snake
+                g.setColor(model.brightness(currentSnake.getColor()) < 130 ? Color.WHITE : Color.BLACK);
+                g.drawString(currentSnake.getNumber(), firstRectX, firstRectY + tileLength);
+            }
+        }
     }
 
     // inserts line breaks into a string
