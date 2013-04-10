@@ -32,4 +32,8 @@ public class Point {
     public void setY(int Y) {
         this.Y = Y;
     }
+    
+    public boolean equals(Point p) {
+        return p.getX() == X && p.getY() == Y;
+    }
 }

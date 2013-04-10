@@ -15,5 +15,5 @@ public interface IGameData extends java.io.Serializable{
     List<ISnake> getSnakes();
     GameState getStatus();
     Point getDimensions();
-    Date getTimeStamp();
+    long getTimeStamp();
 }
