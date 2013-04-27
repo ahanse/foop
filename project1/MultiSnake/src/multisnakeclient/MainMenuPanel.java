@@ -20,6 +20,7 @@ public class MainMenuPanel extends JPanel implements ActionListener {
     private MainFrame parentFrame;
 
     public MainMenuPanel(MainFrame parentFrame) {
+    	super();
         Dimension windowSize = parentFrame.getSize();
         this.parentFrame = parentFrame;
         this.setSize(windowSize);
@@ -49,7 +50,7 @@ public class MainMenuPanel extends JPanel implements ActionListener {
         tmp.setActionCommand("GamePanel");
         menuButtonList.add(tmp);
 
-        //place buttons on manupanel
+        //place buttons on menupanel
         int numberOfButtons = menuButtonList.size();
         this.setLayout(null);
         int width = 150;

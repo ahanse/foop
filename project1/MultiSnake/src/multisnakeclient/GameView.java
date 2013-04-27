@@ -65,7 +65,7 @@ public class GameView extends JFrame {
         // create a panel
         contentPanel = new JPanel();
         contentPanel.setSize(defaultWindowSize);
-        //place buttons on manupanel
+        //place buttons on menupanel
         int numberOfButtons = menuButtonList.size();
         contentPanel.setLayout(null);
         int width = 150;
