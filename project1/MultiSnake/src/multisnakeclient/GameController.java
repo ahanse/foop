@@ -6,6 +6,9 @@ package multisnakeclient;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  *
@@ -26,16 +29,18 @@ public class GameController {
     public GameController(GameModel model, GameView view) {
         this.model = model;
         this.view = view;
+        addListener();
+    }
 
+    private void addListener() {
         // add listeners for view
-        view.addStartServerListener(new StartServerListener());
-        view.addJoinGameListener(new JoinGameListener());
-        view.addOptionsListener(new OptionsListener());
-        view.addHelpListener(new HelpListener());
-        view.addExitListener(new ExitListener());
-        // image testing - ignore this
-        view.addDrawImageListener(new DrawImageListener());
-        view.addBackToMenuListener(new BackToMenuListener());
+        this.view.addStartServerListener(new StartServerListener());
+        this.view.addJoinGameListener(new JoinGameListener());
+        this.view.addOptionsListener(new OptionsListener());
+        this.view.addHelpListener(new HelpListener());
+        this.view.addExitListener(new ExitListener());
+        this.view.addDrawImageListener(new DrawImageListener());
+        this.view.addBackToMenuListener(new BackToMenuListener());
     }
 
     class StartServerListener implements ActionListener {
@@ -117,7 +122,7 @@ public class GameController {
                     int bitrate = 20;
                     Thread.sleep(Math.max(0, bitrate - (int) (elapsedTime2 / 1000000)));
                     long elapsedTime = (System.nanoTime() - start);
-                    System.out.printf("Time taken: " + ((double) elapsedTime) / (1000000000) + " s\n");
+                    //System.out.printf("Time taken: " + ((double) elapsedTime) / (1000000000) + " s\n");
                     synchronized (this) {
                         while (threadSuspended && t == thisThread) {
                             wait();

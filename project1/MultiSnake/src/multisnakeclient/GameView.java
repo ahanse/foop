@@ -65,7 +65,6 @@ public class GameView extends JFrame {
         // create a panel
         contentPanel = new JPanel();
         contentPanel.setSize(defaultWindowSize);
-
         //place buttons on manupanel
         int numberOfButtons = menuButtonList.size();
         contentPanel.setLayout(null);
@@ -160,7 +159,7 @@ public class GameView extends JFrame {
     // Swing Program Template
     @SuppressWarnings("serial")
     public class ImageTemplateJPanel extends JPanel {
-        
+
         public static final int CANVAS_WIDTH = 500;
         public static final int CANVAS_HEIGHT = 500;
         public static final int BOARDER = 1;

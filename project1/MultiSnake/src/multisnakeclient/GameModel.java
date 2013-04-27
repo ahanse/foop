@@ -5,6 +5,7 @@
 package multisnakeclient;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -66,13 +67,13 @@ public class GameModel {
         for (int i = 0; i < numOfXTiles; i++) {
             for (int j = 0; j < numOfYTiles; j++) {
                 m = randomGenerator.nextInt(5);
-                if (randomGenerator.nextInt(100) % 4 == 0) {
+                if (randomGenerator.nextInt(1000) % 2 == 0) {
                     snakes.get(m).add(new Point(i, j));
                 }
             }
         }
         for (int i = 0; i < numOfSnakes; i++) {
-            currentImage.addRectangleFromList(snakes.get(i), i, new Color(COLORPOOL[i]));
+            currentImage.addRectangleFromList(snakes.get(i), i, new Color(COLORPOOL[2*i]));
         }
         return currentImage;
     }
