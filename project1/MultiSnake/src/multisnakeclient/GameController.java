@@ -114,7 +114,7 @@ public class GameController {
                     view.drawImage();
                     long elapsedTime2 = (System.nanoTime() - start);
                     // delay to bitrate milliseconds
-                    int bitrate = 200;
+                    int bitrate = 20;
                     Thread.sleep(Math.max(0, bitrate - (int) (elapsedTime2 / 1000000)));
                     long elapsedTime = (System.nanoTime() - start);
                     System.out.printf("Time taken: " + ((double) elapsedTime) / (1000000000) + " s\n");

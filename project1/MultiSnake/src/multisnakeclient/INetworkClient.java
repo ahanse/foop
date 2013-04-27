@@ -4,8 +4,9 @@
  */
 package multisnakeclient;
 
-import multisnakeglobal.IConnectionState;
+import multisnakeglobal.ConnectionState;
 import multisnakeglobal.IGameData;
+import multisnakeglobal.KeyChange;
 /**
  *
  * @author Benedikt
@@ -13,5 +14,6 @@ import multisnakeglobal.IGameData;
 public interface INetworkClient {
     IGameData getGameData();
     int getOwnID();
-    IConnectionState getStatus();
+    ConnectionState getStatus();
+    void setKeyChange(KeyChange key);
 }

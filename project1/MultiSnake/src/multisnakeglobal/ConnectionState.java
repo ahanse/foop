@@ -8,7 +8,7 @@ package multisnakeglobal;
  *
  * @author Benedikt
  */
-public enum IConnectionState {
+public enum ConnectionState {
     NOTREADY, 
     READY, 
     DISCONNECTED

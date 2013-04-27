@@ -11,7 +11,7 @@ package multisnakeglobal;
 import java.util.List;
 
 public interface ISnake {
-    List<Point> getKoordinaten();
+    List<Point> getCoordinates();
     Point getHead();
     int getPriority();
     int getID();

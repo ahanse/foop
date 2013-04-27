@@ -1,7 +1,7 @@
 
 package multisnakeserver;
  
-import multisnakeglobal.IConnectionState;
+import multisnakeglobal.ConnectionState;
 import multisnakeglobal.IGameData;
 import multisnakeglobal.KeyChange;
 /**
@@ -10,7 +10,7 @@ import multisnakeglobal.KeyChange;
  */
 public interface IPlayer {
  
-    IConnectionState getStatus();
+    ConnectionState getStatus();
     String getNick();
     KeyChange getChangedKeys();
     void setId(int id);

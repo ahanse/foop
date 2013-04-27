@@ -49,7 +49,7 @@ public class Snake implements ISnake {
         return name_;
     }
     
-    public Vector<Point> getKoordinaten() {
+    public Vector<Point> getCoordinates() {
         Vector<Point> nodes = new Vector();
         tiles_.getNodes(nodes);
         return nodes;

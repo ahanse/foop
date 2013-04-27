@@ -6,6 +6,7 @@ package multisnakeclient;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import multisnakeglobal.ISnake;
 import multisnakeglobal.Point;
@@ -31,8 +32,8 @@ public class ImageProceedingData {
     public void addRectangleFromSnake(ISnake snake, Color color) {
         Point head = snake.getHead();
         Stack<Point> coords = new Stack<Point>();
-        for (Point p : snake.getKoordinaten()) {
-            if ((p.getX() != head.getX()) && (p.getY() != head.getY())) {
+        for (Point p : snake.getCoordinates()) {
+            if ((p.getX() != head.getX()) || (p.getY() != head.getY())) {
                 coords.push(p);
             }
         }
@@ -41,7 +42,7 @@ public class ImageProceedingData {
         numOfSnakes++;
     }
 
-    public void addRectangleFromList(ArrayList<Point> list, int number, Color color) {
+    public void addRectangleFromList(List<Point> list, int number, Color color) {
         Stack<Point> coords = new Stack<Point>();
         for (int i = 0; i < list.size(); i++) {
             coords.push(list.get(i));
