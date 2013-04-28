@@ -58,7 +58,7 @@ public final class MainFrame extends JFrame implements KeyListener{
     }
 
     public void drawContent() {
-        this.revalidate();
+        //this.revalidate();
         this.pack();
         this.repaint();
     }
@@ -66,6 +66,7 @@ public final class MainFrame extends JFrame implements KeyListener{
     public Options getOptions() {
         return options;
     }
+    
 
     @Override
     public void keyTyped(KeyEvent e) {
