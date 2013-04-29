@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package multisnakeserver;
+import multisnakeglobal.*;
 
 /**
  *
@@ -14,6 +15,10 @@ public class MultiSnakeServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Ich bin der Server!");
+        GameData gd = new GameData(new Point(20,20));
+        NetworkServer ns = new NetworkServer(2);
+        while(true) {
+        }
+        }
     }
 }
