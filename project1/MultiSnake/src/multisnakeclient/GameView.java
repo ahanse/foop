@@ -54,7 +54,7 @@ public class GameView extends JFrame {
     }
 
     public void drawContent() {
-        this.revalidate();
+        //this.revalidate();
         this.repaint();
     }
 

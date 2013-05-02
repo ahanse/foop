@@ -25,7 +25,7 @@ public class Options {
     private int windowHeight;
     private int[] COLORPOOL;
     private int MAXPLAYER = 10;
-    private Point[] RESLIST = {new Point(400,400),new Point(600,400),new Point(800,600)};
+    private Point[] RESLIST = {new Point(400,400),new Point(600,400),new Point(800,400),new Point(800,600)};
 
 	private static String FILENAME = "options.dat";
 

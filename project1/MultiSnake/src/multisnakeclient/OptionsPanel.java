@@ -30,20 +30,23 @@ public class OptionsPanel extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         
         JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-        JPanel optPnl = new JPanel (new GridLayout(0,2));        
+        JPanel optPnl = new JPanel (new GridLayout(0,2,0,10));        
         
         // create Options
-        Label resLbl = new Label("Window Resolution");
+        JLabel resLbl = new JLabel("Window Resolution");
         resList = new JComboBox(parentFrame.getOptions().getRESLIST());
         resList.setSelectedItem(new Point(parentFrame.getOptions().getWindowWidth(),parentFrame.getOptions().getWindowHeight()));
-        Label lngtLbl = new Label("Max Tile Length");
-        lngthTFld = new JTextField(20);
+        JLabel lngtLbl = new JLabel("Max Tile Length");
+        lngthTFld = new JTextField(10);
         lngthTFld.setText(parentFrame.getOptions().getMaxParcelLength()+"");
+        
         
         optPnl.add(resLbl);
         optPnl.add(resList);
         optPnl.add(lngtLbl);
         optPnl.add(lngthTFld);
+        
+        optPnl.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
         
         // create Buttons
         menuButtonList = new ArrayList<JButton>();
