@@ -88,6 +88,9 @@ public class NewServerPanel extends JPanel implements ActionListener {
             else{
                 String[] options={tickTFld.getText(),boardXTFld.getText(),boardXTFld.getText()};
                 parentFrame.startServer(options);
+                
+                //TODO: own IP and port
+                parentFrame.ConnectToServer("127.0.0.1", 1234);
             }
             
         } else if (com.equals("Back")) {
