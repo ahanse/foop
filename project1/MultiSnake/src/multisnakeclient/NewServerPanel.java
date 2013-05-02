@@ -91,6 +91,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 
                 //TODO: own IP and port
                 parentFrame.ConnectToServer("127.0.0.1", 1234);
+                parentFrame.drawPanel("GamePanel");
             }
             
         } else if (com.equals("Back")) {
