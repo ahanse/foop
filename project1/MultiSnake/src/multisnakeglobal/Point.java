@@ -46,6 +46,32 @@ public class Point {
 	public String toString() {
 		return "("+X+","+Y+")";
 	}
-
     
+    public Point nextPoint(Direction d, Point dimension) {
+        Point goalHead = new Point(0,0);
+        switch(d) {
+            case UP:
+                goalHead.setX(this.getX());
+                goalHead.setY(posMod((this.getY() - 1), dimension.getY()));
+                break;
+            case DOWN:
+                goalHead.setX(this.getX());
+                goalHead.setY(posMod((this.getY() + 1), dimension.getY()));
+                break;
+            case LEFT:
+            goalHead.setX(posMod((this.getX() - 1), dimension.getX()));
+                goalHead.setY(this.getY());
+                break;
+            case RIGHT:
+                goalHead.setX(posMod((this.getX() + 1), dimension.getX()));
+                goalHead.setY(this.getY());
+                break;
+        }
+        return goalHead;
+    }
+
+    private int posMod(int n, int mod) {
+        n = n % mod;
+        return n >= 0 ? n : n + mod;
+    }
 }
