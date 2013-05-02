@@ -21,6 +21,7 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
     private Options options;
     private NetworkClient network;
     private Thread serverThread;
+    private GamePanel gamePanel;
     
     private String[] soptions;
     
@@ -34,14 +35,18 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
         mainPanel=new JPanel(new CardLayout());
         mainPanel.setPreferredSize(new Dimension(options.getWindowWidth(), options.getWindowHeight()));
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
-        network=new NetworkClient("127.0.0.1", 1234);
         this.pack();
         this.setLocationRelativeTo(null);
-        
         addPanels();
         drawPanel("MainMenu");
         
         this.addKeyListener(this);
+    }
+    
+    public void ConnectToServer(String IP, int Port)
+    {
+        network=new NetworkClient(IP, Port);
+        network.addObserver(gamePanel);
     }
     
     private void addPanels()
@@ -50,9 +55,8 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
         mainPanel.add(new OptionsPanel(this),"Options");
         mainPanel.add(new NewServerPanel(this),"NewServer");
         mainPanel.add(new JoinServerPanel(this),"JoinServer");
-        GamePanel panel=new GamePanel(this);
-        network.addObserver(panel);
-        mainPanel.add(panel,"GamePanel");
+        gamePanel=new GamePanel(this);
+        mainPanel.add(gamePanel,"GamePanel");
     }
     
     public void drawPanel(String panelName)
@@ -99,7 +103,10 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
                 key=null;
                 break;
         }
-        network.setChangedKey(key);
+        if(network!=null)
+        {
+            network.setChangedKey(key);
+        }
     }
 
     @Override

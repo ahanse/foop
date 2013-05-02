@@ -27,8 +27,17 @@ public class Options {
     private int MAXPLAYER = 10;
     private Point[] RESLIST = {new Point(400,400),new Point(600,400),new Point(800,400),new Point(800,600)};
 
-	private static String FILENAME = "options.dat";
+    private static String FILENAME = "options.dat";
+    
+    private String nickname;
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public int getMAXPLAYER() {
 		return MAXPLAYER;
@@ -36,7 +45,6 @@ public class Options {
 
 	public Options() {
         readOptions();
-        
         COLORPOOL = new int[]{
             componentToARGB(0, 0, 128, 255),
             componentToARGB(0, 191, 255, 255),
@@ -67,6 +75,7 @@ public class Options {
             setMaxParcelLength((int) (Integer) save.readObject());
             setWindowWidth((int) (Integer) save.readObject());
             setWindowHeight((int) (Integer) save.readObject());
+            setNickname((String) save.readObject());
 
             //close file
             save.close();
@@ -85,6 +94,7 @@ public class Options {
             save.writeObject(getMaxParcelLength());
             save.writeObject(getWindowWidth());
             save.writeObject(getWindowHeight());
+            save.writeObject(getNickname());
             //close file
             save.close();
         } catch (Exception e) {
