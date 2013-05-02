@@ -19,7 +19,9 @@ public class NetworkServer {
     }
     public NetworkServer(int numPlayers, int port){
         players = new NetworkPlayer[numPlayers];
+        for(int i=0;i<numPlayers; i++) {players[i] = new NetworkPlayer();}
         serverThread = new Thread(new NetworkServerThread(port, players));
+        serverThread.start();
     }
  
     public IPlayer[] getPlayers() {    
