@@ -31,26 +31,14 @@ public class GameData implements IGameData{
         return snakes_;
     }
 
-    public void startGame() {
+    public void startGame(int numberOfSnakes) {
         setState(GameState.TIMETOFIGHT);
+        timestamp_ = System.currentTimeMillis() + 3000;
+        generateSnakes(numberOfSnakes);
     }
 
     private void setState(GameState state) {
         state_ = state;
-        if(state == GameState.WAITINGFORPLAYERS) {
-            //do nothing;
-        }
-
-        if(state == GameState.TIMETOFIGHT) {
-            // game starts in 3 seconds
-            timestamp_ = System.currentTimeMillis() + 3000;
-        }
-
-        if(state == GameState.RUNNING) {
-        }
-
-        if(state == GameState.FINISHED) {
-        }
     }
     
     public GameState getStatus() {
