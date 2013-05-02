@@ -9,7 +9,10 @@ package multisnakeglobal;
  * @author hanse
  */
 public class KeyChangedMessage implements INetworkMessage {
-    public KeyChange keyChange = null;
+    public Direction keyChange = null;
+    public KeyChangedMessage(Direction kc) {
+        this.keyChange = kc;
+    }
     @Override
     public void accept(IPlayer p) {
         p.visit(this);

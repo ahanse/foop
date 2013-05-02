@@ -25,7 +25,7 @@ public class NetworkServerThread implements Runnable {
     
     private NetworkServerPlayer getFirstNOTREADYPlayer() {
         for(NetworkServerPlayer p : players) {
-            if(p.getStatus() == ConnectionState.NOTREADY)
+            if(p.getState() == ConnectionState.NOTREADY)
                 return p;
         }
         return null;
@@ -47,6 +47,7 @@ public class NetworkServerThread implements Runnable {
                 if(nrp==null)
                     client.close();
                 else {
+                    nrp.setConnection(client);
                     Thread t = new Thread(nrp);
                     t.start();
                 }

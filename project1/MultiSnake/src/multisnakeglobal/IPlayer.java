@@ -6,10 +6,10 @@ package multisnakeglobal;
  * @author hanse
  */
 public interface IPlayer {
-    ConnectionState getStatus();
+    ConnectionState getState();
     String getNick();
-    KeyChange getChangedKey();
-    void setChangedKey(KeyChange k);
+    Direction getChangedKey();
+    void setChangedKey(Direction k);
     void setId(int id);
     void updateGameData(IGameData gd);
     IGameData getGameData();

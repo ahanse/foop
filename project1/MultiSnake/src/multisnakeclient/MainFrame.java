@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-import multisnakeglobal.KeyChange;
+import multisnakeglobal.Direction;
 import multisnakeserver.MultiSnakeServer;
 
 /**
@@ -19,7 +19,7 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
     
     private JPanel mainPanel;
     private Options options;
-    private DummyNetwork network;
+    private NetworkClient network;
     private Thread serverThread;
     
     private String[] soptions;
@@ -34,7 +34,7 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
         mainPanel=new JPanel(new CardLayout());
         mainPanel.setPreferredSize(new Dimension(options.getWindowWidth(), options.getWindowHeight()));
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
-        network=new DummyNetwork();
+        network=new NetworkClient("127.0.0.1", 1234);
         this.pack();
         this.setLocationRelativeTo(null);
         
@@ -80,20 +80,20 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        KeyChange key;
+        Direction key;
         switch(e.getKeyCode())
         {
             case 37:
-                key=KeyChange.LEFT;
+                key=Direction.LEFT;
                 break;
             case 38:
-                key=KeyChange.UP;
+                key=Direction.UP;
                 break;
             case 39:
-                key=KeyChange.RIGHT;
+                key=Direction.RIGHT;
                 break;
             case 40:
-                key=KeyChange.DOWN;
+                key=Direction.DOWN;
                 break;
             default:
                 key=null;
@@ -109,7 +109,12 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
 
     @Override
     public void run() {
+        try {
         MultiSnakeServer.main(soptions);
+        } catch (InterruptedException e)
+        {
+            System.out.println("Error!");
+        }
     }
 
     void startServer(String[] opt) {

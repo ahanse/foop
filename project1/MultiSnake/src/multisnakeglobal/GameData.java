@@ -124,7 +124,7 @@ public class GameData implements IGameData{
             boolean doMoveTransformation = true;
             
             for(Iterator<ISnake> j = snakes_.iterator(); j.hasNext();) {
-                Snake t = (Snake)(i.next());
+                Snake t = (Snake)(j.next());
                 
                 if(t.contains(goalHead)) {
                     doMoveTransformation = false;

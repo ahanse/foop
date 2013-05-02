@@ -5,14 +5,19 @@
 package multisnakeclient;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
-import multisnakeglobal.AnnounceNickMessage;
+import multisnakeglobal.*;
 import multisnakeglobal.ConnectionState;
+import multisnakeglobal.GameData;
 import multisnakeglobal.IGameData;
 import multisnakeglobal.IPlayer;
-import multisnakeglobal.KeyChange;
+import multisnakeglobal.Direction;
 import multisnakeglobal.KeyChangedMessage;
+import multisnakeglobal.Point;
 import multisnakeglobal.SetIdMessage;
 import multisnakeglobal.UpdateGameDataMessage;
 
@@ -21,20 +26,21 @@ import multisnakeglobal.UpdateGameDataMessage;
  * @author hanse
  */
 public class NetworkClient extends Observable implements Runnable, IPlayer {
-
     private Thread t = null;
     private IGameData gd; 
     private ConnectionState state=ConnectionState.NOTREADY;
     private int id=0;
     private String nick="no nick";
-    private Socket socket=null;
+    private Socket connection=null;
     private String host;
     private int port;
+    private ObjectOutputStream out = null;
     
     public NetworkClient(String host, int port){
         super();
         this.host = host;
         this.port = port;
+        this.gd = new GameData(new Point(1,1));
         t = new Thread(this);
         t.start();
     }
@@ -42,15 +48,45 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     @Override
     public void run() {
         try {
-            socket = new Socket(host, port);
+            connection = new Socket(host, port);
+            state = ConnectionState.READY;
+            super.setChanged();
+            super.notifyObservers();
+            this.out = new ObjectOutputStream(connection.getOutputStream());
+            this.out.flush();
+            ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+                while(true) {
+                    INetworkMessage m = (INetworkMessage)in.readObject();
+                    m.accept(this);
+                    super.setChanged();
+                    super.notifyObservers(); 
+                }
         } catch(IOException e) {
-            state  = ConnectionState.NOTREADY;
-            socket = null;
+            disconnect();
+        } catch(ClassNotFoundException e) {
+            disconnect();
+        }
+        
+    }
+    
+    private void disconnect() {
+            state  = ConnectionState.DISCONNECTED;
+            connection = null;
+            super.setChanged();
+            super.notifyObservers(); 
+    }
+    private void sendMessage(INetworkMessage m) {
+        if(out!=null) {
+            try {
+                out.writeObject(m);
+                System.out.println("foo");
+            }
+            catch(IOException e) { disconnect();}
         }
     }
 
     @Override
-    public ConnectionState getStatus() {
+    public ConnectionState getState() {
         return this.state;
     }
 
@@ -60,13 +96,13 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     }
 
     @Override
-    public KeyChange getChangedKey() {
+    public Direction getChangedKey() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void setChangedKey(KeyChange k) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setChangedKey(Direction k) {
+        if(this.connection!=null) {sendMessage(new KeyChangedMessage(k));}
     }
 
     @Override
@@ -101,12 +137,12 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
 
     @Override
     public void visit(SetIdMessage ms) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.id = ms.id;
     }
 
     @Override
     public void visit(UpdateGameDataMessage ms) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.gd = ms.gameData;
     }
 
 }

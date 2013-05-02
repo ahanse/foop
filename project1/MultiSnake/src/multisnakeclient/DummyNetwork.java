@@ -62,12 +62,12 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
     }
 
     @Override
-    public ConnectionState getStatus() {
+    public ConnectionState getState() {
         return ConnectionState.READY;
     }
 
     @Override
-    public void setChangedKey(KeyChange key) {
+    public void setChangedKey(Direction key) {
         data.key=key;
     }
 
@@ -77,7 +77,7 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
     }
 
     @Override
-    public KeyChange getChangedKey() {
+    public Direction getChangedKey() {
         return data.key;
     }
 
@@ -114,7 +114,7 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
    public class DummyGameData implements IGameData
    {
        private List<ISnake> snakes;
-       private KeyChange key=KeyChange.LEFT;
+       private Direction key=Direction.LEFT;
        private int dimX=30;
        private int dimY=30;
        
@@ -173,19 +173,19 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
             {
                 Point head=snakes.get(0).getCoordinates().get(0);
                 Point erg=new Point(head.getX(),head.getY());
-                if(key==KeyChange.RIGHT)
+                if(key==Direction.RIGHT)
                 {
                     erg.setX(mod((head.getX()+1),dimX));
                 }
-                if(key==KeyChange.LEFT)
+                if(key==Direction.LEFT)
                 {
                     erg.setX(mod((head.getX()-1),dimX));
                 }   
-                if(key==KeyChange.DOWN)
+                if(key==Direction.DOWN)
                 {
                     erg.setY(mod((head.getY()+1),dimY));
                 }
-                if(key==KeyChange.UP)
+                if(key==Direction.UP)
                 {
                     erg.setY(mod((head.getY()-1),dimY));
                 }
