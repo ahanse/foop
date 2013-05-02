@@ -9,8 +9,8 @@ package multisnakeglobal;
  * @author hanse
  */
 public class KeyChangedMessage implements INetworkMessage {
-    public KeyChange keyChange = null;
-    public KeyChangedMessage(KeyChange kc) {
+    public Direction keyChange = null;
+    public KeyChangedMessage(Direction kc) {
         this.keyChange = kc;
     }
     @Override

@@ -15,7 +15,7 @@ import multisnakeglobal.ConnectionState;
 import multisnakeglobal.GameData;
 import multisnakeglobal.IGameData;
 import multisnakeglobal.IPlayer;
-import multisnakeglobal.KeyChange;
+import multisnakeglobal.Direction;
 import multisnakeglobal.KeyChangedMessage;
 import multisnakeglobal.Point;
 import multisnakeglobal.SetIdMessage;
@@ -86,7 +86,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     }
 
     @Override
-    public ConnectionState getStatus() {
+    public ConnectionState getState() {
         return this.state;
     }
 
@@ -96,12 +96,12 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     }
 
     @Override
-    public KeyChange getChangedKey() {
+    public Direction getChangedKey() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void setChangedKey(KeyChange k) {
+    public void setChangedKey(Direction k) {
         if(this.connection!=null) {sendMessage(new KeyChangedMessage(k));}
     }
 

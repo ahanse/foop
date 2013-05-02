@@ -19,11 +19,11 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
     private String nick = "no nick";
     private Socket connection = null;
     private ObjectOutputStream out = null;
-    private KeyChange keyChange = null;
+    private Direction keyChange = null;
     private int id;
     
     @Override
-    public ConnectionState getStatus() {
+    public ConnectionState getState() {
         return state;
     }
 
@@ -33,8 +33,8 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
     }
 
     @Override
-    public KeyChange getChangedKey() {
-        KeyChange k = this.keyChange;
+    public Direction getChangedKey() {
+        Direction k = this.keyChange;
         this.keyChange=null;
         return k;
     }
@@ -114,7 +114,7 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
     }
 
     @Override
-    public void setChangedKey(KeyChange k) {
+    public void setChangedKey(Direction k) {
         throw new UnsupportedOperationException("Not supported for server.");
     }
 

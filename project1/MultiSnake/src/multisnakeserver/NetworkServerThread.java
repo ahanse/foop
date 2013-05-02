@@ -25,7 +25,7 @@ public class NetworkServerThread implements Runnable {
     
     private NetworkServerPlayer getFirstNOTREADYPlayer() {
         for(NetworkServerPlayer p : players) {
-            if(p.getStatus() == ConnectionState.NOTREADY)
+            if(p.getState() == ConnectionState.NOTREADY)
                 return p;
         }
         return null;

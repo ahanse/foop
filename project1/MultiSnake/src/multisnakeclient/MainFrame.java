@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-import multisnakeglobal.KeyChange;
+import multisnakeglobal.Direction;
 
 /**
  *
@@ -74,20 +74,20 @@ public final class MainFrame extends JFrame implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        KeyChange key;
+        Direction key;
         switch(e.getKeyCode())
         {
             case 37:
-                key=KeyChange.LEFT;
+                key=Direction.LEFT;
                 break;
             case 38:
-                key=KeyChange.UP;
+                key=Direction.UP;
                 break;
             case 39:
-                key=KeyChange.RIGHT;
+                key=Direction.RIGHT;
                 break;
             case 40:
-                key=KeyChange.DOWN;
+                key=Direction.DOWN;
                 break;
             default:
                 key=null;
