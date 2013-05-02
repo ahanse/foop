@@ -11,7 +11,7 @@ import java.util.Iterator;
  *
  * @author thb
  */
-public class PointTree {
+public class PointTree implements java.io.Serializable {
     private Point root_;
     private Vector<PointTree> children_;
     
