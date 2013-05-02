@@ -93,7 +93,7 @@ public final class MainFrame extends JFrame implements KeyListener{
                 key=null;
                 break;
         }
-        network.setKeyChange(key);
+        network.setChangedKey(key);
     }
 
     @Override

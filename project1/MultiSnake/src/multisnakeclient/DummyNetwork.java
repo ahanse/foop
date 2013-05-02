@@ -15,7 +15,7 @@ import multisnakeglobal.*;
  *
  * @author Benedikt
  */
-public class DummyNetwork extends Observable implements Runnable, IPlayer{
+public class DummyNetwork extends Observable implements Runnable, IPlayer {
     
     private Boolean threadSuspended = false;
     private Thread t = null;
@@ -59,7 +59,7 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer{
     }
 
     @Override
-    public int getOwnID() {
+    public int getId() {
         return 0;
     }
 
@@ -69,7 +69,7 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer{
     }
 
     @Override
-    public void setKeyChange(KeyChange key) {
+    public void setChangedKey(KeyChange key) {
         data.key=key;
     }
 
@@ -84,22 +84,12 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer{
     }
 
     @Override
-    public void setChangedKey(KeyChange k) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public void setId(int id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void updateGameData(IGameData gd) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public int getId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
