@@ -37,10 +37,10 @@ public class JoinServerPanel extends JPanel implements ActionListener {
         // create Options
         JLabel lblIP = new JLabel("Server IP:");
         txtIP = new JTextField(10);
-        txtIP.setText("");
+        txtIP.setText("127.0.0.1");
         JLabel lblPort = new JLabel("Server Port:");
         txtPort = new JTextField(10);
-        txtPort.setText("1337");
+        txtPort.setText("1234");
         
         optPnl.add(lblIP);
         optPnl.add(txtIP);
@@ -76,11 +76,32 @@ public class JoinServerPanel extends JPanel implements ActionListener {
         String com = e.getActionCommand();
         if (com.equals("")) {
         } else if (com.equals("Join")) {
-            parentFrame.drawPanel("GamePanel");
+            if(!inputCorrect()){
+                JOptionPane.showMessageDialog(this,"Einer der eingegebenen Werte stellt keinen gültigen Wert dar.","Fehler!",JOptionPane.OK_OPTION);
+            }
+            else{
+                parentFrame.ConnectToServer(txtIP.getText(),Integer.parseInt(txtPort.getText()));
+                parentFrame.drawPanel("GamePanel");
+            }
         } else if (com.equals("Back")) {
         	parentFrame.drawPanel("MainMenu");
         } else {
             
         }
+    }
+    
+    private Boolean inputCorrect()
+    {
+        int port;
+        try{
+            port=Integer.parseInt(txtPort.getText());
+        }
+        catch(NumberFormatException ex){
+            return false;
+        }
+        if(port<=0){
+            return false;
+        }
+        return true;
     }
 }
