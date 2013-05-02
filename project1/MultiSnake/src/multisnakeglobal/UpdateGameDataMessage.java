@@ -11,5 +11,8 @@ package multisnakeglobal;
 public class UpdateGameDataMessage implements INetworkMessage {
     public IGameData gameData;
     public UpdateGameDataMessage(IGameData gameData) {this.gameData=gameData;}
-    
+    @Override
+    public void accept(IPlayer p) {
+        p.visit(this);
+    }
 }

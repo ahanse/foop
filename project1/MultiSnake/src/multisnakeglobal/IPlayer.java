@@ -1,9 +1,6 @@
 
-package multisnakeserver;
+package multisnakeglobal;
  
-import multisnakeglobal.ConnectionState;
-import multisnakeglobal.IGameData;
-import multisnakeglobal.KeyChange;
 /**
  *
  * @author hanse
@@ -15,5 +12,8 @@ public interface IPlayer {
     KeyChange getChangedKeys();
     void setId(int id);
     void updateGameData(IGameData gd);
-    
+    void visit(AnnounceNickMessage ms); 
+    void visit(KeyChangedMessage ms); 
+    void visit(SetIdMessage ms); 
+    void visit(UpdateGameDataMessage ms); 
 }

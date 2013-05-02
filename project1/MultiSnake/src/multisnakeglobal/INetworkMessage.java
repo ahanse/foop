@@ -10,5 +10,5 @@ package multisnakeglobal;
  */
 
 public interface INetworkMessage extends java.io.Serializable {
-   
+   void accept(IPlayer player);
 }

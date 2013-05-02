@@ -19,6 +19,5 @@ public class MultiSnakeServer {
         NetworkServer ns = new NetworkServer(2);
         while(true) {
         }
-        }
     }
 }

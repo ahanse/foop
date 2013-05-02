@@ -4,6 +4,8 @@
  */
 package multisnakeserver;
 
+import multisnakeglobal.IPlayer;
+
 /**
  *
  * @author hanse

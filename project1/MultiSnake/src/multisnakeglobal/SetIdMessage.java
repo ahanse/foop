@@ -11,4 +11,8 @@ package multisnakeglobal;
 public class SetIdMessage implements INetworkMessage {
     public int id;
     public SetIdMessage(int id) {this.id=id;}
+    @Override
+    public void accept(IPlayer p) {
+        p.visit(this);
+    }
 }

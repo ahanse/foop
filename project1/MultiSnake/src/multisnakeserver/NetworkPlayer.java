@@ -4,6 +4,7 @@
  */
 package multisnakeserver;
 
+import multisnakeglobal.IPlayer;
 import java.net.*;
 import java.io.*;
 import multisnakeglobal.*;
@@ -51,11 +52,8 @@ public class NetworkPlayer implements IPlayer, Runnable {
         this.connection = connection;    
     }
     
-    private void handleMessage(KeyChangedMessage kc) {
-        keyChange=kc.keyChange;
-    }
     private void handleMessage(AnnounceNickMessage nm) {
-        nick = nm.nick;
+        
     }
     
     @Override
@@ -66,7 +64,7 @@ public class NetworkPlayer implements IPlayer, Runnable {
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
                 while(true) {
                     INetworkMessage m = (INetworkMessage)in.readObject();
-                    // handleMessage(m);
+                    m.accept(this);
                 }
             } 
         } catch(IOException e) {
@@ -90,5 +88,25 @@ public class NetworkPlayer implements IPlayer, Runnable {
             }
             catch(IOException e) { dissconnect();}
         }
+    }
+
+    @Override
+    public void visit(AnnounceNickMessage ms) {
+        nick = ms.nick;
+    }
+
+    @Override
+    public void visit(KeyChangedMessage ms) {
+        keyChange=ms.keyChange;
+    }
+
+    @Override
+    public void visit(SetIdMessage ms) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void visit(UpdateGameDataMessage ms) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
