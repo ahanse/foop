@@ -20,7 +20,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
     private MainFrame parentFrame;
     private ArrayList<JButton> menuButtonList;
     private JComboBox resList;
-    private JTextField lngthTFld;
+    private JTextField txtLength;
 
     public OptionsPanel(MainFrame parentFrame) {
     	super();
@@ -38,13 +38,13 @@ public class OptionsPanel extends JPanel implements ActionListener {
         resList = new JComboBox(parentFrame.getOptions().getRESLIST());
         resList.setSelectedItem(new Point(parentFrame.getOptions().getWindowWidth(),parentFrame.getOptions().getWindowHeight()));
         JLabel lngtLbl = new JLabel("Max Tile Length");
-        lngthTFld = new JTextField(10);
-        lngthTFld.setText(parentFrame.getOptions().getMaxParcelLength()+"");
+        txtLength = new JTextField(10);
+        txtLength.setText(parentFrame.getOptions().getMaxParcelLength()+"");
         
         optPnl.add(resLbl);
         optPnl.add(resList);
         optPnl.add(lngtLbl);
-        optPnl.add(lngthTFld);
+        optPnl.add(txtLength);
         
         optPnl.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
 
@@ -76,7 +76,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         if (com.equals("")) {
         } else if (com.equals("Save")) {
         	Point res = (Point)resList.getSelectedItem();
-            parentFrame.getOptions().saveOptions(Integer.parseInt(lngthTFld.getText()),(int)res.getX(),(int)res.getY());
+            parentFrame.getOptions().saveOptions(Integer.parseInt(txtLength.getText()),(int)res.getX(),(int)res.getY());
             JOptionPane.showMessageDialog(parentFrame, "Options saved! Please restart to take effect!");
         } else if (com.equals("Back")) {
         	parentFrame.drawPanel("MainMenu");

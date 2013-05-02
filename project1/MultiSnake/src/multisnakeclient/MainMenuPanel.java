@@ -46,10 +46,6 @@ public class MainMenuPanel extends JPanel implements ActionListener {
         tmp.setActionCommand("Exit");
         menuButtonList.add(tmp);
 
-        tmp = new JButton("Game Panel");
-        tmp.setActionCommand("GamePanel");
-        menuButtonList.add(tmp);
-
         //place buttons on menupanel
         int numberOfButtons = menuButtonList.size();
         this.setLayout(null);
