@@ -9,8 +9,8 @@ package multisnakeglobal;
  * @author Benedikt
  */
 public enum GameState {
-    STARTED,
-    PAUSED,
-    RUNNING,
-    FINISHED
+        WAITINGFORPLAYERS,
+        TIMETOFIGHT,
+        RUNNING,
+        FINISHED
 }
