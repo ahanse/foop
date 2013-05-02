@@ -10,7 +10,7 @@ package multisnakeglobal;
  */
 import java.util.List;
 
-public interface ISnake {
+public interface ISnake extends java.io.Serializable {
     List<Point> getCoordinates();
     Point getHead();
     int getPriority();

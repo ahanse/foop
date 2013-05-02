@@ -78,6 +78,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     private void sendMessage(INetworkMessage m) {
         if(out!=null) {
             try {
+                out.reset();
                 out.writeObject(m);
                 System.out.println("foo");
             }

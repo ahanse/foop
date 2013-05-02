@@ -8,7 +8,7 @@ package multisnakeglobal;
  *
  * @author Benedikt
  */
-public class Point {
+public class Point implements java.io.Serializable {
     
 	private int X;
     private int Y;

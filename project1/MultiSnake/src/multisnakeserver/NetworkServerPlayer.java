@@ -87,6 +87,7 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
     private void sendMessage(INetworkMessage m) {
         if(out!=null) {
             try {
+                out.reset();
                 out.writeObject(m);
             }
             catch(IOException e) { dissconnect();}
