@@ -47,9 +47,7 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
                 data.change();
                 super.notifyObservers();
             } catch (InterruptedException e) {
-            }
-            
-            
+            } 
         }
     }
 
