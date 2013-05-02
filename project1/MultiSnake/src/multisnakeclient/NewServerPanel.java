@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import multisnakeglobal.Point;
+import multisnakeserver.MultiSnakeServer;
 /**
  *
  * @author Benedikt
@@ -85,7 +86,8 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this,"Einer der eingegebenen Werte stellt keinen gültigen Wert dar.","Fehler!",JOptionPane.OK_OPTION);
             }
             else{
-                
+                String[] options={tickTFld.getText(),boardXTFld.getText(),boardXTFld.getText()};
+                parentFrame.startServer(options);
             }
             
         } else if (com.equals("Back")) {

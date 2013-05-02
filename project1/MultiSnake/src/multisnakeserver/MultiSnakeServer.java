@@ -17,7 +17,16 @@ public class MultiSnakeServer {
     public static void main(String[] args) {
         GameData gd = new GameData(new Point(20,20));
         NetworkServer ns = new NetworkServer(2);
+        int i=0;
         while(true) {
+            i++;
+            System.out.println("Ich bin der Server!"+i);
+            try{
+            Thread.sleep(1000);
+            }
+            catch(Exception e){
+                
+            }
         }
     }
 }

@@ -9,16 +9,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 import multisnakeglobal.KeyChange;
+import multisnakeserver.MultiSnakeServer;
 
 /**
  *
  * @author Benedikt
  */
-public final class MainFrame extends JFrame implements KeyListener{
+public final class MainFrame extends JFrame implements KeyListener,Runnable{
     
     private JPanel mainPanel;
     private Options options;
     private DummyNetwork network;
+    private Thread serverThread;
+    
+    private String[] soptions;
     
     public MainFrame()
     {
@@ -45,6 +49,7 @@ public final class MainFrame extends JFrame implements KeyListener{
         mainPanel.add(new MainMenuPanel(this),"MainMenu");
         mainPanel.add(new OptionsPanel(this),"Options");
         mainPanel.add(new NewServerPanel(this),"NewServer");
+        mainPanel.add(new JoinServerPanel(this),"JoinServer");
         GamePanel panel=new GamePanel(this);
         network.addObserver(panel);
         mainPanel.add(panel,"GamePanel");
@@ -101,5 +106,18 @@ public final class MainFrame extends JFrame implements KeyListener{
     public void keyReleased(KeyEvent e) {
         
     }
-    
+
+    @Override
+    public void run() {
+        MultiSnakeServer.main(soptions);
+    }
+
+    void startServer(String[] opt) {
+        soptions=opt;
+        if(serverThread==null)
+        {
+            serverThread = new Thread(this);
+            serverThread.start();
+        }
+    }
 }
