@@ -58,11 +58,7 @@ public final class MainFrame extends JFrame implements KeyListener{
     }
 
     public void drawContent() {
-<<<<<<< HEAD
         this.revalidate();
-=======
-        //this.revalidate();
->>>>>>> 29c4e35aa4e9ac58f2ca2a68dc0e974d97b7a0fa
         this.pack();
         this.repaint();
     }
@@ -70,13 +66,6 @@ public final class MainFrame extends JFrame implements KeyListener{
     public Options getOptions() {
         return options;
     }
-    
-<<<<<<< HEAD
-    public void changeSize(int width,int height) {
-    	this.setSize(width, height);
-    }
-=======
->>>>>>> 29c4e35aa4e9ac58f2ca2a68dc0e974d97b7a0fa
 
     @Override
     public void keyTyped(KeyEvent e) {

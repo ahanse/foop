@@ -30,18 +30,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         
         JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-<<<<<<< HEAD
-        JPanel optPnl = new JPanel (new GridLayout(0,2));        
-        
-        // create Options
-        Label resLbl = new Label("Window Resolution");
-        resList = new JComboBox(parentFrame.getOptions().getRESLIST());
-        resList.setSelectedItem(new Point(parentFrame.getOptions().getWindowWidth(),parentFrame.getOptions().getWindowHeight()));
-        Label lngtLbl = new Label("Max Tile Length");
-        lngthTFld = new JTextField(20);
-        lngthTFld.setText(parentFrame.getOptions().getMaxParcelLength()+"");
-        
-=======
+
         JPanel optPnl = new JPanel (new GridLayout(0,2,0,10));        
         
         // create Options
@@ -52,18 +41,13 @@ public class OptionsPanel extends JPanel implements ActionListener {
         lngthTFld = new JTextField(10);
         lngthTFld.setText(parentFrame.getOptions().getMaxParcelLength()+"");
         
-        
->>>>>>> 29c4e35aa4e9ac58f2ca2a68dc0e974d97b7a0fa
         optPnl.add(resLbl);
         optPnl.add(resList);
         optPnl.add(lngtLbl);
         optPnl.add(lngthTFld);
         
-<<<<<<< HEAD
-=======
         optPnl.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
-        
->>>>>>> 29c4e35aa4e9ac58f2ca2a68dc0e974d97b7a0fa
+
         // create Buttons
         menuButtonList = new ArrayList<JButton>();
         //Button save Options
@@ -93,12 +77,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         } else if (com.equals("Save")) {
         	Point res = (Point)resList.getSelectedItem();
             parentFrame.getOptions().saveOptions(Integer.parseInt(lngthTFld.getText()),(int)res.getX(),(int)res.getY());
-<<<<<<< HEAD
-            parentFrame.changeSize((int)res.getX(),(int)res.getY());
-            JOptionPane.showMessageDialog(parentFrame, "Options saved!");
-=======
             JOptionPane.showMessageDialog(parentFrame, "Options saved! Please restart to take effect!");
->>>>>>> 29c4e35aa4e9ac58f2ca2a68dc0e974d97b7a0fa
         } else if (com.equals("Back")) {
         	parentFrame.drawPanel("MainMenu");
         } else {
