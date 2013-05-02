@@ -27,11 +27,11 @@ public class MainMenuPanel extends JPanel implements ActionListener {
 
         menuButtonList = new ArrayList<JButton>();
         JButton tmp = new JButton("Start New Server");
-        tmp.setActionCommand("");
+        tmp.setActionCommand("NewServer");
         menuButtonList.add(tmp);
 
         tmp = new JButton("Join Game");
-        tmp.setActionCommand("");
+        tmp.setActionCommand("JoinServer");
         menuButtonList.add(tmp);
 
         tmp = new JButton("Options");
