@@ -21,14 +21,24 @@ public class GameData implements IGameData{
     long timestamp_;
     
     public GameData(Point dimensions) {
-        timestamp_ = System.currentTimeMillis();
+        timestamp_ = 0;
         dimensions_ = dimensions;
-        state_ = GameState.PAUSED;
         snakes_ = new Vector();
+        setState(GameState.WAITINGFORPLAYERS);
     }
     
     public Vector<ISnake> getSnakes() {
         return snakes_;
+    }
+
+    public void startGame(int numberOfSnakes) {
+        setState(GameState.TIMETOFIGHT);
+        timestamp_ = System.currentTimeMillis() + 3000;
+        generateSnakes(numberOfSnakes);
+    }
+
+    private void setState(GameState state) {
+        state_ = state;
     }
     
     public GameState getStatus() {
@@ -85,6 +95,21 @@ public class GameData implements IGameData{
     }
     
     public void playTurn() {
+
+        switch(state_) {
+        case WAITINGFORPLAYERS:
+        case FINISHED: return;
+        case TIMETOFIGHT:
+            if(System.currentTimeMillis() > timestamp_) {
+                setState(GameState.RUNNING);
+            }
+            else {
+                return;
+            }
+        case RUNNING:
+            
+        }
+
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
             Snake s = (Snake)(i.next());
             
@@ -105,7 +130,8 @@ public class GameData implements IGameData{
                     doMoveTransformation = false;
                 
                     // snakes with higher priority than us
-                    if(t.getPriority() >= s.getPriority()) {
+                    if(t.getHead().equals(goalHead) &&
+                       t.getPriority() >= s.getPriority()) {
                         // do nothing, we cannot move onto a snake with higher
                         // priority - do nothing
                     }
