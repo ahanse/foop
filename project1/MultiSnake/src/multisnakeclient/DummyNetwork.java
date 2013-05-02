@@ -10,7 +10,6 @@ import java.util.Observable;
 import java.util.Random;
 import java.util.Set;
 import multisnakeglobal.*;
-import multisnakeserver.*;
 
 /**
  *

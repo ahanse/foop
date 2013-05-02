@@ -44,6 +44,7 @@ public final class MainFrame extends JFrame implements KeyListener{
     {
         mainPanel.add(new MainMenuPanel(this),"MainMenu");
         mainPanel.add(new OptionsPanel(this),"Options");
+        mainPanel.add(new NewServerPanel(this),"NewServer");
         GamePanel panel=new GamePanel(this);
         network.addObserver(panel);
         mainPanel.add(panel,"GamePanel");
