@@ -9,7 +9,8 @@ package multisnakeglobal;
  * @author Benedikt
  */
 public class Point {
-    private int X;
+    
+	private int X;
     private int Y;
 
     public Point(int X, int Y) {
@@ -33,7 +34,18 @@ public class Point {
         this.Y = Y;
     }
     
-    public boolean equals(Point p) {
+    @Override
+    public boolean equals(Object o) {
+    	if(!(o instanceof Point))
+    		return false;
+    	Point p=(Point)o;
         return p.getX() == X && p.getY() == Y;
     }
+    
+    @Override
+	public String toString() {
+		return "("+X+","+Y+")";
+	}
+
+    
 }

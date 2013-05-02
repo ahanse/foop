@@ -89,13 +89,13 @@ public class DummyNetwork extends Observable implements Runnable, INetworkClient
                 tmp.add(new Point(i,10));
            }
            snakes=new ArrayList<ISnake>();
-           snakes.add(new DummySnake(tmp,0));
+           snakes.add(new DummySnake(tmp,0,1));
            tmp=new ArrayList<Point>();
            for(int i=0;i<10;i++)
            {
                 tmp.add(new Point(20,i));
            }
-           snakes.add(new DummySnake(tmp,1));
+           snakes.add(new DummySnake(tmp,1,5));
        }
 
         @Override
@@ -206,10 +206,16 @@ public class DummyNetwork extends Observable implements Runnable, INetworkClient
         {
             private List<Point> points;
             private int id;
+            private int priority;
             
-            public DummySnake(List<Point> points, int id){
+            public void setPriority(int priority) {
+				this.priority = priority;
+			}
+
+			public DummySnake(List<Point> points, int id, int priority){
                 this.points=points;
                 this.id=id;
+                this.priority=priority;
             }
             
             @Override
@@ -224,7 +230,7 @@ public class DummyNetwork extends Observable implements Runnable, INetworkClient
 
             @Override
             public int getPriority() {
-                return 0;
+                return priority;
             }
 
             @Override

@@ -24,13 +24,15 @@ public final class MainFrame extends JFrame implements KeyListener{
     {
         options=new Options();
         this.setTitle("MultiSnake Client GUI Test");
-        this.setSize(new Dimension(options.getWindowWidth(), options.getWindowHeight()));
+        //this.setSize(new Dimension(options.getWindowWidth(), options.getWindowHeight()));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setLocationRelativeTo(null);
         mainPanel=new JPanel(new CardLayout());
-        this.add(mainPanel);
+        mainPanel.setPreferredSize(new Dimension(options.getWindowWidth(), options.getWindowHeight()));
+        this.getContentPane().add(mainPanel,BorderLayout.CENTER);
         network=new DummyNetwork();
+        this.pack();
+        this.setLocationRelativeTo(null);
         
         addPanels();
         drawPanel("MainMenu");
@@ -52,15 +54,21 @@ public final class MainFrame extends JFrame implements KeyListener{
         CardLayout layout=(CardLayout)mainPanel.getLayout();
         layout.show(mainPanel,panelName);
         drawContent();
+        this.requestFocus();
     }
 
     public void drawContent() {
         this.revalidate();
+        this.pack();
         this.repaint();
     }
     
     public Options getOptions() {
         return options;
+    }
+    
+    public void changeSize(int width,int height) {
+    	this.setSize(width, height);
     }
 
     @Override
