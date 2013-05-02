@@ -4,6 +4,7 @@
  */
 package multisnakeclient;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.Observable;
 import multisnakeglobal.AnnounceNickMessage;
@@ -40,9 +41,12 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     
     @Override
     public void run() {
-        /*try {
+        try {
             socket = new Socket(host, port);
-        } */  
+        } catch(IOException e) {
+            state  = ConnectionState.NOTREADY;
+            socket = null;
+        }
     }
 
     @Override
