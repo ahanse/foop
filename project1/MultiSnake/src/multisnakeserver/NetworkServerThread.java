@@ -47,6 +47,7 @@ public class NetworkServerThread implements Runnable {
                 if(nrp==null)
                     client.close();
                 else {
+                    nrp.setConnection(client);
                     Thread t = new Thread(nrp);
                     t.start();
                 }

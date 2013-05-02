@@ -53,7 +53,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
             super.setChanged();
             super.notifyObservers();
             this.out = new ObjectOutputStream(connection.getOutputStream());
-            out.flush();
+            this.out.flush();
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
                 while(true) {
                     INetworkMessage m = (INetworkMessage)in.readObject();

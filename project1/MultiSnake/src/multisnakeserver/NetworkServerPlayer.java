@@ -61,11 +61,10 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
             if(connection != null) {
                 state = ConnectionState.READY;
                 this.out = new ObjectOutputStream(connection.getOutputStream());
-                out.flush();
+                this.out.flush();
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                 System.out.println("foo");
+                System.out.println("foo");
                 while(true) {
-                    
                     INetworkMessage m = (INetworkMessage)in.readObject();
                     System.out.println("got object");
                     m.accept(this);
