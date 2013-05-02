@@ -43,11 +43,11 @@ public class GamePanel extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (!(o instanceof INetworkClient)) {
+		if (!(o instanceof IPlayer)) {
 			throw new IllegalArgumentException();
 		}
-		boardPanel.update((INetworkClient) o);
-		updateRightPanel((INetworkClient) o);
+		boardPanel.update((IPlayer) o);
+		updateRightPanel((IPlayer) o);
 		parentFrame.drawContent();
 	}
 	
@@ -68,9 +68,9 @@ public class GamePanel extends JPanel implements Observer {
 		}
 	}
 	
-	private void updateRightPanel(INetworkClient network)
+	private void updateRightPanel(IPlayer network)
 	{
-		int ownID=network.getOwnID();
+		int ownID=network.getId();
 		IGameData data=network.getGameData();
 		int ind=1;
 		for(ISnake s:data.getSnakes())
@@ -119,7 +119,7 @@ public class GamePanel extends JPanel implements Observer {
 					* c.getBlue() * .068);
 		}
 
-		public void update(INetworkClient network) {
+		public void update(IPlayer network) {
 			IGameData data = network.getGameData();
 
 			currentImage = new ImageProceedingData(data.getDimensions().getX(),

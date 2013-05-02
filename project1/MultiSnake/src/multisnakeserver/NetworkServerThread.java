@@ -15,16 +15,16 @@ import multisnakeglobal.ConnectionState;
 public class NetworkServerThread implements Runnable {
 
     private int port;
-    private NetworkPlayer[] players;
+    private NetworkServerPlayer[] players;
     private ServerSocket server;
     
-    public NetworkServerThread(int port, NetworkPlayer[] players) {
+    public NetworkServerThread(int port, NetworkServerPlayer[] players) {
         this.players = players;
         this.port = port;
     }
     
-    private NetworkPlayer getFirstNOTREADYPlayer() {
-        for(NetworkPlayer p : players) {
+    private NetworkServerPlayer getFirstNOTREADYPlayer() {
+        for(NetworkServerPlayer p : players) {
             if(p.getStatus() == ConnectionState.NOTREADY)
                 return p;
         }
@@ -43,7 +43,7 @@ public class NetworkServerThread implements Runnable {
             server = new ServerSocket(port);
             while(true) {
                 Socket client = server.accept();
-                NetworkPlayer nrp = getFirstNOTREADYPlayer();
+                NetworkServerPlayer nrp = getFirstNOTREADYPlayer();
                 if(nrp==null)
                     client.close();
                 else {

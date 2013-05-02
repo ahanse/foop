@@ -15,7 +15,7 @@ import multisnakeglobal.*;
  *
  * @author Benedikt
  */
-public class DummyNetwork extends Observable implements Runnable, INetworkClient{
+public class DummyNetwork extends Observable implements Runnable, IPlayer{
     
     private Boolean threadSuspended = false;
     private Thread t = null;
@@ -71,6 +71,56 @@ public class DummyNetwork extends Observable implements Runnable, INetworkClient
     @Override
     public void setKeyChange(KeyChange key) {
         data.key=key;
+    }
+
+    @Override
+    public String getNick() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public KeyChange getChangedKey() {
+        return data.key;
+    }
+
+    @Override
+    public void setChangedKey(KeyChange k) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setId(int id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void updateGameData(IGameData gd) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getId() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void visit(AnnounceNickMessage ms) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void visit(KeyChangedMessage ms) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void visit(SetIdMessage ms) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void visit(UpdateGameDataMessage ms) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
    public class DummyGameData implements IGameData
