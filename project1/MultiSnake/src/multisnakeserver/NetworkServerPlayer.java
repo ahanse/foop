@@ -53,19 +53,21 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
     public void setConnection(Socket connection) {
         this.connection = connection;    
     }
-    
-    private void handleMessage(AnnounceNickMessage nm) {
         
-    }
-    
     @Override
     public void run() {
+        System.out.println("ready steady go!");
         try {
             if(connection != null) {
                 state = ConnectionState.READY;
+                this.out = new ObjectOutputStream(connection.getOutputStream());
+                out.flush();
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+                 System.out.println("foo");
                 while(true) {
+                    
                     INetworkMessage m = (INetworkMessage)in.readObject();
+                    System.out.println("got object");
                     m.accept(this);
                 }
             } 
@@ -83,7 +85,7 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
         finally {state = ConnectionState.DISCONNECTED; out=null;}
     }
     
-    public void sendMessage(INetworkMessage m) {
+    private void sendMessage(INetworkMessage m) {
         if(out!=null) {
             try {
                 out.writeObject(m);

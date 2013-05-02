@@ -18,7 +18,7 @@ public final class MainFrame extends JFrame implements KeyListener{
     
     private JPanel mainPanel;
     private Options options;
-    private DummyNetwork network;
+    private NetworkClient network;
     
     public MainFrame()
     {
@@ -30,7 +30,7 @@ public final class MainFrame extends JFrame implements KeyListener{
         mainPanel=new JPanel(new CardLayout());
         mainPanel.setPreferredSize(new Dimension(options.getWindowWidth(), options.getWindowHeight()));
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
-        network=new DummyNetwork();
+        network=new NetworkClient("127.0.0.1", 1234);
         this.pack();
         this.setLocationRelativeTo(null);
         

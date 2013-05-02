@@ -13,7 +13,6 @@ public class MultiSnakeClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Ich bin der Client!");
         /*GameModel model = new GameModel();
         GameView view = new GameView(model,model.getWindowWidth(),model.getWindowHeight());
         GameController controller = new GameController(model,view);
