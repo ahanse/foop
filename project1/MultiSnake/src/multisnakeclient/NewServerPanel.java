@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import multisnakeglobal.Point;
-import multisnakeserver.MultiSnakeServer;
 /**
  *
  * @author Benedikt

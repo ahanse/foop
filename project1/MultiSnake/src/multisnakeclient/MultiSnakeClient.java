@@ -13,10 +13,6 @@ public class MultiSnakeClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /*GameModel model = new GameModel();
-        GameView view = new GameView(model,model.getWindowWidth(),model.getWindowHeight());
-        GameController controller = new GameController(model,view);
-        view.setVisible(true);*/
         MainFrame main=new MainFrame();
         main.setVisible(true);
     }

@@ -8,13 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
-import java.util.Set;
 import multisnakeglobal.*;
 
 /**
  *
  * @author Benedikt
  */
+
+// THIS IS NOT PART OF THE PROJECT ANYMORE. KEPT FOR SECURITY REASON
+
 public class DummyNetwork extends Observable implements Runnable, IPlayer {
     
     private Boolean threadSuspended = false;
