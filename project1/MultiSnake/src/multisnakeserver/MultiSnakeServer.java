@@ -16,7 +16,7 @@ public class MultiSnakeServer {
      */
     public static void main(String[] args) throws InterruptedException {
         GameData gd = new GameData(new Point(30,20));
-        NetworkServer ns = new NetworkServer(1);
+        NetworkServer ns = new NetworkServer(2);
         IPlayer[] players = ns.getPlayers();
         //wait until all clients are connected
         boolean allReady; 
@@ -28,7 +28,7 @@ public class MultiSnakeServer {
             }
             Thread.sleep(100);
         } while(!allReady);
-        gd.startGame(1);
+        gd.startGame(2);
         while(true) {
             for(int p=0; p<players.length; p++) 
             {
