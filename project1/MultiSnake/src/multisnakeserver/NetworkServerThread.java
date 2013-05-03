@@ -7,6 +7,7 @@ package multisnakeserver;
 import java.io.*;
 import java.net.*;
 import multisnakeglobal.ConnectionState;
+import multisnakeglobal.NetworkClient;
 
 /**
  *
@@ -15,16 +16,16 @@ import multisnakeglobal.ConnectionState;
 public class NetworkServerThread implements Runnable {
 
     private int port;
-    private NetworkServerPlayer[] players;
+    private NetworkClient[] players;
     private ServerSocket server;
     
-    public NetworkServerThread(int port, NetworkServerPlayer[] players) {
+    public NetworkServerThread(int port, NetworkClient[] players) {
         this.players = players;
         this.port = port;
     }
     
-    private NetworkServerPlayer getFirstNOTREADYPlayer() {
-        for(NetworkServerPlayer p : players) {
+    private NetworkClient getFirstNOTREADYPlayer() {
+        for(NetworkClient p : players) {
             if(p.getState() == ConnectionState.NOTREADY)
                 return p;
         }
@@ -42,14 +43,15 @@ public class NetworkServerThread implements Runnable {
         try {
             server = new ServerSocket(port);
             while(true) {
-                Socket client = server.accept();
-                NetworkServerPlayer nrp = getFirstNOTREADYPlayer();
-                if(nrp==null)
-                    client.close();
+                Socket clientSocket = server.accept();
+                System.out.println("Client connected to server.");
+                NetworkClient nrp = getFirstNOTREADYPlayer();
+                if(nrp==null) {
+                    System.out.println("No free player slots.");
+                    clientSocket.close();
+                }
                 else {
-                    nrp.setConnection(client);
-                    Thread t = new Thread(nrp);
-                    t.start();
+                    nrp.connect(clientSocket);
                 }
             }
         } catch(IOException e) {

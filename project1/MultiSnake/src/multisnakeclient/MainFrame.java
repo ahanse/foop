@@ -4,9 +4,11 @@
  */
 package multisnakeclient;
 
+import multisnakeglobal.NetworkClient;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import javax.swing.*;
 import multisnakeglobal.Direction;
 import multisnakeserver.MultiSnakeServer;
@@ -45,7 +47,13 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
     
     public void ConnectToServer(String IP, int Port)
     {
-        network=new NetworkClient(IP, Port);
+        network=new NetworkClient();
+        try {
+            network.connect(IP, Port);
+        } catch (IOException e) {
+            //TODO: Error window!
+            System.err.println("Could not connect!");
+        }
         network.addObserver(gamePanel);
     }
     
