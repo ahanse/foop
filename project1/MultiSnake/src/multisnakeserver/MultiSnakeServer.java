@@ -24,7 +24,7 @@ public class MultiSnakeServer {
             numOfPlayers = Integer.parseInt(args[3]);
         }
         else {
-            tick = 500;
+            tick = 300;
             dimX = 30;
             dimY = 30;
             numOfPlayers = 1;
