@@ -11,15 +11,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
 import multisnakeglobal.*;
-import multisnakeglobal.ConnectionState;
-import multisnakeglobal.GameData;
-import multisnakeglobal.IGameData;
-import multisnakeglobal.IPlayer;
-import multisnakeglobal.Direction;
-import multisnakeglobal.KeyChangedMessage;
-import multisnakeglobal.Point;
-import multisnakeglobal.SetIdMessage;
-import multisnakeglobal.UpdateGameDataMessage;
 
 /**
  *
