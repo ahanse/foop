@@ -39,7 +39,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         // create Options
         JLabel lblTick = new JLabel("Game tick(ms)");
         txtTick = new JTextField(10);
-        txtTick.setText("1000");
+        txtTick.setText("500");
         JLabel lblDimX = new JLabel("Game Board X");
         txtDimX = new JTextField(10);
         txtDimX.setText("30");
@@ -48,7 +48,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         txtDimY.setText("30");
         JLabel lblNumOfPlayers = new JLabel("Number of Players");
         txtNumOfPlayers = new JTextField(10);
-        txtNumOfPlayers.setText("0");
+        txtNumOfPlayers.setText("1");
         
         optPnl.add(lblTick);
         optPnl.add(txtTick);
