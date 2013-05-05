@@ -31,16 +31,14 @@ public class GamePanel extends JPanel implements Observer {
     public GamePanel(MainFrame parent) {
         super();
         this.parentFrame = parent;
-        boardPanel = new BoardPanel(parentFrame);
+        boardPanel = new BoardPanel(parentFrame,this);
         rightPanel = new JPanel();
         //rightPanel.setBackground(Color.black);
         //boardPanel.setPreferredSize(boardPanel.getPreferredSize());
         this.setLayout(new BorderLayout(0, 0));
-        this.add(boardPanel, BorderLayout.CENTER);
-        this.rightPanel.setPreferredSize(new Dimension(100, 10));
-        this.rightPanel.setBackground(Color.yellow);
         addRightPanelComponents();
-        this.add(rightPanel, BorderLayout.LINE_END);
+        this.add(rightPanel, BorderLayout.CENTER);
+        this.add(boardPanel, BorderLayout.LINE_START);
     }
 
     @Override
@@ -114,13 +112,14 @@ public class GamePanel extends JPanel implements Observer {
 
         private ImageProceedingData currentImage;
         private MainFrame parentFrame;
+        private GamePanel parentPanel;
         private int parcelLength;
         private static final int BOARDER = 1;
-
-        public BoardPanel(MainFrame parent) {
+        public BoardPanel(MainFrame parent, GamePanel parentPanel) {
             super();
             currentImage = null;
             parentFrame = parent;
+            this.parentPanel=parentPanel;
             parcelLength = parent.getOptions().getMaxParcelLength();
         }
 
@@ -152,11 +151,13 @@ public class GamePanel extends JPanel implements Observer {
                 currentImage.addRectangleFromSnake(snake, new Color(color));
             }
             parcelLength = Math.min(parentFrame.getOptions()
-                    .getMaxParcelLength(), ((int) this.getSize().getWidth() - 2)
+                    .getMaxParcelLength(), ((parentPanel.getSize().width-100) - 2)
                     / data.getDimensions().getX());
-            parcelLength = Math.min(parcelLength, (int) (this.getSize()
-                    .getHeight() - 2) / data.getDimensions().getY());
-        }
+            parcelLength = Math.min(parcelLength, (int) ((parentPanel.getSize().height) - 2) / data.getDimensions().getY()); 
+            int boardSizeX=parcelLength*data.getDimensions().getX()+2;
+            int boardSizeY=parcelLength*data.getDimensions().getY()+2;
+            this.setPreferredSize(new Dimension(boardSizeX,boardSizeY));
+         }
 
         /**
          * Custom painting codes on this JPanel
