@@ -151,12 +151,12 @@ public class GamePanel extends JPanel implements Observer {
 				// paint background
 				g.setColor(Color.BLACK);
 				g.drawRect(0, 0,
-						parcelLength * currentImage.getNumOfXFields()+2,
-						parcelLength * currentImage.getNumOfYFields()+2);
-                                g.setColor(Color.WHITE);
-				g.clearRect(1, 1,
 						parcelLength * currentImage.getNumOfXFields()+1,
 						parcelLength * currentImage.getNumOfYFields()+1);
+                                g.setColor(Color.WHITE);
+				g.fillRect(1, 1,
+						parcelLength * currentImage.getNumOfXFields(),
+						parcelLength * currentImage.getNumOfYFields());
 				// initiate some help variables
 				RectangleData currentSnake;
 				int firstRectX = 0;
@@ -172,10 +172,10 @@ public class GamePanel extends JPanel implements Observer {
 					firstRectX = (currentCoords.getX()) * parcelLength+boardCornerX;
 					firstRectY = (currentCoords.getY()) * parcelLength+boardCornerY;
 					// set color
-					g.setColor(Color.WHITE);
+					//g.setColor(Color.WHITE);
 					// fill first tile of the snake on board including a boarder
-					g.fillRect(firstRectX, firstRectY, parcelLength,
-							parcelLength);
+					//g.fillRect(firstRectX, firstRectY, parcelLength,
+							//parcelLength);
 					g.setColor(currentSnake.getColor());
 					g.fillRect(firstRectX + BOARDER, firstRectY + BOARDER,
 							parcelLength - 2 * BOARDER, parcelLength - 2
