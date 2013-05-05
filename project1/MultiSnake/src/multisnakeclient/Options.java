@@ -26,7 +26,7 @@ public class Options {
     private int[] COLORPOOL;
     private int ownColorInd;
     private int MAXPLAYER = 10;
-    private Point[] RESLIST = {new Point(640, 480), new Point(800, 600), new Point(1024, 768), new Point(1280, 720), new Point(1152, 864), new Point(1280, 960)};
+    private Point[] RESLIST = {new Point(640,480), new Point(800,600),new Point(852,480), new Point(1024,768), new Point(1280,720), new Point(1152,864), new Point(1280,960),new Point(1365,768)};
     private static String FILENAME = "options.dat";
     private String nickname;
 
