@@ -24,6 +24,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
     private JTextField txtLength;
     private JTextField txtNick;
     private JComboBox lstColor;
+    private JCheckBox chkFull;
 
     public OptionsPanel(MainFrame parentFrame) {
         super();
@@ -58,6 +59,10 @@ public class OptionsPanel extends JPanel implements ActionListener {
         lstColor = new JComboBox(colorpool);
         lstColor.setRenderer(new CellColorRenderer());
         lstColor.setSelectedIndex(parentFrame.getOptions().getOwnColorInd());
+        
+        JLabel lblFull = new JLabel("Fullscreen");
+        chkFull = new JCheckBox();
+        chkFull.setSelected(parentFrame.getOptions().getFullscreen());
 
         pnlOptions.add(lblRes);
         pnlOptions.add(lstRes);
@@ -67,6 +72,8 @@ public class OptionsPanel extends JPanel implements ActionListener {
         pnlOptions.add(txtNick);
         pnlOptions.add(lblColor);
         pnlOptions.add(lstColor);
+        pnlOptions.add(lblFull);
+        pnlOptions.add(chkFull);
 
         pnlOptions.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 50));
 
@@ -121,7 +128,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         if (com.equals("")) {
         } else if (com.equals("Save")) {
             Point res = (Point) lstRes.getSelectedItem();
-            parentFrame.getOptions().saveOptions(Integer.parseInt(txtLength.getText()), (int) res.getX(), (int) res.getY(), txtNick.getText(), lstColor.getSelectedIndex());
+            parentFrame.getOptions().saveOptions(Integer.parseInt(txtLength.getText()), (int) res.getX(), (int) res.getY(), txtNick.getText(), lstColor.getSelectedIndex(), chkFull.isSelected());
             JOptionPane.showMessageDialog(parentFrame, "Options saved! Please restart to take effect!");
         } else if (com.equals("Back")) {
             parentFrame.drawPanel("MainMenu");

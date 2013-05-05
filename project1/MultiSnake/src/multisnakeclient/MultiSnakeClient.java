@@ -15,5 +15,7 @@ public class MultiSnakeClient {
     public static void main(String[] args) {
         MainFrame main=new MainFrame();
         main.setVisible(true);
+        main.addPanels();
+        main.drawPanel("MainMenu");
     }
 }

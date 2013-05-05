@@ -26,9 +26,14 @@ public class Options {
     private int[] COLORPOOL;
     private int ownColorInd;
     private int MAXPLAYER = 10;
-    private Point[] RESLIST = {new Point(640, 480), new Point(800, 600), new Point(1024, 768), new Point(1280, 720), new Point(1152, 864), new Point(1280, 960)};
+    private Point[] RESLIST = {new Point(640, 480), new Point(800, 600), new Point(852, 480), new Point(1024, 768), new Point(1280, 720), new Point(1152, 864), new Point(1280, 960), new Point(1365, 768)};
     private static String FILENAME = "options.dat";
     private String nickname;
+    private Boolean fullscreen;
+
+    public Boolean getFullscreen() {
+        return fullscreen;
+    }
 
     public Options() {
         readOptions();
@@ -64,6 +69,7 @@ public class Options {
             this.windowHeight = (int) (Integer) save.readObject();
             this.nickname = (String) save.readObject();
             this.ownColorInd = (int) (Integer) save.readObject();
+            this.fullscreen = (Boolean) save.readObject();
 
             //close file
             save.close();
@@ -73,6 +79,7 @@ public class Options {
             this.windowHeight = 480;
             this.nickname = "noNick";
             this.ownColorInd = 0;
+            this.fullscreen = false;
         }
     }
 
@@ -89,6 +96,7 @@ public class Options {
             save.writeObject(this.windowHeight);
             save.writeObject(this.nickname);
             save.writeObject(this.ownColorInd);
+            save.writeObject(this.fullscreen);
             //close file
             save.close();
         } catch (Exception e) {
@@ -96,12 +104,13 @@ public class Options {
     }
 
     // saves the options in this class to a file
-    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname, int ownColorInd) {
+    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname, int ownColorInd, Boolean fullscreen) {
         this.maxParcelLength = maxParcelLength;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
         this.nickname = nickname;
         this.ownColorInd = ownColorInd;
+        this.fullscreen = fullscreen;
         saveOptions();
     }
 
@@ -124,7 +133,7 @@ public class Options {
     public Point[] getRESLIST() {
         return RESLIST;
     }
-    
+
     public String getNickname() {
         return nickname;
     }
