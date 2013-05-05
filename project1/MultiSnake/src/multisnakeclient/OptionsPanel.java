@@ -19,8 +19,9 @@ public class OptionsPanel extends JPanel implements ActionListener {
 
     private MainFrame parentFrame;
     private ArrayList<JButton> menuButtonList;
-    private JComboBox resList;
+    private JComboBox lstRes;
     private JTextField txtLength;
+    private JTextField txtNick;
 
     public OptionsPanel(MainFrame parentFrame) {
     	super();
@@ -31,22 +32,28 @@ public class OptionsPanel extends JPanel implements ActionListener {
         
         JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 
-        JPanel optPnl = new JPanel (new GridLayout(0,2,0,10));        
+        JPanel pnlOptions = new JPanel (new GridLayout(0,2,0,10));        
         
         // create Options
-        JLabel resLbl = new JLabel("Window Resolution");
-        resList = new JComboBox(parentFrame.getOptions().getRESLIST());
-        resList.setSelectedItem(new Point(parentFrame.getOptions().getWindowWidth(),parentFrame.getOptions().getWindowHeight()));
-        JLabel lngtLbl = new JLabel("Max Tile Length");
+        JLabel lblRes = new JLabel("Window Resolution");
+        lstRes = new JComboBox(parentFrame.getOptions().getRESLIST());
+        lstRes.setSelectedItem(new Point(parentFrame.getOptions().getWindowWidth(),parentFrame.getOptions().getWindowHeight()));
+        JLabel lblLength = new JLabel("Max Tile Length");
         txtLength = new JTextField(10);
         txtLength.setText(parentFrame.getOptions().getMaxParcelLength()+"");
         
-        optPnl.add(resLbl);
-        optPnl.add(resList);
-        optPnl.add(lngtLbl);
-        optPnl.add(txtLength);
+        JLabel lblNick = new JLabel("Nickname");
+        txtNick = new JTextField(parentFrame.getOptions().getNickname());
+        txtNick.setText(parentFrame.getOptions().getMaxParcelLength()+"");
         
-        optPnl.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
+        pnlOptions.add(lblRes);
+        pnlOptions.add(lstRes);
+        pnlOptions.add(lblLength);
+        pnlOptions.add(txtLength);
+        pnlOptions.add(lblNick);
+        pnlOptions.add(txtNick);
+        
+        pnlOptions.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
 
         // create Buttons
         menuButtonList = new ArrayList<JButton>();
@@ -65,7 +72,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         	btnPnl.add(button);
             button.addActionListener(this);
         }
-        this.add(optPnl,BorderLayout.PAGE_START);
+        this.add(pnlOptions,BorderLayout.PAGE_START);
         this.add(btnPnl,BorderLayout.PAGE_END);
     }
     
@@ -75,8 +82,8 @@ public class OptionsPanel extends JPanel implements ActionListener {
         String com = e.getActionCommand();
         if (com.equals("")) {
         } else if (com.equals("Save")) {
-        	Point res = (Point)resList.getSelectedItem();
-            parentFrame.getOptions().saveOptions(Integer.parseInt(txtLength.getText()),(int)res.getX(),(int)res.getY());
+        	Point res = (Point)lstRes.getSelectedItem();
+            parentFrame.getOptions().saveOptions(Integer.parseInt(txtLength.getText()),(int)res.getX(),(int)res.getY(),txtNick.getText());
             JOptionPane.showMessageDialog(parentFrame, "Options saved! Please restart to take effect!");
         } else if (com.equals("Back")) {
         	parentFrame.drawPanel("MainMenu");

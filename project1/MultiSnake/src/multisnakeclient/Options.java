@@ -102,20 +102,12 @@ public class Options {
     }
     
  // saves the options in this class to a file
-    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight) {
-        try {
-            //open a file to write to
-            FileOutputStream saveFile = new FileOutputStream(FILENAME);
-            //create an ObjectOutputStream to put objects into save file
-            ObjectOutputStream save = new ObjectOutputStream(saveFile);
-            // write on Stream
-            save.writeObject(maxParcelLength);
-            save.writeObject(windowWidth);
-            save.writeObject(windowHeight);
-            //close file
-            save.close();
-        } catch (Exception e) {
-        }
+    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname) {
+        this.maxParcelLength = maxParcelLength;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
+        this.nickname = nickname;
+        saveOptions();
     }
 
     public int getMaxParcelLength() {

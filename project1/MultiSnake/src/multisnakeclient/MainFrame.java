@@ -46,6 +46,7 @@ public final class MainFrame extends JFrame implements KeyListener,Runnable{
     public void ConnectToServer(String IP, int Port)
     {
         network=new NetworkClient(IP, Port);
+        network.setNick(options.getNickname());
         network.addObserver(gamePanel);
     }
     

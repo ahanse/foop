@@ -128,4 +128,9 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
     public int getId() {
         return id;
     }
+
+    @Override
+    public void setNick(String nickname) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

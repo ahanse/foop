@@ -5,21 +5,11 @@
 package multisnakeclient;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
 import multisnakeglobal.*;
-import multisnakeglobal.ConnectionState;
-import multisnakeglobal.GameData;
-import multisnakeglobal.IGameData;
-import multisnakeglobal.IPlayer;
-import multisnakeglobal.Direction;
-import multisnakeglobal.KeyChangedMessage;
-import multisnakeglobal.Point;
-import multisnakeglobal.SetIdMessage;
-import multisnakeglobal.UpdateGameDataMessage;
 
 /**
  *
@@ -144,6 +134,11 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     @Override
     public void visit(UpdateGameDataMessage ms) {
         this.gd = ms.gameData;
+    }
+
+    @Override
+    public void setNick(String nickname) {
+        this.nick=nickname;
     }
 
 }

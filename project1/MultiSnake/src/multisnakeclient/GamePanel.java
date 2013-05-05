@@ -7,6 +7,8 @@ package multisnakeclient;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -131,10 +133,10 @@ public class GamePanel extends JPanel implements Observer {
 				currentImage.addRectangleFromSnake(snake, new Color(color));
 			}
 			parcelLength = Math.min(parentFrame.getOptions()
-					.getMaxParcelLength(), (int) this.getSize().getWidth()
+					.getMaxParcelLength(), ((int) this.getSize().getWidth()-2)
 					/ data.getDimensions().getX());
-			parcelLength = Math.min(parcelLength, (int) this.getSize()
-					.getHeight() / data.getDimensions().getY());
+			parcelLength = Math.min(parcelLength, (int) (this.getSize()
+					.getHeight()-2) / data.getDimensions().getY());
 		}
 
 		/**
@@ -143,17 +145,23 @@ public class GamePanel extends JPanel implements Observer {
 		@Override
 		public void paintComponent(Graphics g) {
 			if (currentImage != null) {
+                                int boardCornerX=1;
+                                int boardCornerY=1;
 				super.paintComponent(g);
 				// paint background
-				g.setColor(Color.WHITE);
-				g.clearRect(0, 0,
-						parcelLength * currentImage.getNumOfXFields(),
-						parcelLength * currentImage.getNumOfYFields());
+				g.setColor(Color.BLACK);
+				g.drawRect(0, 0,
+						parcelLength * currentImage.getNumOfXFields()+2,
+						parcelLength * currentImage.getNumOfYFields()+2);
+                                g.setColor(Color.WHITE);
+				g.clearRect(1, 1,
+						parcelLength * currentImage.getNumOfXFields()+1,
+						parcelLength * currentImage.getNumOfYFields()+1);
 				// initiate some help variables
 				RectangleData currentSnake;
 				int firstRectX = 0;
 				int firstRectY = 0;
-				multisnakeglobal.Point currentCoords;
+				Point currentCoords;
 				// until no data left, iteration over snakes
 				while (!currentImage.isEmpty()) {
 					// read data of next snake in line
@@ -161,8 +169,8 @@ public class GamePanel extends JPanel implements Observer {
 					// read coords of the current snake
 					currentCoords = currentSnake.getNextCoord();
 					// save the first coords
-					firstRectX = (currentCoords.getX()) * parcelLength;
-					firstRectY = (currentCoords.getY()) * parcelLength;
+					firstRectX = (currentCoords.getX()) * parcelLength+boardCornerX;
+					firstRectY = (currentCoords.getY()) * parcelLength+boardCornerY;
 					// set color
 					g.setColor(Color.WHITE);
 					// fill first tile of the snake on board including a boarder
@@ -180,18 +188,40 @@ public class GamePanel extends JPanel implements Observer {
 						// position
 						g.copyArea(firstRectX, firstRectY, parcelLength,
 								parcelLength, currentCoords.getX()
-										* parcelLength - firstRectX,
+										* parcelLength - firstRectX+boardCornerX,
 								currentCoords.getY() * parcelLength
-										- firstRectY);
+										- firstRectY+boardCornerY);
 						currentCoords = currentSnake.getNextCoord();
 					}
 					// add number to head of the snake
 					g.setColor(brightness(currentSnake.getColor()) < 130 ? Color.WHITE
 							: Color.BLACK);
-					g.drawString(currentSnake.getNumber(), firstRectX,
-							firstRectY + parcelLength);
+                                        Font f=new Font("SansSerif", Font.PLAIN, ((parcelLength-2*BOARDER)*3)/4);
+                                        g.setFont(f);
+                                        String s=currentSnake.getNumber();
+                                        determineFontSize(parcelLength-2,parcelLength-2,g,s);
+                                        FontMetrics fm = g.getFontMetrics();
+                                        int x=(parcelLength-fm.stringWidth(s))/2+firstRectX;
+                                        int y=(parcelLength-fm.getDescent()+fm.getAscent())/2+firstRectY;
+					g.drawString(s, x, y);
 				}
 			}
 		}
+                
+                private void determineFontSize(int pX, int pY, Graphics g,String s)
+                {
+                    FontMetrics fm=g.getFontMetrics();
+                    Font f=g.getFont();
+                    while(fm.stringWidth(s)<pX && fm.getHeight()<pY)
+                    {
+                        f=f.deriveFont(f.getSize2D()+0.5f);
+                        fm=g.getFontMetrics(f);
+                    }
+                    while(fm.stringWidth(s)>pX || fm.getHeight()>pY)
+                    {
+                        f=f.deriveFont(f.getSize2D()-0.5f);
+                        fm=g.getFontMetrics(f);
+                    }
+                }
 	}
 }

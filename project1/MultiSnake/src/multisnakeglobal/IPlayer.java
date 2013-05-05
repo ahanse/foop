@@ -8,6 +8,7 @@ package multisnakeglobal;
 public interface IPlayer {
     ConnectionState getState();
     String getNick();
+    void setNick(String nickname);
     Direction getChangedKey();
     void setChangedKey(Direction k);
     void setId(int id);
