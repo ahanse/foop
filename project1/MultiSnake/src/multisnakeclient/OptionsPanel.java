@@ -38,13 +38,14 @@ public class OptionsPanel extends JPanel implements ActionListener {
         JLabel lblRes = new JLabel("Window Resolution");
         lstRes = new JComboBox(parentFrame.getOptions().getRESLIST());
         lstRes.setSelectedItem(new Point(parentFrame.getOptions().getWindowWidth(),parentFrame.getOptions().getWindowHeight()));
+        
         JLabel lblLength = new JLabel("Max Tile Length");
         txtLength = new JTextField(10);
         txtLength.setText(parentFrame.getOptions().getMaxParcelLength()+"");
         
         JLabel lblNick = new JLabel("Nickname");
-        txtNick = new JTextField(parentFrame.getOptions().getNickname());
-        txtNick.setText(parentFrame.getOptions().getMaxParcelLength()+"");
+        txtNick = new JTextField(50);
+        txtNick.setText(parentFrame.getOptions().getNickname());
         
         pnlOptions.add(lblRes);
         pnlOptions.add(lstRes);
