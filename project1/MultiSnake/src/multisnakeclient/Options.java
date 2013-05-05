@@ -24,26 +24,13 @@ public class Options {
     private int windowWidth;
     private int windowHeight;
     private int[] COLORPOOL;
+    private int ownColorInd;
     private int MAXPLAYER = 10;
-    private Point[] RESLIST = {new Point(400,400),new Point(600,400),new Point(800,400),new Point(800,600)};
-
+    private Point[] RESLIST = {new Point(640, 480), new Point(800, 600), new Point(1024, 768), new Point(1280, 720), new Point(1152, 864), new Point(1280, 960)};
     private static String FILENAME = "options.dat";
-    
     private String nickname;
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public int getMAXPLAYER() {
-		return MAXPLAYER;
-	}
-
-	public Options() {
+    public Options() {
         readOptions();
         COLORPOOL = new int[]{
             componentToARGB(0, 0, 128, 255),
@@ -63,7 +50,7 @@ public class Options {
     public final int componentToARGB(int red, int green, int blue, int transparency) {
         return (transparency << 24) | (red << 16) | (green << 8) | blue;
     }
-    
+
     // reads the options in this class from a file and sets them
     public final void readOptions() {
         try {
@@ -72,10 +59,11 @@ public class Options {
             //create an ObjectInputStream to get objects from save file
             ObjectInputStream save = new ObjectInputStream(saveFile);
 
-            setMaxParcelLength((int) (Integer) save.readObject());
-            setWindowWidth((int) (Integer) save.readObject());
-            setWindowHeight((int) (Integer) save.readObject());
-            setNickname((String) save.readObject());
+            this.maxParcelLength = (int) (Integer) save.readObject();
+            this.windowWidth = (int) (Integer) save.readObject();
+            this.windowHeight = (int) (Integer) save.readObject();
+            this.nickname = (String) save.readObject();
+            this.ownColorInd = (int) (Integer) save.readObject();
 
             //close file
             save.close();
@@ -91,22 +79,24 @@ public class Options {
             //create an ObjectOutputStream to put objects into save file
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
             // write on Stream
-            save.writeObject(getMaxParcelLength());
-            save.writeObject(getWindowWidth());
-            save.writeObject(getWindowHeight());
-            save.writeObject(getNickname());
+            save.writeObject(this.maxParcelLength);
+            save.writeObject(this.windowWidth);
+            save.writeObject(this.windowHeight);
+            save.writeObject(this.nickname);
+            save.writeObject(this.ownColorInd);
             //close file
             save.close();
         } catch (Exception e) {
         }
     }
-    
- // saves the options in this class to a file
-    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname) {
+
+    // saves the options in this class to a file
+    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname, int ownColorInd) {
         this.maxParcelLength = maxParcelLength;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
         this.nickname = nickname;
+        this.ownColorInd = ownColorInd;
         saveOptions();
     }
 
@@ -125,22 +115,20 @@ public class Options {
     public int[] getCOLORPOOL() {
         return COLORPOOL;
     }
-    
+
     public Point[] getRESLIST() {
-		return RESLIST;
-	}
-
-    public void setMaxParcelLength(int maxParcelLength) {
-        this.maxParcelLength = maxParcelLength;
-    }
-
-    public void setWindowWidth(int windowWidth) {
-        this.windowWidth = windowWidth;
-    }
-
-    public void setWindowHeight(int windowHeight) {
-        this.windowHeight = windowHeight;
+        return RESLIST;
     }
     
-    
+    public String getNickname() {
+        return nickname;
+    }
+
+    public int getMAXPLAYER() {
+        return MAXPLAYER;
+    }
+
+    public int getOwnColorInd() {
+        return ownColorInd;
+    }
 }
