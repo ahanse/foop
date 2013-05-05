@@ -68,6 +68,11 @@ public class Options {
             //close file
             save.close();
         } catch (Exception e) {
+            this.maxParcelLength = 10;
+            this.windowWidth = 640;
+            this.windowHeight = 480;
+            this.nickname = "noNick";
+            this.ownColorInd = 0;
         }
     }
 
