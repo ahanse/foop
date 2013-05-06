@@ -30,7 +30,7 @@ public class NetworkServer {
     
     public void endGame() {
         for(NetworkServerPlayer p: players) {
-            p.dissconnect();
+            p.disconnect();
         }
     }
     

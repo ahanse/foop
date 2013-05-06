@@ -71,13 +71,13 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
                 }
             } 
         } catch(IOException e) {
-            dissconnect();
+            disconnect();
         } catch(ClassNotFoundException e) {
-            dissconnect();
+            disconnect();
         }
     }
     
-    public void dissconnect() {
+    public void disconnect() {
         try{
             connection.close();
         } catch(IOException e) {}
@@ -90,7 +90,7 @@ public class NetworkServerPlayer implements IPlayer, Runnable {
                 out.reset();
                 out.writeObject(m);
             }
-            catch(IOException e) { dissconnect();}
+            catch(IOException e) { disconnect();}
         }
     }
 

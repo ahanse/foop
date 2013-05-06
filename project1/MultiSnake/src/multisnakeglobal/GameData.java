@@ -77,9 +77,11 @@ public class GameData implements IGameData{
     }
     
     public void generateSnakes(int number) {
+        Point h = new Point((int) dimensions_.getX()/number-1,(int) dimensions_.getY()/number-1);
+        int length = 5;
         for(int i = 0; i < number; ++i) {
             // FIXME
-            makeSnake(new Point(0,i),5, Direction.DOWN);
+            makeSnake(new Point(h.getX()*number,h.getY()*number),length,Direction.DOWN);
         }
     }
     
