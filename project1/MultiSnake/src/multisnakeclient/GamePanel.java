@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements Observer {
     private MainFrame parentFrame;
     private BoardPanel boardPanel;
     private JPanel rightPanel;
-    private ArrayList<Label> Players;
+    private ArrayList<Label> players;
 
     public GamePanel(MainFrame parent) {
         super();
@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Observer {
 
     private void addRightPanelComponents() {
         rightPanel.setLayout(new GridBagLayout());
-        Players = new ArrayList<Label>();
+        players = new ArrayList<Label>();
 
         //Adds the first Label
         GridBagConstraints c = new GridBagConstraints();
@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements Observer {
         c.gridx = 0;
         c.gridy = 0;
         Label newLabel = new Label();
-        Players.add(newLabel);
+        players.add(newLabel);
         rightPanel.add(newLabel, c);
     }
 
@@ -84,27 +84,27 @@ public class GamePanel extends JPanel implements Observer {
             pri += " ";
             Label l;
             if (s.getID() == ownID) {
-                l = Players.get(0);
+                l = players.get(0);
             } else {
-                if(Players.Size()<ind)
+                if (players.size() <= ind) {
                     //Add new label
                     GridBagConstraints c = new GridBagConstraints();
                     c.anchor = GridBagConstraints.LINE_START;
                     c.gridx = 0;
                     c.gridy = ind;
                     l = new Label();
-                    Players.add(l);
+                    players.add(l);
                     rightPanel.add(l, c);
                 } else {
-                    l = Players.get(ind);
+                    l = players.get(ind);
                 }
                 ind++;
             }
             l.setText(pri + s.getName());
             l.setVisible(true);
         }
-        for (int i = ind; i < Players.size(); i++) {
-            Players.get(ind).setVisible(false);
+        for (int i = ind; i < players.size(); i++) {
+            players.get(ind).setVisible(false);
         }
     }
 

@@ -21,6 +21,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
     private MainFrame parentFrame;
     private ArrayList<JButton> menuButtonList;
     private JComboBox lstRes;
+    private JLabel lblRes;
     private JTextField txtLength;
     private JTextField txtNick;
     private JComboBox lstColor;
@@ -38,7 +39,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         JPanel pnlOptions = new JPanel(new GridLayout(0, 2, 0, 10));
 
         // create Options
-        JLabel lblRes = new JLabel("Window Resolution");
+        lblRes = new JLabel("Window Resolution");
         lstRes = new JComboBox(parentFrame.getOptions().getRESLIST());
         lstRes.setSelectedItem(new Point(parentFrame.getOptions().getWindowWidth(), parentFrame.getOptions().getWindowHeight()));
 
@@ -59,11 +60,17 @@ public class OptionsPanel extends JPanel implements ActionListener {
         lstColor = new JComboBox(colorpool);
         lstColor.setRenderer(new CellColorRenderer());
         lstColor.setSelectedIndex(parentFrame.getOptions().getOwnColorInd());
-        
-        JLabel lblFull = new JLabel("Fullscreen");
-        chkFull = new JCheckBox();
-        chkFull.setSelected(parentFrame.getOptions().getFullscreen());
 
+        JLabel lblFull = new JLabel("");
+        chkFull = new JCheckBox("Fullscreen",parentFrame.getOptions().getFullscreen());
+        chkFull.setActionCommand("Fullscreentoggle");
+        chkFull.addActionListener(this);
+        //chkFull.setSelected(parentFrame.getOptions().getFullscreen());
+
+        toggleResolutionList();
+        
+        pnlOptions.add(lblFull);
+        pnlOptions.add(chkFull);
         pnlOptions.add(lblRes);
         pnlOptions.add(lstRes);
         pnlOptions.add(lblLength);
@@ -72,8 +79,6 @@ public class OptionsPanel extends JPanel implements ActionListener {
         pnlOptions.add(txtNick);
         pnlOptions.add(lblColor);
         pnlOptions.add(lstColor);
-        pnlOptions.add(lblFull);
-        pnlOptions.add(chkFull);
 
         pnlOptions.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 50));
 
@@ -96,6 +101,16 @@ public class OptionsPanel extends JPanel implements ActionListener {
         }
         this.add(pnlOptions, BorderLayout.PAGE_START);
         this.add(btnPnl, BorderLayout.PAGE_END);
+    }
+
+    private void toggleResolutionList() {
+        if (chkFull.isSelected()) {
+            lblRes.setVisible(false);
+            lstRes.setVisible(false);
+        } else {
+            lblRes.setVisible(true);
+            lstRes.setVisible(true);
+        }
     }
 
     private class CellColorRenderer extends JLabel implements ListCellRenderer {
@@ -132,6 +147,8 @@ public class OptionsPanel extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(parentFrame, "Options saved! Please restart to take effect!");
         } else if (com.equals("Back")) {
             parentFrame.drawPanel("MainMenu");
+        } else if (com.equals("Fullscreentoggle")) {
+            toggleResolutionList();
         } else {
         }
     }

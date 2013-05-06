@@ -37,7 +37,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         // create Options
         JLabel lblTick = new JLabel("Game tick(ms)");
         txtTick = new JTextField(10);
-        txtTick.setText("200");
+        txtTick.setText("100");
         JLabel lblDimX = new JLabel("Game Board X");
         txtDimX = new JTextField(10);
         txtDimX.setText("30");
@@ -94,7 +94,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 parentFrame.startServer(options);
                 
                 //TODO: own IP and port
-                parentFrame.ConnectToServer("127.0.0.1", 1234);
+                parentFrame.connectToServer("127.0.0.1", 1234);
                 parentFrame.drawPanel("GamePanel");
                 
                 //wieso sollte man direkt zum Server connecten? Dann ist der eigene Platz schon besetzt, wenn man wirklich das Spiel joinen will über das Join Game Panel
