@@ -24,26 +24,18 @@ public class Options {
     private int windowWidth;
     private int windowHeight;
     private int[] COLORPOOL;
+    private int ownColorInd;
     private int MAXPLAYER = 10;
-    private Point[] RESLIST = {new Point(400,400),new Point(600,400),new Point(800,400),new Point(800,600)};
-
+    private Point[] RESLIST = {new Point(640, 480), new Point(800, 600), new Point(852, 480), new Point(1024, 768), new Point(1280, 720), new Point(1152, 864), new Point(1280, 960), new Point(1365, 768)};
     private static String FILENAME = "options.dat";
-    
     private String nickname;
+    private Boolean fullscreen;
 
-    public String getNickname() {
-        return nickname;
+    public Boolean getFullscreen() {
+        return fullscreen;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public int getMAXPLAYER() {
-		return MAXPLAYER;
-	}
-
-	public Options() {
+    public Options() {
         readOptions();
         COLORPOOL = new int[]{
             componentToARGB(0, 0, 128, 255),
@@ -63,7 +55,7 @@ public class Options {
     public final int componentToARGB(int red, int green, int blue, int transparency) {
         return (transparency << 24) | (red << 16) | (green << 8) | blue;
     }
-    
+
     // reads the options in this class from a file and sets them
     public final void readOptions() {
         try {
@@ -72,14 +64,22 @@ public class Options {
             //create an ObjectInputStream to get objects from save file
             ObjectInputStream save = new ObjectInputStream(saveFile);
 
-            setMaxParcelLength((int) (Integer) save.readObject());
-            setWindowWidth((int) (Integer) save.readObject());
-            setWindowHeight((int) (Integer) save.readObject());
-            setNickname((String) save.readObject());
+            this.maxParcelLength = (int) (Integer) save.readObject();
+            this.windowWidth = (int) (Integer) save.readObject();
+            this.windowHeight = (int) (Integer) save.readObject();
+            this.nickname = (String) save.readObject();
+            this.ownColorInd = (int) (Integer) save.readObject();
+            this.fullscreen = (Boolean) save.readObject();
 
             //close file
             save.close();
         } catch (Exception e) {
+            this.maxParcelLength = 1000;
+            this.windowWidth = 640;
+            this.windowHeight = 480;
+            this.nickname = "noNick";
+            this.ownColorInd = 0;
+            this.fullscreen = false;
         }
     }
 
@@ -91,31 +91,27 @@ public class Options {
             //create an ObjectOutputStream to put objects into save file
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
             // write on Stream
-            save.writeObject(getMaxParcelLength());
-            save.writeObject(getWindowWidth());
-            save.writeObject(getWindowHeight());
-            save.writeObject(getNickname());
+            save.writeObject(this.maxParcelLength);
+            save.writeObject(this.windowWidth);
+            save.writeObject(this.windowHeight);
+            save.writeObject(this.nickname);
+            save.writeObject(this.ownColorInd);
+            save.writeObject(this.fullscreen);
             //close file
             save.close();
         } catch (Exception e) {
         }
     }
-    
- // saves the options in this class to a file
-    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight) {
-        try {
-            //open a file to write to
-            FileOutputStream saveFile = new FileOutputStream(FILENAME);
-            //create an ObjectOutputStream to put objects into save file
-            ObjectOutputStream save = new ObjectOutputStream(saveFile);
-            // write on Stream
-            save.writeObject(maxParcelLength);
-            save.writeObject(windowWidth);
-            save.writeObject(windowHeight);
-            //close file
-            save.close();
-        } catch (Exception e) {
-        }
+
+    // saves the options in this class to a file
+    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname, int ownColorInd, Boolean fullscreen) {
+        this.maxParcelLength = maxParcelLength;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
+        this.nickname = nickname;
+        this.ownColorInd = ownColorInd;
+        this.fullscreen = fullscreen;
+        saveOptions();
     }
 
     public int getMaxParcelLength() {
@@ -133,22 +129,20 @@ public class Options {
     public int[] getCOLORPOOL() {
         return COLORPOOL;
     }
-    
+
     public Point[] getRESLIST() {
-		return RESLIST;
-	}
-
-    public void setMaxParcelLength(int maxParcelLength) {
-        this.maxParcelLength = maxParcelLength;
+        return RESLIST;
     }
 
-    public void setWindowWidth(int windowWidth) {
-        this.windowWidth = windowWidth;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setWindowHeight(int windowHeight) {
-        this.windowHeight = windowHeight;
+    public int getMAXPLAYER() {
+        return MAXPLAYER;
     }
-    
-    
+
+    public int getOwnColorInd() {
+        return ownColorInd;
+    }
 }

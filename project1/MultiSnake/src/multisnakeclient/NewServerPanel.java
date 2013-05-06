@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import multisnakeglobal.Point;
-import multisnakeserver.MultiSnakeServer;
 /**
  *
  * @author Benedikt
@@ -39,7 +37,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         // create Options
         JLabel lblTick = new JLabel("Game tick(ms)");
         txtTick = new JTextField(10);
-        txtTick.setText("1000");
+        txtTick.setText("100");
         JLabel lblDimX = new JLabel("Game Board X");
         txtDimX = new JTextField(10);
         txtDimX.setText("30");
@@ -48,7 +46,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         txtDimY.setText("30");
         JLabel lblNumOfPlayers = new JLabel("Number of Players");
         txtNumOfPlayers = new JTextField(10);
-        txtNumOfPlayers.setText("0");
+        txtNumOfPlayers.setText("1");
         
         optPnl.add(lblTick);
         optPnl.add(txtTick);
@@ -96,7 +94,11 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 parentFrame.startServer(options);
                 
                 //TODO: own IP and port
-                parentFrame.ConnectToServer("127.0.0.1", 1234);
+                parentFrame.connectToServer("127.0.0.1", 1234);
+                parentFrame.drawPanel("GamePanel");
+                
+                //wieso sollte man direkt zum Server connecten? Dann ist der eigene Platz schon besetzt, wenn man wirklich das Spiel joinen will über das Join Game Panel
+                //parentFrame.ConnectToServer("127.0.0.1", 1234);
             }
             
         } else if (com.equals("Back")) {

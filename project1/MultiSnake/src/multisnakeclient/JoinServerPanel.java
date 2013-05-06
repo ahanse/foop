@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import multisnakeglobal.Point;
-import multisnakeserver.MultiSnakeServer;
 /**
  *
  * @author Benedikt
@@ -80,7 +78,7 @@ public class JoinServerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this,"Einer der eingegebenen Werte stellt keinen gültigen Wert dar.","Fehler!",JOptionPane.OK_OPTION);
             }
             else{
-                parentFrame.ConnectToServer(txtIP.getText(),Integer.parseInt(txtPort.getText()));
+                parentFrame.connectToServer(txtIP.getText(),Integer.parseInt(txtPort.getText()));
                 parentFrame.drawPanel("GamePanel");
             }
         } else if (com.equals("Back")) {
