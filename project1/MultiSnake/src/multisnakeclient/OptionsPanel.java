@@ -79,7 +79,6 @@ public class OptionsPanel extends JPanel implements ActionListener {
         pnlOptions.add(txtNick);
         pnlOptions.add(lblColor);
         pnlOptions.add(lstColor);
-        
 
         pnlOptions.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 50));
 
