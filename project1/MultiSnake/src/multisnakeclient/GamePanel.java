@@ -202,8 +202,7 @@ public class GamePanel extends JPanel implements Observer {
                             * BOARDER);
                     // iterate over remaining coords of the snaketiles
                     currentCoords = currentSnake.getNextCoord();
-                    while ((currentCoords.getX() != -1)
-                            && (currentCoords.getY() != -1)) {
+                    while (currentCoords != null) {
                         // copy the first tile of the snake to the new tile
                         // position
                         g.copyArea(firstRectX, firstRectY, parcelLength,
