@@ -86,6 +86,7 @@ public class GamePanel extends JPanel implements Observer {
             if (s.getID() == ownID) {
                 l = Players.get(0);
             } else {
+                if(Players.Size()<ind)
                     //Add new label
                     GridBagConstraints c = new GridBagConstraints();
                     c.anchor = GridBagConstraints.LINE_START;
