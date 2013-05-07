@@ -4,18 +4,13 @@
  */
 package multisnakeclient;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Label;
+import java.awt.*;
+import java.net.*;
 import java.util.*;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import multisnakeglobal.*;
+import multisnakeglobal.Point;
 
 /**
  *
@@ -27,11 +22,12 @@ public class GamePanel extends JPanel implements Observer {
     private BoardPanel boardPanel;
     private JPanel rightPanel;
     private ArrayList<Label> players;
+    private int Zaehler;
 
     public GamePanel(MainFrame parent) {
         super();
         this.parentFrame = parent;
-        boardPanel = new BoardPanel(parentFrame,this);
+        boardPanel = new BoardPanel(parentFrame, this);
         rightPanel = new JPanel();
         //rightPanel.setBackground(Color.black);
         //boardPanel.setPreferredSize(boardPanel.getPreferredSize());
@@ -39,6 +35,7 @@ public class GamePanel extends JPanel implements Observer {
         addRightPanelComponents();
         this.add(rightPanel, BorderLayout.CENTER);
         this.add(boardPanel, BorderLayout.LINE_START);
+        Zaehler = 0;
     }
 
     @Override
@@ -49,6 +46,8 @@ public class GamePanel extends JPanel implements Observer {
         boardPanel.update((IPlayer) o);
         updateRightPanel((IPlayer) o);
         parentFrame.drawContent();
+        Zaehler++;
+        System.out.println(Zaehler + "");
     }
 
     private void addRightPanelComponents() {
@@ -115,12 +114,31 @@ public class GamePanel extends JPanel implements Observer {
         private GamePanel parentPanel;
         private int parcelLength;
         private static final int BOARDER = 1;
+        private Label lblBoardCaption;
+        private Label lblBoardInformation;
+
         public BoardPanel(MainFrame parent, GamePanel parentPanel) {
             super();
             currentImage = null;
             parentFrame = parent;
-            this.parentPanel=parentPanel;
+            this.parentPanel = parentPanel;
             parcelLength = parent.getOptions().getMaxParcelLength();
+            this.setLayout(new GridBagLayout());
+            
+            GridBagConstraints c = new GridBagConstraints();
+            c.anchor = GridBagConstraints.CENTER;
+            c.gridx = 0;
+            c.gridy = 0;
+            lblBoardCaption = new Label();
+            lblBoardCaption.setFont(new Font("SansSerif", Font.BOLD, 20));
+            lblBoardCaption.setText("");
+            this.add(lblBoardCaption,c);
+            
+            c.gridy=1;
+            lblBoardInformation = new Label();
+            lblBoardInformation.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            lblBoardInformation.setText("");
+            this.add(lblBoardInformation,c);
         }
 
         // calculates the brightness of a color (between 0..255)
@@ -133,6 +151,42 @@ public class GamePanel extends JPanel implements Observer {
         public void update(IPlayer network) {
             IGameData data = network.getGameData();
 
+            switch (data.getStatus()) {
+                case WAITINGFORPLAYERS:
+                    try {
+                        lblBoardInformation.setText("Your own local network adress: " + InetAddress.getLocalHost().getHostAddress());
+                    } catch (Exception e) {
+                        lblBoardInformation.setText("Couldn't find out own IP-adress.");
+                    }
+                    lblBoardInformation.setBackground(this.getBackground());
+                    lblBoardInformation.setVisible(true);
+                    lblBoardCaption.setText("Waiting for players");
+                    lblBoardCaption.setBackground(this.getBackground());
+                    lblBoardCaption.setVisible(true);
+                    currentImage = null;
+                    break;
+                case TIMETOFIGHT:
+                    lblBoardCaption.setText("Get Ready!");
+                    lblBoardCaption.setBackground(Color.WHITE);
+                    lblBoardCaption.setVisible(true);
+                    lblBoardInformation.setBackground(Color.WHITE);
+                    lblBoardInformation.setText("The game is starting");
+                    lblBoardInformation.setVisible(true);
+                    calculateImage(network);
+                    break;
+                case RUNNING:
+                    lblBoardInformation.setVisible(false);
+                    lblBoardCaption.setVisible(false);
+                    calculateImage(network);
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
+        private void calculateImage(IPlayer network) {
+            IGameData data = network.getGameData();
             currentImage = new ImageProceedingData(data.getDimensions().getX(),
                     data.getDimensions().getY());
 
@@ -151,13 +205,13 @@ public class GamePanel extends JPanel implements Observer {
                 currentImage.addRectangleFromSnake(snake, new Color(color));
             }
             parcelLength = Math.min(parentFrame.getOptions()
-                    .getMaxParcelLength(), ((parentPanel.getSize().width-100) - 2)
+                    .getMaxParcelLength(), ((parentPanel.getSize().width - 100) - 2)
                     / data.getDimensions().getX());
-            parcelLength = Math.min(parcelLength, (int) ((parentPanel.getSize().height) - 2) / data.getDimensions().getY()); 
-            int boardSizeX=parcelLength*data.getDimensions().getX()+2;
-            int boardSizeY=parcelLength*data.getDimensions().getY()+2;
-            this.setPreferredSize(new Dimension(boardSizeX,boardSizeY));
-         }
+            parcelLength = Math.min(parcelLength, (int) ((parentPanel.getSize().height) - 2) / data.getDimensions().getY());
+            int boardSizeX = parcelLength * data.getDimensions().getX() + 2;
+            int boardSizeY = parcelLength * data.getDimensions().getY() + 2;
+            this.setPreferredSize(new Dimension(boardSizeX, boardSizeY));
+        }
 
         /**
          * Custom painting codes on this JPanel
@@ -181,13 +235,15 @@ public class GamePanel extends JPanel implements Observer {
                 RectangleData currentSnake;
                 int firstRectX = 0;
                 int firstRectY = 0;
-                Point currentCoords;
+                Point currentCoords = new Point(0, 0);
                 // until no data left, iteration over snakes
                 while (!currentImage.isEmpty()) {
                     // read data of next snake in line
                     currentSnake = currentImage.getNextRectangleData();
                     // read coords of the current snake
+
                     currentCoords = currentSnake.getNextCoord();
+
                     // save the first coords
                     firstRectX = (currentCoords.getX()) * parcelLength + boardCornerX;
                     firstRectY = (currentCoords.getY()) * parcelLength + boardCornerY;
