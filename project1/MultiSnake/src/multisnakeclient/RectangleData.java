@@ -32,7 +32,7 @@ public class RectangleData {
         if (!coords.isEmpty()) {
             return coords.pop();
         } else {
-            return new Point(-1, -1);
+            return null;
         }
     }
 

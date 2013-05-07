@@ -25,8 +25,9 @@ public class Snake implements ISnake {
     // The direction in which the snake will attempt to move
     private Direction direction_;
     
-    public Snake(Point head) {
+    public Snake(Point head, int id) {
         tiles_ = new PointTree(head);
+        id_ = id;
     }
     
     public boolean isDead() {

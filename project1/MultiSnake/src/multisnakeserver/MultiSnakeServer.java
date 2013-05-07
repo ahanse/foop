@@ -44,7 +44,6 @@ public class MultiSnakeServer {
         } while(!allReady);
         gd.startGame(numOfPlayers);
         while(true) {
-            
             Thread.sleep(tick);
             for(int p=0; p<players.length; p++) 
             {
