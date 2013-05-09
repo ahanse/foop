@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Observer {
     private BoardPanel boardPanel;
     private JPanel rightPanel;
     private ArrayList<Label> players;
-    private int Zaehler;
+    //private int Zaehler;
 
     public GamePanel(MainFrame parent) {
         super();
@@ -35,7 +35,7 @@ public class GamePanel extends JPanel implements Observer {
         addRightPanelComponents();
         this.add(rightPanel, BorderLayout.CENTER);
         this.add(boardPanel, BorderLayout.LINE_START);
-        Zaehler = 0;
+        //Zaehler = 0;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class GamePanel extends JPanel implements Observer {
         boardPanel.update((IPlayer) o);
         updateRightPanel((IPlayer) o);
         parentFrame.drawContent();
-        Zaehler++;
-        System.out.println(Zaehler + "");
+        //Zaehler++;
+        //System.out.println(Zaehler + "");
     }
 
     private void addRightPanelComponents() {
