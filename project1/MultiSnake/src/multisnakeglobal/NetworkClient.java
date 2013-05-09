@@ -77,6 +77,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     private void sendMessage(INetworkMessage m) {
         if(outStream!=null) {
             try {
+                System.out.println("Message sent!");
                 outStream.reset();
                 outStream.writeObject(m);
             }
@@ -97,11 +98,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     @Override
     public synchronized Direction getChangedKey() {
         Direction k = this.keyChange;     
-        if(k!=null) {
-            super.setChanged();
-            super.notifyObservers(); 
-            this.keyChange=null;
-        }
+        this.keyChange=null;
         return k;
     }
 
@@ -109,27 +106,22 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     public synchronized void setChangedKey(Direction k) {
         if(this.connection!=null) {
             sendMessage(new KeyChangedMessage(k));
-            if(keyChange!=k) {
-                super.setChanged();
-                super.notifyObservers(); 
-                keyChange = k;
-                
-            }
+            keyChange = k;
         }
     }
 
     @Override
     public synchronized void setId(int id) {
-        super.setChanged();
-        super.notifyObservers();       
+        //super.setChanged();
+        //super.notifyObservers();       
         this.id = id;
         if(state==ConnectionState.READY) sendMessage(new SetIdMessage(id));
     }
 
     @Override
     public synchronized  void updateGameData(IGameData gd) {
-        super.setChanged();
-        super.notifyObservers();       
+        //super.setChanged();
+        //super.notifyObservers();       
         this.gd = gd;
         if(state==ConnectionState.READY) sendMessage(new UpdateGameDataMessage(gd));
     }
