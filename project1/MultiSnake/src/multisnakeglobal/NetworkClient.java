@@ -35,7 +35,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     
     public void connect(Socket connection) {
         this.connection = connection;
-        System.out.println("Connected client.");
+        System.out.println("Connected client/server.");
         t = new Thread(this);
         t.start();
     }
@@ -77,7 +77,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     private void sendMessage(INetworkMessage m) {
         if(outStream!=null) {
             try {
-                System.out.println("Message sent!");
+                //System.out.println("Message sent!");
                 outStream.reset();
                 outStream.writeObject(m);
             }
