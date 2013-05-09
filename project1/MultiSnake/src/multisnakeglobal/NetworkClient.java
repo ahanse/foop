@@ -143,7 +143,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
 
     @Override
     public synchronized void visit(KeyChangedMessage ms) {
-        this.setChangedKey(ms.keyChange);
+        this.keyChange = ms.keyChange;
     }
 
     @Override
