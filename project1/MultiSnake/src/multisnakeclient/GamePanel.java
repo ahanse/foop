@@ -43,11 +43,32 @@ public class GamePanel extends JPanel implements Observer {
         if (!(o instanceof IPlayer)) {
             throw new IllegalArgumentException();
         }
-        boardPanel.update((IPlayer) o);
-        updateRightPanel((IPlayer) o);
+        int[] cols=calculateColors((IPlayer) o);
+        boardPanel.update((IPlayer) o,cols);
+        updateRightPanel((IPlayer) o,cols);
         parentFrame.drawContent();
         //Zaehler++;
         //System.out.println(Zaehler + "");
+    }
+    int[] calculateColors(IPlayer network)
+    {
+        int ownID = network.getId();
+        int nextColorInd = 0;
+        java.util.List<ISnake> snakes = network.getGameData().getSnakes();
+        int[] erg=new int[snakes.size()];
+        for(int i=0;i<snakes.size();i++)
+        {
+            if (snakes.get(i).getID() == ownID) {
+                        erg[i] = parentFrame.getOptions().getCOLORPOOL()[parentFrame.getOptions().getOwnColorInd()];
+                    } else {
+                        if (nextColorInd == parentFrame.getOptions().getOwnColorInd()) {
+                            nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
+                        }
+                        erg[i]=parentFrame.getOptions().getCOLORPOOL()[nextColorInd];
+                        nextColorInd=(nextColorInd+1)% parentFrame.getOptions().getCOLORPOOL().length;
+                    }
+        }
+        return erg;
     }
 
     private void addRightPanelComponents() {
@@ -63,8 +84,15 @@ public class GamePanel extends JPanel implements Observer {
         players.add(newLabel);
         rightPanel.add(newLabel, c);
     }
-
-    private void updateRightPanel(IPlayer network) {
+    
+    // calculates the brightness of a color (between 0..255)
+    private int brightness(Color c) {
+        return (int) Math.sqrt(c.getRed() * c.getRed() * .241
+                + c.getGreen() * c.getGreen() * .691 + c.getBlue()
+                * c.getBlue() * .068);
+    }
+    
+    private void updateRightPanel(IPlayer network, int[] cols) {
         int ownID = network.getId();
         IGameData data = network.getGameData();
         int ind = 1;
@@ -75,6 +103,7 @@ public class GamePanel extends JPanel implements Observer {
             }
         }
         int maxPriorityLength = (maxPriority + "").length();
+        int j=0;
         for (ISnake s : data.getSnakes()) {
             String pri = s.getPriority() + "";
             for (int i = pri.length(); i < maxPriorityLength; i++) {
@@ -97,10 +126,16 @@ public class GamePanel extends JPanel implements Observer {
                 } else {
                     l = players.get(ind);
                 }
-                ind++;
+                
             }
+            ind++;
+            Color col=new Color(cols[j]);
+            l.setBackground(col);
+            l.setForeground(brightness(col) < 130 ? Color.WHITE
+                            : Color.BLACK);
             l.setText(pri + s.getName());
             l.setVisible(true);
+            j++;
         }
         for (int i = ind; i < players.size(); i++) {
             players.get(ind).setVisible(false);
@@ -141,14 +176,7 @@ public class GamePanel extends JPanel implements Observer {
             this.add(lblBoardInformation,c);
         }
 
-        // calculates the brightness of a color (between 0..255)
-        private int brightness(Color c) {
-            return (int) Math.sqrt(c.getRed() * c.getRed() * .241
-                    + c.getGreen() * c.getGreen() * .691 + c.getBlue()
-                    * c.getBlue() * .068);
-        }
-
-        public void update(IPlayer network) {
+        public void update(IPlayer network, int[] cols) {
             IGameData data = network.getGameData();
 
             switch (data.getStatus()) {
@@ -172,12 +200,12 @@ public class GamePanel extends JPanel implements Observer {
                     lblBoardInformation.setBackground(Color.WHITE);
                     lblBoardInformation.setText("The game is starting");
                     lblBoardInformation.setVisible(true);
-                    calculateImage(network);
+                    calculateImage(network, cols);
                     break;
                 case RUNNING:
                     lblBoardInformation.setVisible(false);
                     lblBoardCaption.setVisible(false);
-                    calculateImage(network);
+                    calculateImage(network, cols);
                     break;
                 default:
                     break;
@@ -185,27 +213,16 @@ public class GamePanel extends JPanel implements Observer {
             }
         }
 
-        private void calculateImage(IPlayer network) {
+        private void calculateImage(IPlayer network, int[] cols) {
             IGameData data = network.getGameData();
+            int i=0;
             currentImage = new ImageProceedingData(data.getDimensions().getX(),
                     data.getDimensions().getY());
-
-            int ownID = network.getId();
-            int nextColorInd = 0;
             for (ISnake snake : data.getSnakes()) {
-                int color;
                 if(snake.getHead()!=null){
-                    if (snake.getID() == ownID) {
-                        color = parentFrame.getOptions().getCOLORPOOL()[parentFrame.getOptions().getOwnColorInd()];
-                    } else {
-                        if (nextColorInd == parentFrame.getOptions().getOwnColorInd()) {
-                            nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
-                        }
-                        color = parentFrame.getOptions().getCOLORPOOL()[nextColorInd];
-                        nextColorInd=(nextColorInd+1)% parentFrame.getOptions().getCOLORPOOL().length;
-                    }
-                    currentImage.addRectangleFromSnake(snake, new Color(color));
+                    currentImage.addRectangleFromSnake(snake, new Color(cols[i]));
                 }
+                i++;
             }
             parcelLength = Math.min(parentFrame.getOptions()
                     .getMaxParcelLength(), ((parentPanel.getSize().width - 100) - 2)
