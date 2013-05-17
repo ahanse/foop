@@ -16,20 +16,18 @@ public class MultiSnakeServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
-        int dimX,dimY,numOfPlayers,tick, numOfAIs;
+        int dimX,dimY,numOfPlayers,tick;
         if(args.length!=0) {
             tick = Integer.parseInt(args[0]);
             dimX = Integer.parseInt(args[1]);
             dimY = Integer.parseInt(args[2]);
             numOfPlayers = Integer.parseInt(args[3]);
-            numOfAIs = Integer.parseInt(args[4]);
         }
         else {
             tick = 300;
             dimX = 30;
             dimY = 30;
             numOfPlayers = 1;
-            numOfAIs = 1;
         }
         GameData gd = new GameData(new Point(dimX,dimY));
         NetworkServer ns = new NetworkServer(numOfPlayers);

@@ -194,15 +194,17 @@ public class GamePanel extends JPanel implements Observer {
             int nextColorInd = 0;
             for (ISnake snake : data.getSnakes()) {
                 int color;
-                if (snake.getID() == ownID) {
-                    color = parentFrame.getOptions().getCOLORPOOL()[parentFrame.getOptions().getOwnColorInd()];
-                } else {
-                    if (nextColorInd == parentFrame.getOptions().getOwnColorInd()) {
-                        nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
+                if(snake.getHead()!=null){
+                    if (snake.getID() == ownID) {
+                        color = parentFrame.getOptions().getCOLORPOOL()[parentFrame.getOptions().getOwnColorInd()];
+                    } else {
+                        if (nextColorInd == parentFrame.getOptions().getOwnColorInd()) {
+                            nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
+                        }
+                        color = parentFrame.getOptions().getCOLORPOOL()[nextColorInd];
                     }
-                    color = parentFrame.getOptions().getCOLORPOOL()[nextColorInd];
+                    currentImage.addRectangleFromSnake(snake, new Color(color));
                 }
-                currentImage.addRectangleFromSnake(snake, new Color(color));
             }
             parcelLength = Math.min(parentFrame.getOptions()
                     .getMaxParcelLength(), ((parentPanel.getSize().width - 100) - 2)
