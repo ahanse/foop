@@ -39,7 +39,7 @@ public class MultiSnakeServer {
         
         for(int i=0;i<numOfBots;i++)
         {
-            bots[i]=new Bot();
+            bots[i]=new Bot(gd,numOfPlayers+i);
         }
 
         //wait until all clients are connected
@@ -54,11 +54,16 @@ public class MultiSnakeServer {
         } while(!allReady);
         gd.startGame(numOfPlayers + numOfBots);
         Thread.sleep(500);
+        
         for(int p=0; p<players.length; p++) {
             players[p].setId(p);
             gd.setSnakeName(p, players[p].getNick());
         }
-        while(true) {
+	for(int i = 0; i < numOfBots; ++i) {
+            gd.setSnakeName(numOfPlayers + i, "Bot"+i);
+	}
+
+        while(gd.getStatus()!=GameState.FINISHED) {
             Thread.sleep(tick);
             for(int p=0; p<players.length; p++) 
             {
@@ -80,5 +85,6 @@ public class MultiSnakeServer {
                 players[p].updateGameData(gd);
             }
         }
+        ns.endGame();
     }
 }
