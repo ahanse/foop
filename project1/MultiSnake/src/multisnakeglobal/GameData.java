@@ -142,6 +142,10 @@ public class GameData implements IGameData{
                 return;
             }
         case RUNNING:
+		if(System.currentTimeMillis() > timestamp_ + 120000) {
+			setState(GameState.FINISHED);
+			return;
+		}
             
         }
 
