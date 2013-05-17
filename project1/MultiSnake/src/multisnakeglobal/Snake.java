@@ -25,9 +25,10 @@ public class Snake implements ISnake {
     // The direction in which the snake will attempt to move
     private Direction direction_;
     
-    public Snake(Point head, int id) {
+    public Snake(Point head, int id, int priority) {
         tiles_ = new PointTree(head);
         id_ = id;
+        priority_ = priority;
     }
     
     public boolean isDead() {
@@ -40,6 +41,10 @@ public class Snake implements ISnake {
     
     public int getPriority() {
         return priority_;
+    }
+
+    public void setPriority(int priority) {
+        priority_ = priority;
     }
     
     public int getID() {
