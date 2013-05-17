@@ -19,6 +19,7 @@ public class GameData implements IGameData{
     GameState state_;
     Point dimensions_;
     long timestamp_;
+    long lastshuffle_;
     
     public GameData(Point dimensions) {
         timestamp_ = 0;
@@ -34,6 +35,7 @@ public class GameData implements IGameData{
     public void startGame(int numberOfSnakes) {
         setState(GameState.TIMETOFIGHT);
         timestamp_ = System.currentTimeMillis() + 3000;
+	lastshuffle_ = timestamp_;
         generateSnakes(numberOfSnakes);
     }
 
@@ -62,10 +64,20 @@ public class GameData implements IGameData{
 
         return null;
     }
+
+
+    // FIXME: should be private
+    public void shufflePriorities() {
+        for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
+            Snake s = (Snake)(i.next());
+            s.setPriority(s.getPriority() + 1 % snakes_.size());
+        }
+        
+    }
     
     // FIXME: should be private void
-    public Snake makeSnake(Point headLocation, int length, Direction direction, int id) {
-        Snake s = new Snake(headLocation,id);
+    public Snake makeSnake(Point headLocation, int length, Direction direction, int id, int priority) {
+        Snake s = new Snake(headLocation,id,priority);
         s.setDirection(direction);
         PointTree prevPoint = s.getPointTree();
         for(int i = 0; i < length - 1; ++i) {
@@ -83,13 +95,13 @@ public class GameData implements IGameData{
     // FIXME: should be private
     public void generateSnakes(int number) {
         int length = 5;
-        int space = dimensions_.getX() / (number/2);
+        int space = dimensions_.getX() / (1+number/2);
         for(int i = 0; i < number/2; ++i) {
-            makeSnake(new Point(space/2 + space*i,length),length,Direction.DOWN,i);
+            makeSnake(new Point(space/2 + space*i,length),length,Direction.DOWN,i,i);
         }
         
         for(int i = number/2; i < number; ++i) {
-            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i);
+            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,i);
         }
     }
     
@@ -122,6 +134,10 @@ public class GameData implements IGameData{
             
         }
 
+	if(lastshuffle_ + 10000 < System.currentTimeMillis()) {
+		shufflePriorities();
+	}
+
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
             Snake s = (Snake)(i.next());
             
@@ -134,6 +150,7 @@ public class GameData implements IGameData{
             // If we would move onto a snake with higher priority we cannot
             // move.
             boolean doMoveTransformation = true;
+
             
             for(Iterator<ISnake> j = snakes_.iterator(); j.hasNext();) {
                 Snake t = (Snake)(j.next());
