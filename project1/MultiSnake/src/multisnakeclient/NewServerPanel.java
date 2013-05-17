@@ -157,7 +157,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         catch(NumberFormatException ex){
             return false;
         }
-        if(numOfPlayers<=0)
+        if(numOfPlayers<0)
         {
             return false;
         }
