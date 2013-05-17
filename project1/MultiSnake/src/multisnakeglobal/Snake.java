@@ -13,6 +13,7 @@ import java.util.Iterator;
  */
 public class Snake implements ISnake {
     private int priority_;
+    private int next_priority_;
     private int id_;
     private String name_;
     
@@ -29,6 +30,7 @@ public class Snake implements ISnake {
         tiles_ = new PointTree(head);
         id_ = id;
         priority_ = priority;
+	next_priority_ = priority;
     }
     
     public boolean isDead() {
@@ -45,6 +47,20 @@ public class Snake implements ISnake {
 
     public void setPriority(int priority) {
         priority_ = priority;
+    }
+
+    public void updatePriority(int next_priority) {
+	priority_ = next_priority_;
+	next_priority_ = next_priority;
+    }
+    
+    
+    public int getNextPriority() {
+        return next_priority_;
+    }
+
+    public void setNextPriority(int next_priority) {
+        next_priority_ = next_priority;
     }
     
     public int getID() {
