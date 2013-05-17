@@ -53,9 +53,10 @@ public class MultiSnakeServer {
             Thread.sleep(100);
         } while(!allReady);
         gd.startGame(numOfPlayers + numOfBots);
-        Thread.sleep(1000);
+        Thread.sleep(500);
         for(int p=0; p<players.length; p++) {
             players[p].setId(p);
+            gd.setSnakeName(p, players[p].getNick());
         }
         while(true) {
             Thread.sleep(tick);
