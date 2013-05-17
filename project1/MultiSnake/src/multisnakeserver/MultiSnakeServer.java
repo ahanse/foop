@@ -36,6 +36,11 @@ public class MultiSnakeServer {
         multisnakeglobal.IPlayer[] players = ns.getPlayers();
 
 	Bot[] bots = new Bot[numOfBots];
+        
+        for(int i=0;i<numOfBots;i++)
+        {
+            bots[i]=new Bot();
+        }
 
         //wait until all clients are connected
         boolean allReady; 
