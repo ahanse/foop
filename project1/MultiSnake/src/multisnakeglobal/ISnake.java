@@ -14,6 +14,8 @@ public interface ISnake extends java.io.Serializable {
     List<Point> getCoordinates();
     Point getHead();
     int getPriority();
+    int getNextPriority();
     int getID();
     String getName();
+    boolean isDead();
 }

@@ -94,6 +94,14 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     public synchronized String getNick() {
         return this.nick;
     }
+   
+    @Override
+    public void setNick(String nickname) {
+        this.nick = nickname;
+        if(this.connection!=null) {
+            sendMessage(new AnnounceNickMessage(nickname));
+        }
+    }
 
     @Override
     public synchronized Direction getChangedKey() {
@@ -155,10 +163,4 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
     public  synchronized void visit(UpdateGameDataMessage ms) {
         this.gd = ms.gameData;
     }
-
-    @Override
-    public void setNick(String nickname) {
-        
-    }
-
 }

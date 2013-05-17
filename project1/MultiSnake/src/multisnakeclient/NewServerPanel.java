@@ -22,6 +22,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
     private JTextField txtDimX;
     private JTextField txtDimY;
     private JTextField txtNumOfPlayers;
+    private JTextField txtNumOfAi;
 
     public NewServerPanel(MainFrame parentFrame) {
     	super();
@@ -34,19 +35,23 @@ public class NewServerPanel extends JPanel implements ActionListener {
 
         JPanel optPnl = new JPanel (new GridLayout(0,2,0,10));        
         
+        String[] savedSettings = parentFrame.readServerSettings();
         // create Options
         JLabel lblTick = new JLabel("Game tick(ms)");
         txtTick = new JTextField(10);
-        txtTick.setText("100");
+        txtTick.setText(savedSettings[0]);
         JLabel lblDimX = new JLabel("Game Board X");
         txtDimX = new JTextField(10);
-        txtDimX.setText("30");
+        txtDimX.setText(savedSettings[1]);
         JLabel lblDimY = new JLabel("Game Board Y");
         txtDimY = new JTextField(10);
-        txtDimY.setText("30");
-        JLabel lblNumOfPlayers = new JLabel("Number of Players");
+        txtDimY.setText(savedSettings[2]);
+        JLabel lblNumOfPlayers = new JLabel("Number of Players (Humans)");
         txtNumOfPlayers = new JTextField(10);
-        txtNumOfPlayers.setText("1");
+        txtNumOfPlayers.setText(savedSettings[3]);
+        JLabel lblNumOfAi = new JLabel("Number of AI");
+        txtNumOfAi = new JTextField(10);
+        txtNumOfAi.setText(savedSettings[4]);
         
         optPnl.add(lblTick);
         optPnl.add(txtTick);
@@ -56,6 +61,8 @@ public class NewServerPanel extends JPanel implements ActionListener {
         optPnl.add(txtDimY);
         optPnl.add(lblNumOfPlayers);
         optPnl.add(txtNumOfPlayers);
+        optPnl.add(lblNumOfAi);
+        optPnl.add(txtNumOfAi);
         
         optPnl.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
 
@@ -90,7 +97,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this,"Einer der eingegebenen Werte stellt keinen gültigen Wert dar.","Fehler!",JOptionPane.OK_OPTION);
             }
             else{
-                String[] options={txtTick.getText(),txtDimX.getText(),txtDimX.getText(),txtNumOfPlayers.getText()};
+                String[] options={txtTick.getText(),txtDimX.getText(),txtDimY.getText(),txtNumOfPlayers.getText(),txtNumOfAi.getText()};
                 parentFrame.startServer(options);
                 
                 //TODO: own IP and port
@@ -134,7 +141,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         
         int yCoord;
         try{
-            yCoord=Integer.parseInt(txtDimX.getText());
+            yCoord=Integer.parseInt(txtDimY.getText());
         }
         catch(NumberFormatException ex){
             return false;
@@ -152,6 +159,18 @@ public class NewServerPanel extends JPanel implements ActionListener {
             return false;
         }
         if(numOfPlayers<=0)
+        {
+            return false;
+        }
+        
+        int numOfAi;
+        try{
+            numOfAi=Integer.parseInt(txtNumOfAi.getText());
+        }
+        catch(NumberFormatException ex){
+            return false;
+        }
+        if(numOfAi<0)
         {
             return false;
         }

@@ -13,6 +13,7 @@ import java.util.Iterator;
  */
 public class Snake implements ISnake {
     private int priority_;
+    private int next_priority_;
     private int id_;
     private String name_;
     
@@ -25,9 +26,12 @@ public class Snake implements ISnake {
     // The direction in which the snake will attempt to move
     private Direction direction_;
     
-    public Snake(Point head, int id) {
+    public Snake(Point head, int id, int priority) {
         tiles_ = new PointTree(head);
         id_ = id;
+        priority_ = priority;
+	next_priority_ = priority;
+	name_ = "";
     }
     
     public boolean isDead() {
@@ -41,6 +45,24 @@ public class Snake implements ISnake {
     public int getPriority() {
         return priority_;
     }
+
+    public void setPriority(int priority) {
+        priority_ = priority;
+    }
+
+    public void updatePriority(int next_priority) {
+	priority_ = next_priority_;
+	next_priority_ = next_priority;
+    }
+    
+    
+    public int getNextPriority() {
+        return next_priority_;
+    }
+
+    public void setNextPriority(int next_priority) {
+        next_priority_ = next_priority;
+    }
     
     public int getID() {
         return id_;
@@ -48,6 +70,10 @@ public class Snake implements ISnake {
     
     public String getName() {
         return name_;
+    }
+
+    public void setName(String name) {
+        name_ = name;
     }
     
     public Vector<Point> getCoordinates() {

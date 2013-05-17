@@ -12,6 +12,10 @@ import java.io.IOException;
 import javax.swing.*;
 import multisnakeglobal.Direction;
 import multisnakeserver.MultiSnakeServer;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  *
@@ -57,9 +61,13 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
         try {
             network.addObserver(gamePanel);
             network.connect(IP, Port);
+            Thread.sleep(500);
             network.setNick(options.getNickname());
             
         } catch (IOException e) {
+            //TODO: Error window!
+            System.err.println("Could not connect!");
+        } catch (InterruptedException e) {
             //TODO: Error window!
             System.err.println("Could not connect!");
         }
@@ -100,23 +108,18 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     @Override
     public void keyPressed(KeyEvent e) {
         Direction key;
-        switch (e.getKeyCode()) {
-            case 37:
-                key = Direction.LEFT;
-                break;
-            case 38:
-                key = Direction.UP;
-                break;
-            case 39:
-                key = Direction.RIGHT;
-                break;
-            case 40:
-                key = Direction.DOWN;
-                break;
-            default:
-                key = null;
-                break;
-        }
+        int[] directionKeys = options.getDirectionKeys();
+        int keycode = e.getKeyCode();
+        if(keycode == directionKeys[0])
+            key = Direction.LEFT;
+        else if (keycode == directionKeys[1])
+            key = Direction.UP;
+        else if (keycode == directionKeys[2])
+            key = Direction.RIGHT;
+        else if (keycode == directionKeys[3])
+            key = Direction.DOWN;
+        else
+            key = null;
         if (network != null) {
             network.setChangedKey(key);
         }
@@ -138,9 +141,38 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     // start multisnakeserver in a new thread
     void startServer(String[] opt) {
         soptions = opt;
+        saveServerSettings();
         if (serverThread == null) {
             serverThread = new Thread(this);
             serverThread.start();
+        }
+    }
+    
+    private void saveServerSettings() {
+        try {
+            //open a file to write to
+            FileOutputStream saveFile = new FileOutputStream("sOptions.dat");
+            //create an ObjectOutputStream to put objects into save file
+            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+            // write on Stream
+            save.writeObject(this.soptions);
+            //close file
+            save.close();
+        } catch (Exception e) {
+        }
+    }
+    
+    public String[] readServerSettings() {
+        try {
+            //open file to read from
+            FileInputStream saveFile = new FileInputStream("sOptions.dat");
+            //create an ObjectInputStream to get objects from save file
+            ObjectInputStream save = new ObjectInputStream(saveFile);
+            this.soptions = (String[]) save.readObject();
+            return this.soptions;
+        } catch (Exception e) {
+            String[] standard = {"200","30","30","1","0"};
+            return standard;
         }
     }
 }
