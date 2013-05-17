@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  *
@@ -20,13 +21,14 @@ public class GameData implements IGameData{
     Point dimensions_;
     long timestamp_;
     int ticks_;
+    Random generator_;    
 
-    
     public GameData(Point dimensions) {
         timestamp_ = 0;
         dimensions_ = dimensions;
         snakes_ = new Vector();
         setState(GameState.WAITINGFORPLAYERS);
+	generator_ = new Random();
     }
     
     public Vector<ISnake> getSnakes() {
@@ -72,7 +74,7 @@ public class GameData implements IGameData{
     public void shufflePriorities() {
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
             Snake s = (Snake)(i.next());
-            s.updatePriority((s.getPriority() + 1) % snakes_.size());
+            s.updatePriority(generator_.nextInt(snakes_.size()));
         }
         
     }
@@ -103,7 +105,7 @@ public class GameData implements IGameData{
         }
         
         for(int i = number/2; i < number; ++i) {
-            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,i);
+            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,generator_.nextInt(snakes_.size()));
         }
     }
     
