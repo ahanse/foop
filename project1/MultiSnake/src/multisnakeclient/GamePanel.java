@@ -5,9 +5,12 @@
 package multisnakeclient;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.*;
 import java.util.*;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import multisnakeglobal.*;
 import multisnakeglobal.Point;
@@ -20,22 +23,24 @@ public class GamePanel extends JPanel implements Observer {
 
     private MainFrame parentFrame;
     private BoardPanel boardPanel;
-    private JPanel rightPanel;
     private ArrayList<Label> players;
+    private RightPanel rightPanel;
     //private int Zaehler;
 
     public GamePanel(MainFrame parent) {
         super();
         this.parentFrame = parent;
         boardPanel = new BoardPanel(parentFrame, this);
-        rightPanel = new JPanel();
+
         //rightPanel.setBackground(Color.black);
         //boardPanel.setPreferredSize(boardPanel.getPreferredSize());
         this.setLayout(new BorderLayout(0, 0));
-        addRightPanelComponents();
+        rightPanel = new RightPanel();
+        rightPanel.addRightPanelComponents();
         this.add(rightPanel, BorderLayout.CENTER);
         this.add(boardPanel, BorderLayout.LINE_START);
         //Zaehler = 0;
+
     }
 
     @Override
@@ -43,118 +48,38 @@ public class GamePanel extends JPanel implements Observer {
         if (!(o instanceof IPlayer)) {
             throw new IllegalArgumentException();
         }
-        int[] cols=calculateColors((IPlayer) o);
-        boardPanel.update((IPlayer) o,cols);
-        updateRightPanel((IPlayer) o,cols);
+        int[] cols = calculateColors((IPlayer) o);
+        boardPanel.update((IPlayer) o, cols);
+        rightPanel.updateRightPanel((IPlayer) o, cols);
         parentFrame.drawContent();
         //Zaehler++;
         //System.out.println(Zaehler + "");
     }
-    int[] calculateColors(IPlayer network)
-    {
+
+    int[] calculateColors(IPlayer network) {
         int ownID = network.getId();
         int nextColorInd = 0;
         java.util.List<ISnake> snakes = network.getGameData().getSnakes();
-        int[] erg=new int[snakes.size()];
-        for(int i=0;i<snakes.size();i++)
-        {
+        int[] erg = new int[snakes.size()];
+        for (int i = 0; i < snakes.size(); i++) {
             if (snakes.get(i).getID() == ownID) {
-                        erg[i] = parentFrame.getOptions().getCOLORPOOL()[parentFrame.getOptions().getOwnColorInd()];
-                    } else {
-                        if (nextColorInd == parentFrame.getOptions().getOwnColorInd()) {
-                            nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
-                        }
-                        erg[i]=parentFrame.getOptions().getCOLORPOOL()[nextColorInd];
-                        nextColorInd=(nextColorInd+1)% parentFrame.getOptions().getCOLORPOOL().length;
-                    }
+                erg[i] = parentFrame.getOptions().getCOLORPOOL()[parentFrame.getOptions().getOwnColorInd()];
+            } else {
+                if (nextColorInd == parentFrame.getOptions().getOwnColorInd()) {
+                    nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
+                }
+                erg[i] = parentFrame.getOptions().getCOLORPOOL()[nextColorInd];
+                nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
+            }
         }
         return erg;
     }
 
-    private void addRightPanelComponents() {
-        rightPanel.setLayout(new GridBagLayout());
-        players = new ArrayList<Label>();
-
-        //Adds the first Label
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.LINE_START;
-        c.gridx = 0;
-        c.gridy = 0;
-        Label newLabel = new Label();
-        players.add(newLabel);
-        rightPanel.add(newLabel, c);
-    }
-    
     // calculates the brightness of a color (between 0..255)
     private int brightness(Color c) {
         return (int) Math.sqrt(c.getRed() * c.getRed() * .241
                 + c.getGreen() * c.getGreen() * .691 + c.getBlue()
                 * c.getBlue() * .068);
-    }
-    
-    private void updateRightPanel(IPlayer network, int[] cols) {
-        int ownID = network.getId();
-        IGameData data = network.getGameData();
-        int ind = 1;
-        int maxPriority = 0;
-        int maxNextPriority = 0;
-        for (ISnake s : data.getSnakes()) {
-            if (s.getPriority() > maxPriority) {
-                maxPriority = s.getPriority();
-            }
-            if(s.getNextPriority()>maxNextPriority){
-                maxNextPriority=s.getNextPriority();
-            }
-        }
-        int maxPriorityLength = (maxPriority + "").length();
-        int maxNextPriorityLength = (maxNextPriority + "").length();
-        int j=0;
-        for (ISnake s : data.getSnakes()) {
-            String pri = s.getPriority() + "";
-            for (int i = pri.length(); i < maxPriorityLength; i++) {
-                pri = " " + pri;
-            }
-            pri += " -> ";
-            String nextPri=s.getNextPriority()+"";
-            for (int i = nextPri.length(); i < maxNextPriorityLength; i++) {
-                nextPri = " " + nextPri;
-            }
-            pri += nextPri+" ";
-            Label l;
-            if (s.getID() == ownID) {
-                l = players.get(0);
-            } else {
-                if (players.size() <= ind) {
-                    //Add new label
-                    GridBagConstraints c = new GridBagConstraints();
-                    c.anchor = GridBagConstraints.LINE_START;
-                    c.gridx = 0;
-                    c.gridy = ind;
-                    l = new Label();
-                    players.add(l);
-                    rightPanel.add(l, c);
-                } else {
-                    l = players.get(ind);
-                }
-                ind++;
-            }
-            
-            Color col=new Color(cols[j]);
-            l.setBackground(col);
-            l.setForeground(brightness(col) < 130 ? Color.WHITE
-                            : Color.BLACK);
-            pri=pri+s.getName();
-            if(s.isDead())
-            {
-                pri+=" (+)";
-            }
-            l.setText(pri);
-            l.setVisible(true);
-            j++;
-        }
-        for (int i = ind; i < players.size(); i++) {
-            players.get(ind).setVisible(false);
-        }
     }
 
     private class BoardPanel extends JPanel {
@@ -174,7 +99,7 @@ public class GamePanel extends JPanel implements Observer {
             this.parentPanel = parentPanel;
             parcelLength = parent.getOptions().getMaxParcelLength();
             this.setLayout(new GridBagLayout());
-            
+
             GridBagConstraints c = new GridBagConstraints();
             c.anchor = GridBagConstraints.CENTER;
             c.gridx = 0;
@@ -182,13 +107,13 @@ public class GamePanel extends JPanel implements Observer {
             lblBoardCaption = new Label();
             lblBoardCaption.setFont(new Font("SansSerif", Font.BOLD, 20));
             lblBoardCaption.setText("");
-            this.add(lblBoardCaption,c);
-            
-            c.gridy=1;
+            this.add(lblBoardCaption, c);
+
+            c.gridy = 1;
             lblBoardInformation = new Label();
             lblBoardInformation.setFont(new Font("SansSerif", Font.PLAIN, 18));
             lblBoardInformation.setText("");
-            this.add(lblBoardInformation,c);
+            this.add(lblBoardInformation, c);
         }
 
         public void update(IPlayer network, int[] cols) {
@@ -230,11 +155,11 @@ public class GamePanel extends JPanel implements Observer {
 
         private void calculateImage(IPlayer network, int[] cols) {
             IGameData data = network.getGameData();
-            int i=0;
+            int i = 0;
             currentImage = new ImageProceedingData(data.getDimensions().getX(),
                     data.getDimensions().getY());
             for (ISnake snake : data.getSnakes()) {
-                if(snake.getHead()!=null){
+                if (snake.getHead() != null) {
                     currentImage.addRectangleFromSnake(snake, new Color(cols[i]));
                 }
                 i++;
@@ -328,6 +253,195 @@ public class GamePanel extends JPanel implements Observer {
             while (fm.stringWidth(s) > pX || fm.getHeight() > pY) {
                 f = f.deriveFont(f.getSize2D() - 0.5f);
                 fm = g.getFontMetrics(f);
+            }
+        }
+    }
+
+    private class RightPanel extends JPanel implements ActionListener {
+
+        private JPanel playerListPanel;
+        private JButton backButton;
+
+        public RightPanel() {
+            this.setLayout(new BorderLayout());
+            JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+
+            //Button go back to MainMenu
+            backButton = new JButton("Back to Main Menu");
+            backButton.setActionCommand("Back");
+            backButton.setVisible(false);
+
+            btnPnl.add(backButton);
+            backButton.addActionListener(this);
+
+            playerListPanel = new JPanel();
+
+            this.add(playerListPanel, BorderLayout.CENTER);
+            this.add(btnPnl, BorderLayout.PAGE_END);
+        }
+
+        public void addRightPanelComponents() {
+            playerListPanel.setLayout(new GridBagLayout());
+            players = new ArrayList<Label>();
+
+            //Adds the first Label
+            GridBagConstraints c = new GridBagConstraints();
+            c.anchor = GridBagConstraints.LINE_START;
+            c.gridx = 0;
+            c.gridy = 0;
+            Label newLabel = new Label();
+            players.add(newLabel);
+            playerListPanel.add(newLabel, c);
+        }
+
+        private Integer[] sortSnakes(final java.util.List<ISnake> snakes) {
+            Integer[] idx = new Integer[snakes.size()];
+            for (int i = 0; i < snakes.size(); i++) {
+                idx[i] = i;
+            }
+            Arrays.sort(idx, new Comparator<Integer>() {
+                @Override
+                public int compare(final Integer o1, final Integer o2) {
+                    return Integer.compare( snakes.get(o2).getCoordinates().size(),snakes.get(o1).getCoordinates().size());
+                }
+            });
+            return idx;
+        }
+
+        public void updateRightPanel(IPlayer network, int[] cols) {
+            
+            int ownID = network.getId();
+            IGameData data = network.getGameData();
+            if (data.getStatus() == GameState.FINISHED) {
+                backButton.setVisible(true);
+                Integer[] idx = sortSnakes(data.getSnakes());
+                Label l=players.get(0);
+                l.setBackground(null);
+                l.setText("Results");
+                l.setFont(new Font("SansSerif", Font.BOLD, 20));
+                int maxPlaceSize=0;
+                int maxPointSize=0;
+                for (int i=0;i<idx.length;i++) {
+                    if(((i+1)+"").length()>maxPlaceSize)
+                    {
+                        maxPlaceSize=((i+1)+"").length();
+                    }
+                    if((data.getSnakes().get(i).getCoordinates().size()+"").length()>maxPointSize)
+                    {
+                        maxPointSize=(data.getSnakes().get(i).getCoordinates().size()+"").length();
+                    }
+                }
+                for(int i=0;i<idx.length;i++)
+                {
+                    if (players.size() <= i+1) {
+                            //Add new label
+                            GridBagConstraints c = new GridBagConstraints();
+                            c.anchor = GridBagConstraints.LINE_START;
+                            c.gridx = 0;
+                            c.gridy = i+1;
+                            l = new Label();
+                            players.add(l);
+                            playerListPanel.add(l, c);
+                        } else {
+                            l = players.get(i+1);
+                        }
+                    Color c=new Color(cols[idx[i]]);
+                    l.setBackground(c);
+                    l.setForeground(brightness(c) < 130 ? Color.WHITE
+                            : Color.BLACK);
+                    String t=(i+1)+"";
+                    for(int j=t.length();j<maxPlaceSize;j++)
+                    {
+                        t=" "+t;
+                    }
+                    t+=". ";
+                    String tmp=data.getSnakes().get(idx[i]).getCoordinates().size()+"";
+                    for(int j=tmp.length();j<maxPointSize;j++)
+                    {
+                        t+=" ";
+                    }
+                    t+=tmp+" "+data.getSnakes().get(idx[i]).getName();
+                    l.setText(t);
+                    l.setVisible(true);
+                }
+                for (int i = idx.length+2; i < players.size(); i++) {
+                    players.get(i).setVisible(false);
+                }
+            } else {
+                int ind = 1;
+                int maxPriority = 0;
+                int maxNextPriority = 0;
+                int maxNickSize=0;
+                for (ISnake s : data.getSnakes()) {
+                    if (s.getPriority() > maxPriority) {
+                        maxPriority = s.getPriority();
+                    }
+                    if (s.getNextPriority() > maxNextPriority) {
+                        maxNextPriority = s.getNextPriority();
+                    }
+                    if(s.getName().length()>maxNickSize)
+                    {
+                        maxNickSize=s.getName().length();
+                    }
+                }
+                int maxPriorityLength = (maxPriority + "").length();
+                int maxNextPriorityLength = (maxNextPriority + "").length();
+                int j = 0;
+                for (ISnake s : data.getSnakes()) {
+                    String pri = s.getPriority() + "";
+                    for (int i = pri.length(); i < maxPriorityLength; i++) {
+                        pri = " " + pri;
+                    }
+                    pri += " -> ";
+                    String nextPri = s.getNextPriority() + "";
+                    for (int i = nextPri.length(); i < maxNextPriorityLength; i++) {
+                        nextPri = " " + nextPri;
+                    }
+                    pri += nextPri + " ";
+                    Label l;
+                    if (s.getID() == ownID) {
+                        l = players.get(0);
+                    } else {
+                        if (players.size() <= ind) {
+                            //Add new label
+                            GridBagConstraints c = new GridBagConstraints();
+                            c.anchor = GridBagConstraints.LINE_START;
+                            c.gridx = 0;
+                            c.gridy = ind;
+                            l = new Label();
+                            players.add(l);
+                            playerListPanel.add(l, c);
+                        } else {
+                            l = players.get(ind);
+                        }
+                        ind++;
+                    }
+
+                    Color col = new Color(cols[j]);
+                    l.setBackground(col);
+                    l.setForeground(brightness(col) < 130 ? Color.WHITE
+                            : Color.BLACK);
+                    pri = pri + s.getName();
+                    if (s.isDead()) {
+                        pri += " (+)";
+                    }
+                    l.setText(pri);
+                    l.setVisible(true);
+                    j++;
+                }
+                for (int i = ind; i < players.size(); i++) {
+                    players.get(i).setVisible(false);
+                }
+            }
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String com = e.getActionCommand();
+            if (com.equals("")) {
+            } else if (com.equals("Back")) {
+                parentFrame.drawPanel("MainMenu");
+            } else {
             }
         }
     }
