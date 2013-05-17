@@ -4,9 +4,9 @@
 *.jar
 *.war
 *.ear
+*.dat
 
 /project1/MultiSnake/build/
 /project1/MultiSnake/dist/
 /project1/.classpath
 /project1/.project
-project1/MultiSnake/options.dat
