@@ -95,4 +95,8 @@ public class Snake implements ISnake {
         return returntree;
     }
     
+    public String toString() {
+        return "id = " + id_ + ":" + direction_ +":" + tiles_;
+    }
+    
 }

@@ -63,25 +63,33 @@ public class GameData implements IGameData{
         return null;
     }
     
-    private void makeSnake(Point headLocation, int length, Direction direction, int id) {
+    // FIXME: should be private void
+    public Snake makeSnake(Point headLocation, int length, Direction direction, int id) {
         Snake s = new Snake(headLocation,id);
         s.setDirection(direction);
         PointTree prevPoint = s.getPointTree();
-        for(int i = 0; i <= length - 1; ++i) {
+        for(int i = 0; i < length - 1; ++i) {
             Point p = prevPoint.getRoot().nextPoint(inverseDirection(direction), dimensions_);
             PointTree nextPoint = new PointTree(p);
             prevPoint.addRightMostChild(nextPoint);
             prevPoint = nextPoint;
         }
         snakes_.add(s);
+        
+        System.out.println("generated snake: " + s);
+        return s;
     }
     
+    // FIXME: should be private
     public void generateSnakes(int number) {
-        Point h = new Point((int) dimensions_.getX()/number-1,(int) dimensions_.getY()/number-1);
         int length = 5;
-        for(int i = 0; i < number; ++i) {
-            // FIXME
-            makeSnake(new Point(h.getX()*i,h.getY()*i),length,Direction.DOWN,i);
+        int space = dimensions_.getX() / (number/2);
+        for(int i = 0; i < number/2; ++i) {
+            makeSnake(new Point(space/2 + space*i,length),length,Direction.DOWN,i);
+        }
+        
+        for(int i = number/2; i < number; ++i) {
+            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i);
         }
     }
     
@@ -94,6 +102,8 @@ public class GameData implements IGameData{
             return;
         }
         ((Snake)(snakes_.get(snakeIndex))).setDirection(direction);
+        
+        System.out.println("updated snake direction: " + (Snake)(snakes_.get(snakeIndex)));
     }
     
     public void playTurn() {
@@ -136,16 +146,20 @@ public class GameData implements IGameData{
                        t.getPriority() >= s.getPriority()) {
                         // do nothing, we cannot move onto a snake with higher
                         // priority - do nothing
+                        
+                        System.out.println("snake cannot move: " + s);
                     }
                     else {
                         // snakes with higher priority than us
                         s.eat(t.getEaten(goalHead));
+                        System.out.println("snake eaten: " + s + "; " + t);
                     }
                 }
             }
             
             if(doMoveTransformation) {
                 s.moveTransformation(goalHead);
+                System.out.println("snake moved: " + s);
             }
         }
     }

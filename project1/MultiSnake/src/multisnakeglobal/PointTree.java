@@ -59,6 +59,17 @@ public class PointTree implements java.io.Serializable {
         }
     }
     
+    public String toString() {
+        String s = ":" + root_;
+        
+        for(Iterator<PointTree> i = children_.iterator(); i.hasNext();) {
+            PointTree t = i.next();
+            s += t.toString();
+        }
+        
+        return s;
+    }
+    
     public void getNodes(Vector<Point> nodes) {
         nodes.add(root_);
         
@@ -91,7 +102,7 @@ public class PointTree implements java.io.Serializable {
                 return t;
             }
             PointTree u = t.findAndDeleteSubTree(p);
-            if(t.findAndDeleteSubTree(p) != null) {
+            if(u != null) {
                 return u;
             }
         }
