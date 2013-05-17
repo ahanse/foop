@@ -39,7 +39,7 @@ public class MultiSnakeServer {
         
         for(int i=0;i<numOfBots;i++)
         {
-            bots[i]=new Bot();
+            bots[i]=new Bot(gd,numOfPlayers+i);
         }
 
         //wait until all clients are connected

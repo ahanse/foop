@@ -7,8 +7,13 @@ import java.util.Random;
  */
 public class Bot {
 	Random generator_;
-	public Bot() {
+	int ownID_;
+	// DO NOT MODIFY gd_!
+	GameData gd_;
+	public Bot(GameData gd, int ownID) {
 		generator_ = new Random();
+		ownID_ = ownID;
+		gd_ = gd;
 	}
 
 	public Direction play() {
