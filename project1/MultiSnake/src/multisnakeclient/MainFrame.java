@@ -61,7 +61,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
         try {
             network.addObserver(gamePanel);
             network.connect(IP, Port);
-            Thread.sleep(500);
+            Thread.sleep(50);
             network.setNick(options.getNickname());
             
         } catch (IOException e) {
@@ -171,7 +171,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
             this.soptions = (String[]) save.readObject();
             return this.soptions;
         } catch (Exception e) {
-            String[] standard = {"200","30","30","1","0"};
+            String[] standard = {"200","30","30","1","0","120"};
             return standard;
         }
     }

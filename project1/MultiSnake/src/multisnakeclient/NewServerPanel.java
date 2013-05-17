@@ -23,6 +23,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
     private JTextField txtDimY;
     private JTextField txtNumOfPlayers;
     private JTextField txtNumOfAi;
+    private JTextField txtPlaytime;
 
     public NewServerPanel(MainFrame parentFrame) {
     	super();
@@ -52,6 +53,9 @@ public class NewServerPanel extends JPanel implements ActionListener {
         JLabel lblNumOfAi = new JLabel("Number of AI");
         txtNumOfAi = new JTextField(10);
         txtNumOfAi.setText(savedSettings[4]);
+        JLabel lblPlaytime = new JLabel("Playtime in Seconds");
+        txtPlaytime = new JTextField(10);
+        txtPlaytime.setText(savedSettings[5]);
         
         optPnl.add(lblTick);
         optPnl.add(txtTick);
@@ -63,6 +67,8 @@ public class NewServerPanel extends JPanel implements ActionListener {
         optPnl.add(txtNumOfPlayers);
         optPnl.add(lblNumOfAi);
         optPnl.add(txtNumOfAi);
+        optPnl.add(lblPlaytime);
+        optPnl.add(txtPlaytime);
         
         optPnl.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
 
@@ -97,7 +103,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this,"Einer der eingegebenen Werte stellt keinen gültigen Wert dar.","Fehler!",JOptionPane.OK_OPTION);
             }
             else{
-                String[] options={txtTick.getText(),txtDimX.getText(),txtDimY.getText(),txtNumOfPlayers.getText(),txtNumOfAi.getText()};
+                String[] options={txtTick.getText(),txtDimX.getText(),txtDimY.getText(),txtNumOfPlayers.getText(),txtNumOfAi.getText(),txtPlaytime.getText()};
                 parentFrame.startServer(options);
                 
                 //TODO: own IP and port
@@ -171,6 +177,18 @@ public class NewServerPanel extends JPanel implements ActionListener {
             return false;
         }
         if(numOfAi<0)
+        {
+            return false;
+        }
+        
+        int playtime;
+        try{
+            playtime=Integer.parseInt(txtPlaytime.getText());
+        }
+        catch(NumberFormatException ex){
+            return false;
+        }
+        if(playtime<=0)
         {
             return false;
         }

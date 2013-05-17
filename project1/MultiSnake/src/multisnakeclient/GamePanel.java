@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.*;
 import java.util.*;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import multisnakeglobal.*;
@@ -319,6 +318,7 @@ public class GamePanel extends JPanel implements Observer {
                 l.setBackground(null);
                 l.setText("Results");
                 l.setFont(new Font("SansSerif", Font.BOLD, 20));
+                l.setForeground(Color.black);
                 int maxPlaceSize=0;
                 int maxPointSize=0;
                 for (int i=0;i<idx.length;i++) {
@@ -349,18 +349,22 @@ public class GamePanel extends JPanel implements Observer {
                     l.setBackground(c);
                     l.setForeground(brightness(c) < 130 ? Color.WHITE
                             : Color.BLACK);
-                    String t=(i+1)+"";
-                    for(int j=t.length();j<maxPlaceSize;j++)
+                    String t=(i+1)+".";
+                    for(int j=t.length();j<=maxPlaceSize;j++)
                     {
-                        t=" "+t;
+                        t+="  ";
                     }
-                    t+=". ";
-                    String tmp=data.getSnakes().get(idx[i]).getCoordinates().size()+"";
+                    t+=" | ";
+                    String tmp;
+                    if(data.getSnakes().get(idx[i]).getHead()==null)
+                        tmp = "0";
+                    else
+                        tmp=data.getSnakes().get(idx[i]).getCoordinates().size()+"";
                     for(int j=tmp.length();j<maxPointSize;j++)
                     {
-                        t+=" ";
+                        t+="  ";
                     }
-                    t+=tmp+" "+data.getSnakes().get(idx[i]).getName();
+                    t+=tmp+" | "+data.getSnakes().get(idx[i]).getName();
                     l.setText(t);
                     l.setVisible(true);
                 }
