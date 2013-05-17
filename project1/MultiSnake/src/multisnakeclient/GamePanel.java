@@ -202,6 +202,7 @@ public class GamePanel extends JPanel implements Observer {
                             nextColorInd = (nextColorInd + 1) % parentFrame.getOptions().getCOLORPOOL().length;
                         }
                         color = parentFrame.getOptions().getCOLORPOOL()[nextColorInd];
+                        nextColorInd++;
                     }
                     currentImage.addRectangleFromSnake(snake, new Color(color));
                 }
