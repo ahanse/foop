@@ -19,7 +19,8 @@ public class GameData implements IGameData{
     GameState state_;
     Point dimensions_;
     long timestamp_;
-    long lastshuffle_;
+    int ticks_;
+
     
     public GameData(Point dimensions) {
         timestamp_ = 0;
@@ -35,7 +36,7 @@ public class GameData implements IGameData{
     public void startGame(int numberOfSnakes) {
         setState(GameState.TIMETOFIGHT);
         timestamp_ = System.currentTimeMillis() + 3000;
-	lastshuffle_ = timestamp_;
+	ticks_ = 0;
         generateSnakes(numberOfSnakes);
 	shufflePriorities();
     }
@@ -89,7 +90,7 @@ public class GameData implements IGameData{
         }
         snakes_.add(s);
         
-        System.out.println("generated snake: " + s);
+        //System.out.println("generated snake: " + s);
         return s;
     }
     
@@ -116,7 +117,16 @@ public class GameData implements IGameData{
         }
         ((Snake)(snakes_.get(snakeIndex))).setDirection(direction);
         
-        System.out.println("updated snake direction: " + (Snake)(snakes_.get(snakeIndex)));
+        //System.out.println("updated snake direction: " + (Snake)(snakes_.get(snakeIndex)));
+    }
+
+    public void setSnakeName(int snakeIndex, String nick) {
+        // Is this necessary? Or is an index out of bounds exception or
+        // whatever this throws enough
+        if (snakeIndex >= snakes_.size() || snakeIndex < 0) {
+            return;
+        }
+        ((Snake)(snakes_.get(snakeIndex))).setName(nick);
     }
     
     public void playTurn() {
@@ -135,9 +145,8 @@ public class GameData implements IGameData{
             
         }
 
-	if(lastshuffle_ + 10000 < System.currentTimeMillis()) {
+	if(ticks_ % 10 == 0) {
 		shufflePriorities();
-		lastshuffle_ = System.currentTimeMillis();
 	}
 
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
@@ -170,20 +179,22 @@ public class GameData implements IGameData{
                         // do nothing, we cannot move onto a snake with higher
                         // priority - do nothing
                         
-                        System.out.println("snake cannot move: " + s);
+                        //System.out.println("snake cannot move: " + s);
                     }
                     else {
                         // snakes with higher priority than us
                         s.eat(t.getEaten(goalHead));
-                        System.out.println("snake eaten: " + s + "; " + t);
+                        //System.out.println("snake eaten: " + s + "; " + t);
                     }
                 }
             }
             
             if(doMoveTransformation) {
                 s.moveTransformation(goalHead);
-                System.out.println("snake moved: " + s);
+                //System.out.println("snake moved: " + s);
             }
         }
+
+	ticks_++;
     }
 }

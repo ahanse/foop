@@ -31,6 +31,7 @@ public class Snake implements ISnake {
         id_ = id;
         priority_ = priority;
 	next_priority_ = priority;
+	name_ = "";
     }
     
     public boolean isDead() {
@@ -69,6 +70,10 @@ public class Snake implements ISnake {
     
     public String getName() {
         return name_;
+    }
+
+    public void setName(String name) {
+        name_ = name;
     }
     
     public Vector<Point> getCoordinates() {
