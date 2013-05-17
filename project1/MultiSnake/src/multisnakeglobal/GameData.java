@@ -105,7 +105,7 @@ public class GameData implements IGameData{
         }
         
         for(int i = number/2; i < number; ++i) {
-            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,generator_.nextInt(snakes_.size()));
+            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,number);
         }
     }
     
