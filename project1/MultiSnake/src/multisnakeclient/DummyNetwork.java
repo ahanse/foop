@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package multisnakeclient;
+package multiclient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -287,6 +287,12 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
             public String getName() {
                 return "DummySnake";
             }
+
+
+            public int getNextPriority() {
+                return priority;
+            }
+
             
         }
    }

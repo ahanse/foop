@@ -37,6 +37,7 @@ public class GameData implements IGameData{
         timestamp_ = System.currentTimeMillis() + 3000;
 	lastshuffle_ = timestamp_;
         generateSnakes(numberOfSnakes);
+	shufflePriorities();
     }
 
     private void setState(GameState state) {
@@ -70,7 +71,7 @@ public class GameData implements IGameData{
     public void shufflePriorities() {
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
             Snake s = (Snake)(i.next());
-            s.setPriority(s.getPriority() + 1 % snakes_.size());
+            s.updatePriority((s.getPriority() + 1) % snakes_.size());
         }
         
     }
@@ -136,6 +137,7 @@ public class GameData implements IGameData{
 
 	if(lastshuffle_ + 10000 < System.currentTimeMillis()) {
 		shufflePriorities();
+		lastshuffle_ = System.currentTimeMillis();
 	}
 
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
