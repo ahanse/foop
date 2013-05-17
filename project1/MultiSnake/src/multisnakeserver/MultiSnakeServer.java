@@ -58,7 +58,7 @@ public class MultiSnakeServer {
             players[p].setId(p);
             gd.setSnakeName(p, players[p].getNick());
         }
-        while(true) {
+        while(gd.getStatus()!=GameState.FINISHED) {
             Thread.sleep(tick);
             for(int p=0; p<players.length; p++) 
             {
@@ -80,5 +80,6 @@ public class MultiSnakeServer {
                 players[p].updateGameData(gd);
             }
         }
+        ns.endGame();
     }
 }
