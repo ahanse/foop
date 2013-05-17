@@ -90,7 +90,7 @@ public class GameData implements IGameData{
         }
         snakes_.add(s);
         
-        System.out.println("generated snake: " + s);
+        //System.out.println("generated snake: " + s);
         return s;
     }
     
@@ -117,7 +117,7 @@ public class GameData implements IGameData{
         }
         ((Snake)(snakes_.get(snakeIndex))).setDirection(direction);
         
-        System.out.println("updated snake direction: " + (Snake)(snakes_.get(snakeIndex)));
+        //System.out.println("updated snake direction: " + (Snake)(snakes_.get(snakeIndex)));
     }
 
     public void setSnakeName(int snakeIndex, String nick) {
@@ -179,19 +179,19 @@ public class GameData implements IGameData{
                         // do nothing, we cannot move onto a snake with higher
                         // priority - do nothing
                         
-                        System.out.println("snake cannot move: " + s);
+                        //System.out.println("snake cannot move: " + s);
                     }
                     else {
                         // snakes with higher priority than us
                         s.eat(t.getEaten(goalHead));
-                        System.out.println("snake eaten: " + s + "; " + t);
+                        //System.out.println("snake eaten: " + s + "; " + t);
                     }
                 }
             }
             
             if(doMoveTransformation) {
                 s.moveTransformation(goalHead);
-                System.out.println("snake moved: " + s);
+                //System.out.println("snake moved: " + s);
             }
         }
 
