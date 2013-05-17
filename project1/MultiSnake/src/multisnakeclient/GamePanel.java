@@ -97,19 +97,29 @@ public class GamePanel extends JPanel implements Observer {
         IGameData data = network.getGameData();
         int ind = 1;
         int maxPriority = 0;
+        int maxNextPriority = 0;
         for (ISnake s : data.getSnakes()) {
             if (s.getPriority() > maxPriority) {
                 maxPriority = s.getPriority();
             }
+            if(s.getNextPriority()>maxNextPriority){
+                maxNextPriority=s.getNextPriority();
+            }
         }
         int maxPriorityLength = (maxPriority + "").length();
+        int maxNextPriorityLength = (maxNextPriority + "").length();
         int j=0;
         for (ISnake s : data.getSnakes()) {
             String pri = s.getPriority() + "";
             for (int i = pri.length(); i < maxPriorityLength; i++) {
                 pri = " " + pri;
             }
-            pri += " ";
+            pri += " -> ";
+            String nextPri=s.getNextPriority()+"";
+            for (int i = nextPri.length(); i < maxNextPriorityLength; i++) {
+                nextPri = " " + nextPri;
+            }
+            pri += nextPri+" ";
             Label l;
             if (s.getID() == ownID) {
                 l = players.get(0);
@@ -126,14 +136,19 @@ public class GamePanel extends JPanel implements Observer {
                 } else {
                     l = players.get(ind);
                 }
-                
+                ind++;
             }
-            ind++;
+            
             Color col=new Color(cols[j]);
             l.setBackground(col);
             l.setForeground(brightness(col) < 130 ? Color.WHITE
                             : Color.BLACK);
-            l.setText(pri + s.getName());
+            pri=pri+s.getName();
+            if(s.isDead())
+            {
+                pri+=" (+)";
+            }
+            l.setText(pri);
             l.setVisible(true);
             j++;
         }

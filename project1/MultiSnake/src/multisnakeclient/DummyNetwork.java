@@ -293,6 +293,11 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
                 return priority;
             }
 
+            @Override
+            public boolean isDead() {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
             
         }
    }
