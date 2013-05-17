@@ -108,23 +108,18 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     @Override
     public void keyPressed(KeyEvent e) {
         Direction key;
-        switch (e.getKeyCode()) {
-            case 37:
-                key = Direction.LEFT;
-                break;
-            case 38:
-                key = Direction.UP;
-                break;
-            case 39:
-                key = Direction.RIGHT;
-                break;
-            case 40:
-                key = Direction.DOWN;
-                break;
-            default:
-                key = null;
-                break;
-        }
+        int[] directionKeys = options.getDirectionKeys();
+        int keycode = e.getKeyCode();
+        if(keycode == directionKeys[0])
+            key = Direction.LEFT;
+        else if (keycode == directionKeys[1])
+            key = Direction.UP;
+        else if (keycode == directionKeys[2])
+            key = Direction.RIGHT;
+        else if (keycode == directionKeys[3])
+            key = Direction.DOWN;
+        else
+            key = null;
         if (network != null) {
             network.setChangedKey(key);
         }

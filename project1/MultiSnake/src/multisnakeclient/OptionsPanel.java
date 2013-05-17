@@ -7,6 +7,8 @@ package multisnakeclient;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -26,6 +28,8 @@ public class OptionsPanel extends JPanel implements ActionListener {
     private JTextField txtNick;
     private JComboBox lstColor;
     private JCheckBox chkFull;
+    private JTextField[] txtDirections = new JTextField[4];
+    private int[] directionKeys;
 
     public OptionsPanel(MainFrame parentFrame) {
         super();
@@ -33,6 +37,8 @@ public class OptionsPanel extends JPanel implements ActionListener {
         this.parentFrame = parentFrame;
         this.setSize(windowSize);
         this.setLayout(new BorderLayout());
+        
+        this.directionKeys = parentFrame.getOptions().getDirectionKeys();
 
         JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 
@@ -79,6 +85,109 @@ public class OptionsPanel extends JPanel implements ActionListener {
         pnlOptions.add(txtNick);
         pnlOptions.add(lblColor);
         pnlOptions.add(lstColor);
+        
+        JLabel[] lblDirections = new JLabel[4];
+        
+        lblDirections[0] = new JLabel("Left Key");
+        JTextField dirtmp = new JTextField(10);
+        dirtmp.setText(KeyEvent.getKeyText(directionKeys[0]));
+        txtDirections[0] = dirtmp;
+        
+        lblDirections[1] = new JLabel("Up Key");
+        dirtmp = new JTextField(10);
+        dirtmp.setText(KeyEvent.getKeyText(directionKeys[1]));
+        txtDirections[1] = dirtmp;
+        
+        lblDirections[2] = new JLabel("Right Key");
+        dirtmp = new JTextField(10);
+        dirtmp.setText(KeyEvent.getKeyText(directionKeys[2]));
+        txtDirections[2] = dirtmp;
+        
+        lblDirections[3] = new JLabel("Down Key");
+        dirtmp = new JTextField(10);
+        dirtmp.setText(KeyEvent.getKeyText(directionKeys[3]));
+        txtDirections[3] = dirtmp; 
+        
+        txtDirections[0].addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int keycode = e.getKeyCode();
+                txtDirections[0].setText(KeyEvent.getKeyText(keycode));
+                directionKeys[0]=keycode;
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // TODO: Do something for the keyTyped event
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // TODO: Do something for the keyPressed event
+            }
+        });
+        
+        txtDirections[1].addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int keycode = e.getKeyCode();
+                txtDirections[1].setText(KeyEvent.getKeyText(keycode));
+                directionKeys[1]=keycode;
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // TODO: Do something for the keyTyped event
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // TODO: Do something for the keyPressed event
+            }
+        });
+        
+        txtDirections[2].addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int keycode = e.getKeyCode();
+                txtDirections[2].setText(KeyEvent.getKeyText(keycode));
+                directionKeys[2]=keycode;
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // TODO: Do something for the keyTyped event
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // TODO: Do something for the keyPressed event
+            }
+        });
+        
+        txtDirections[3].addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int keycode = e.getKeyCode();
+                txtDirections[3].setText(KeyEvent.getKeyText(keycode));
+                directionKeys[3]=keycode;
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // TODO: Do something for the keyTyped event
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // TODO: Do something for the keyPressed event
+            }
+        });
+        
+        for(int i=0;i<4;i++) {
+            pnlOptions.add(lblDirections[i]);
+            pnlOptions.add(txtDirections[i]);
+        }
 
         pnlOptions.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 50));
 
@@ -143,7 +252,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         if (com.equals("")) {
         } else if (com.equals("Save")) {
             Point res = (Point) lstRes.getSelectedItem();
-            parentFrame.getOptions().saveOptions(Integer.parseInt(txtLength.getText()), (int) res.getX(), (int) res.getY(), txtNick.getText(), lstColor.getSelectedIndex(), chkFull.isSelected());
+            parentFrame.getOptions().saveOptions(Integer.parseInt(txtLength.getText()), (int) res.getX(), (int) res.getY(), txtNick.getText(), lstColor.getSelectedIndex(), chkFull.isSelected(),this.directionKeys);
             JOptionPane.showMessageDialog(parentFrame, "Options saved! Please restart to take effect!");
         } else if (com.equals("Back")) {
             parentFrame.drawPanel("MainMenu");
