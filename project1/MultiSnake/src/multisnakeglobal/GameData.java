@@ -19,7 +19,8 @@ public class GameData implements IGameData{
     GameState state_;
     Point dimensions_;
     long timestamp_;
-    long lastshuffle_;
+    int ticks_;
+
     
     public GameData(Point dimensions) {
         timestamp_ = 0;
@@ -35,7 +36,7 @@ public class GameData implements IGameData{
     public void startGame(int numberOfSnakes) {
         setState(GameState.TIMETOFIGHT);
         timestamp_ = System.currentTimeMillis() + 3000;
-	lastshuffle_ = timestamp_;
+	ticks_ = 0;
         generateSnakes(numberOfSnakes);
 	shufflePriorities();
     }
@@ -135,9 +136,8 @@ public class GameData implements IGameData{
             
         }
 
-	if(lastshuffle_ + 10000 < System.currentTimeMillis()) {
+	if(ticks_ % 10 == 0) {
 		shufflePriorities();
-		lastshuffle_ = System.currentTimeMillis();
 	}
 
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
@@ -185,5 +185,7 @@ public class GameData implements IGameData{
                 System.out.println("snake moved: " + s);
             }
         }
+
+	ticks_++;
     }
 }
