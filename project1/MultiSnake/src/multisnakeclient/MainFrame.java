@@ -57,9 +57,13 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
         try {
             network.addObserver(gamePanel);
             network.connect(IP, Port);
+            Thread.sleep(500);
             network.setNick(options.getNickname());
             
         } catch (IOException e) {
+            //TODO: Error window!
+            System.err.println("Could not connect!");
+        } catch (InterruptedException e) {
             //TODO: Error window!
             System.err.println("Could not connect!");
         }
