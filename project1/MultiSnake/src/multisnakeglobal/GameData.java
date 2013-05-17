@@ -142,6 +142,8 @@ public class GameData implements IGameData{
 
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
             Snake s = (Snake)(i.next());
+
+            if(s.isDead()) continue;
             
             Point currentHead = s.getHead();
             Point goalHead = currentHead.nextPoint(s.getDirection(), dimensions_);
@@ -156,6 +158,8 @@ public class GameData implements IGameData{
             
             for(Iterator<ISnake> j = snakes_.iterator(); j.hasNext();) {
                 Snake t = (Snake)(j.next());
+
+		if(t.isDead()) continue;
                 
                 if(t.contains(goalHead)) {
                     doMoveTransformation = false;
