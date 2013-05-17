@@ -119,6 +119,15 @@ public class GameData implements IGameData{
         
         System.out.println("updated snake direction: " + (Snake)(snakes_.get(snakeIndex)));
     }
+
+    public void setSnakeName(int snakeIndex, String nick) {
+        // Is this necessary? Or is an index out of bounds exception or
+        // whatever this throws enough
+        if (snakeIndex >= snakes_.size() || snakeIndex < 0) {
+            return;
+        }
+        ((Snake)(snakes_.get(snakeIndex))).setName(nick);
+    }
     
     public void playTurn() {
 
