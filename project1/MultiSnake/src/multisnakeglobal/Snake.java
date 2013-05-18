@@ -16,6 +16,7 @@ public class Snake implements ISnake {
     private int next_priority_;
     private int id_;
     private String name_;
+    private boolean isBot;
     
     private PointTree tiles_;
     
@@ -26,12 +27,13 @@ public class Snake implements ISnake {
     // The direction in which the snake will attempt to move
     private Direction direction_;
     
-    public Snake(Point head, int id, int priority) {
+    public Snake(Point head, int id, int priority, boolean isBot) {
         tiles_ = new PointTree(head);
         id_ = id;
         priority_ = priority;
 	next_priority_ = priority;
 	name_ = "";
+        this.isBot=isBot;
     }
     
     public boolean isDead() {
@@ -123,6 +125,11 @@ public class Snake implements ISnake {
     
     public String toString() {
         return "id = " + id_ + ":" + direction_ +":" + tiles_;
+    }
+
+    @Override
+    public boolean isBot() {
+        return isBot;
     }
     
 }

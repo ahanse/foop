@@ -18,4 +18,5 @@ public interface ISnake extends java.io.Serializable {
     int getID();
     String getName();
     boolean isDead();
+    boolean isBot();
 }

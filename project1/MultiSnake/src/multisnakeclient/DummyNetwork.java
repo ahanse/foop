@@ -298,6 +298,11 @@ public class DummyNetwork extends Observable implements Runnable, IPlayer {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
+            @Override
+            public boolean isBot() {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
             
         }
    }

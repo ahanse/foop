@@ -6,11 +6,11 @@ import java.util.Random;
  * @author Thomas
  */
 public class Bot {
-	Random generator_;
-	int ownID_;
+	protected Random generator_;
+        protected int ownID_;
 	// DO NOT MODIFY gd_!
-	GameData gd_;
-	public Bot(GameData gd, int ownID) {
+        protected IGameData gd_;
+	public Bot(IGameData gd, int ownID) {
 		generator_ = new Random();
 		ownID_ = ownID;
 		gd_ = gd;

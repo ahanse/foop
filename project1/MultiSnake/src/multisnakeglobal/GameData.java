@@ -36,12 +36,12 @@ public class GameData implements IGameData{
         return snakes_;
     }
 
-    public void startGame(int numberOfSnakes,int playtime) {
+    public void startGame(int numberOfSnakes, int numOfBots,int playtime) {
         setState(GameState.TIMETOFIGHT);
         timestamp_ = System.currentTimeMillis() + 3000;
         playtime_ = playtime;
 	ticks_ = 0;
-        generateSnakes(numberOfSnakes);
+        generateSnakes(numberOfSnakes,numOfBots);
 	shufflePriorities();
     }
 
@@ -82,8 +82,8 @@ public class GameData implements IGameData{
     }
     
     // FIXME: should be private void
-    public Snake makeSnake(Point headLocation, int length, Direction direction, int id, int priority) {
-        Snake s = new Snake(headLocation,id,priority);
+    public Snake makeSnake(Point headLocation, int length, Direction direction, int id, int priority, boolean isBot) {
+        Snake s = new Snake(headLocation,id,priority, isBot);
         s.setDirection(direction);
         PointTree prevPoint = s.getPointTree();
         for(int i = 0; i < length - 1; ++i) {
@@ -99,15 +99,19 @@ public class GameData implements IGameData{
     }
     
     // FIXME: should be private
-    public void generateSnakes(int number) {
+    public void generateSnakes(int numOfPlayers, int numOfBots) {
         int length = 5;
+        int number=numOfPlayers+numOfBots;
         int space = dimensions_.getX() / (1+number/2);
+        
         for(int i = 0; i < number/2; ++i) {
-            makeSnake(new Point(space/2 + space*i,length),length,Direction.DOWN,i,i);
+            boolean isBot=i>numOfPlayers;
+            makeSnake(new Point(space/2 + space*i,length),length,Direction.DOWN,i,i,isBot);
         }
         
         for(int i = number/2; i < number; ++i) {
-            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,number);
+            boolean isBot=i>numOfPlayers;
+            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,number,isBot);
         }
     }
     
