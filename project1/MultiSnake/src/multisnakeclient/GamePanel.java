@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.*;
 import java.util.*;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import multisnakeglobal.*;
@@ -150,7 +149,7 @@ public class GamePanel extends JPanel implements Observer {
                 case FINISHED:
                     lblBoardInformation.setVisible(false);
                     lblBoardCaption.setVisible(false);
-                    //calculateImage(network, cols);
+                    calculateImage(network, cols);
                     break;
                 default:
                     break;
@@ -324,11 +323,13 @@ public class GamePanel extends JPanel implements Observer {
                 l.setBackground(null);
                 l.setText("Results");
                 l.setFont(new Font("SansSerif", Font.BOLD, 20));
-                int maxPlaceSize = 0;
-                int maxPointSize = 0;
-                for (int i = 0; i < idx.length; i++) {
-                    if (((i + 1) + "").length() > maxPlaceSize) {
-                        maxPlaceSize = ((i + 1) + "").length();
+                l.setForeground(Color.black);
+                int maxPlaceSize=0;
+                int maxPointSize=0;
+                for (int i=0;i<idx.length;i++) {
+                    if(((i+1)+"").length()>maxPlaceSize)
+                    {
+                        maxPlaceSize=((i+1)+"").length();
                     }
                     if ((getPoints(data.getSnakes().get(i))+"").length() > maxPointSize) {
                         maxPointSize = (getPoints(data.getSnakes().get(i))+"").length();
@@ -351,16 +352,18 @@ public class GamePanel extends JPanel implements Observer {
                     l.setBackground(c);
                     l.setForeground(brightness(c) < 130 ? Color.WHITE
                             : Color.BLACK);
-                    String t = (i + 1) + "";
-                    for (int j = t.length(); j < maxPlaceSize; j++) {
-                        t = " " + t;
+                    String t=(i+1)+".";
+                    for(int j=t.length();j<=maxPlaceSize;j++)
+                    {
+                        t+="  ";
                     }
-                    t += ". ";
-                    String tmp = getPoints(data.getSnakes().get(idx[i]))+"";
-                    for (int j = tmp.length(); j < maxPointSize; j++) {
-                        t += " ";
+                    t+=" | ";
+                    String tmp=getPoints(data.getSnakes().get(idx[i]))+"";
+                    for(int j=tmp.length();j<maxPointSize;j++)
+                    {
+                        t+="  ";
                     }
-                    t += tmp + " " + data.getSnakes().get(idx[i]).getName();
+                    t+=tmp+" | "+data.getSnakes().get(idx[i]).getName();
                     l.setText(t);
                     l.setVisible(true);
                 }

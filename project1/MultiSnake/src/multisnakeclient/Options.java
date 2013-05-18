@@ -30,6 +30,7 @@ public class Options {
     private static String FILENAME = "options.dat";
     private String nickname;
     private Boolean fullscreen;
+    private int[] directionKeys;
 
     public Boolean getFullscreen() {
         return fullscreen;
@@ -70,6 +71,7 @@ public class Options {
             this.nickname = (String) save.readObject();
             this.ownColorInd = (int) (Integer) save.readObject();
             this.fullscreen = (Boolean) save.readObject();
+            this.directionKeys = (int[]) save.readObject();
 
             //close file
             save.close();
@@ -80,6 +82,7 @@ public class Options {
             this.nickname = "noNick";
             this.ownColorInd = 0;
             this.fullscreen = false;
+            this.directionKeys = new int[]{37,38,39,40};
         }
     }
 
@@ -97,6 +100,7 @@ public class Options {
             save.writeObject(this.nickname);
             save.writeObject(this.ownColorInd);
             save.writeObject(this.fullscreen);
+            save.writeObject(this.directionKeys);
             //close file
             save.close();
         } catch (Exception e) {
@@ -104,13 +108,14 @@ public class Options {
     }
 
     // saves the options in this class to a file
-    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname, int ownColorInd, Boolean fullscreen) {
+    public final void saveOptions(int maxParcelLength, int windowWidth, int windowHeight, String nickname, int ownColorInd, Boolean fullscreen, int[] directionKeys) {
         this.maxParcelLength = maxParcelLength;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
         this.nickname = nickname;
         this.ownColorInd = ownColorInd;
         this.fullscreen = fullscreen;
+        this.directionKeys = directionKeys;
         saveOptions();
     }
 
@@ -144,5 +149,13 @@ public class Options {
 
     public int getOwnColorInd() {
         return ownColorInd;
+    }
+
+    public int[] getDirectionKeys() {
+        return directionKeys;
+    }
+
+    public void setDirectionKeys(int[] directionKeys) {
+        this.directionKeys = directionKeys;
     }
 }

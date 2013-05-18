@@ -61,7 +61,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
         try {
             network.addObserver(gamePanel);
             network.connect(IP, Port);
-            Thread.sleep(500);
+            Thread.sleep(50);
             network.setNick(options.getNickname());
             
         } catch (IOException e) {
@@ -108,23 +108,18 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     @Override
     public void keyPressed(KeyEvent e) {
         Direction key;
-        switch (e.getKeyCode()) {
-            case 37:
-                key = Direction.LEFT;
-                break;
-            case 38:
-                key = Direction.UP;
-                break;
-            case 39:
-                key = Direction.RIGHT;
-                break;
-            case 40:
-                key = Direction.DOWN;
-                break;
-            default:
-                key = null;
-                break;
-        }
+        int[] directionKeys = options.getDirectionKeys();
+        int keycode = e.getKeyCode();
+        if(keycode == directionKeys[0])
+            key = Direction.LEFT;
+        else if (keycode == directionKeys[1])
+            key = Direction.UP;
+        else if (keycode == directionKeys[2])
+            key = Direction.RIGHT;
+        else if (keycode == directionKeys[3])
+            key = Direction.DOWN;
+        else
+            key = null;
         if (network != null) {
             network.setChangedKey(key);
         }
@@ -136,10 +131,13 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
 
     @Override
     public void run() {
+        //Thread thisThread = Thread.currentThread();
+        //while(serverThread!=thisThread)
         try {
             MultiSnakeServer.main(soptions);
-        } catch (InterruptedException e) {
-            System.out.println("Error!");
+            network.disconnect();
+        } catch (InterruptedException iex) {
+            throw new RuntimeException("Interrupted",iex);
         }
     }
 
@@ -147,10 +145,10 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     void startServer(String[] opt) {
         soptions = opt;
         saveServerSettings();
-        if (serverThread == null) {
+        if (true) {
             serverThread = new Thread(this);
             serverThread.start();
-        }
+        }            
     }
     
     private void saveServerSettings() {
@@ -176,7 +174,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
             this.soptions = (String[]) save.readObject();
             return this.soptions;
         } catch (Exception e) {
-            String[] standard = {"200","30","30","1","0"};
+            String[] standard = {"200","30","30","1","0","120"};
             return standard;
         }
     }

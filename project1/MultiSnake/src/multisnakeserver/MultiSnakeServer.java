@@ -16,13 +16,14 @@ public class MultiSnakeServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
-        int dimX,dimY,numOfPlayers,tick,numOfBots;
+        int dimX,dimY,numOfPlayers,tick,numOfBots,playtime;
         if(args.length!=0) {
             tick = Integer.parseInt(args[0]);
             dimX = Integer.parseInt(args[1]);
             dimY = Integer.parseInt(args[2]);
             numOfPlayers = Integer.parseInt(args[3]);
             numOfBots = Integer.parseInt(args[4]);
+            playtime = 1000 * Integer.parseInt(args[5]);
         }
         else {
             tick = 300;
@@ -30,6 +31,7 @@ public class MultiSnakeServer {
             dimY = 30;
             numOfPlayers = 1;
             numOfBots = 0;
+            playtime = 120000;
         }
         GameData gd = new GameData(new Point(dimX,dimY));
         NetworkServer ns = new NetworkServer(numOfPlayers);
@@ -52,7 +54,7 @@ public class MultiSnakeServer {
             }
             Thread.sleep(100);
         } while(!allReady);
-        gd.startGame(numOfPlayers + numOfBots);
+        gd.startGame(numOfPlayers + numOfBots,playtime);
         Thread.sleep(500);
         
         for(int p=0; p<players.length; p++) {
@@ -63,7 +65,7 @@ public class MultiSnakeServer {
             gd.setSnakeName(numOfPlayers + i, "Bot"+i);
 	}
 
-        while(gd.getStatus()!=GameState.FINISHED) {
+        do {
             Thread.sleep(tick);
             for(int p=0; p<players.length; p++) 
             {
@@ -84,7 +86,7 @@ public class MultiSnakeServer {
             {
                 players[p].updateGameData(gd);
             }
-        }
+        } while(gd.getStatus()!=GameState.FINISHED);
         ns.endGame();
     }
 }

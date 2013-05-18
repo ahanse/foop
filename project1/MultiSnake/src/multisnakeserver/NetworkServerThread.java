@@ -42,7 +42,7 @@ public class NetworkServerThread implements Runnable {
     public void run() {
         try {
             server = new ServerSocket(port);
-            while(true) {
+            while(this!=null) {
                 Socket clientSocket = server.accept();
                 System.out.println("Client connected to server.");
                 NetworkClient nrp = getFirstNOTREADYPlayer();
