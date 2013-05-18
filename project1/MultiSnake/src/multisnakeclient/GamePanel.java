@@ -49,8 +49,8 @@ public class GamePanel extends JPanel implements Observer {
             throw new IllegalArgumentException();
         }
         int[] cols = calculateColors((IPlayer) o);
-        boardPanel.update((IPlayer) o, cols);
         rightPanel.updateRightPanel((IPlayer) o, cols);
+        boardPanel.update((IPlayer) o, cols);
         parentFrame.drawContent();
         //Zaehler++;
         //System.out.println(Zaehler + "");
@@ -146,6 +146,11 @@ public class GamePanel extends JPanel implements Observer {
                     lblBoardInformation.setVisible(false);
                     lblBoardCaption.setVisible(false);
                     calculateImage(network, cols);
+                    break;
+                case FINISHED:
+                    lblBoardInformation.setVisible(false);
+                    lblBoardCaption.setVisible(false);
+                    //calculateImage(network, cols);
                     break;
                 default:
                     break;
@@ -302,76 +307,71 @@ public class GamePanel extends JPanel implements Observer {
             Arrays.sort(idx, new Comparator<Integer>() {
                 @Override
                 public int compare(final Integer o1, final Integer o2) {
-                    return Integer.compare( snakes.get(o2).getCoordinates().size(),snakes.get(o1).getCoordinates().size());
+                    return Integer.compare(getPoints(snakes.get(o2)), getPoints(snakes.get(o1)));
                 }
             });
             return idx;
         }
 
         public void updateRightPanel(IPlayer network, int[] cols) {
-            
+
             int ownID = network.getId();
             IGameData data = network.getGameData();
             if (data.getStatus() == GameState.FINISHED) {
                 backButton.setVisible(true);
                 Integer[] idx = sortSnakes(data.getSnakes());
-                Label l=players.get(0);
+                Label l = players.get(0);
                 l.setBackground(null);
                 l.setText("Results");
                 l.setFont(new Font("SansSerif", Font.BOLD, 20));
-                int maxPlaceSize=0;
-                int maxPointSize=0;
-                for (int i=0;i<idx.length;i++) {
-                    if(((i+1)+"").length()>maxPlaceSize)
-                    {
-                        maxPlaceSize=((i+1)+"").length();
+                int maxPlaceSize = 0;
+                int maxPointSize = 0;
+                for (int i = 0; i < idx.length; i++) {
+                    if (((i + 1) + "").length() > maxPlaceSize) {
+                        maxPlaceSize = ((i + 1) + "").length();
                     }
-                    if((data.getSnakes().get(i).getCoordinates().size()+"").length()>maxPointSize)
-                    {
-                        maxPointSize=(data.getSnakes().get(i).getCoordinates().size()+"").length();
+                    if ((getPoints(data.getSnakes().get(i))+"").length() > maxPointSize) {
+                        maxPointSize = (getPoints(data.getSnakes().get(i))+"").length();
                     }
                 }
-                for(int i=0;i<idx.length;i++)
-                {
-                    if (players.size() <= i+1) {
-                            //Add new label
-                            GridBagConstraints c = new GridBagConstraints();
-                            c.anchor = GridBagConstraints.LINE_START;
-                            c.gridx = 0;
-                            c.gridy = i+1;
-                            l = new Label();
-                            players.add(l);
-                            playerListPanel.add(l, c);
-                        } else {
-                            l = players.get(i+1);
-                        }
-                    Color c=new Color(cols[idx[i]]);
+                for (int i = 0; i < idx.length; i++) {
+                    if (players.size() <= i + 1) {
+                        //Add new label
+                        GridBagConstraints c = new GridBagConstraints();
+                        c.anchor = GridBagConstraints.LINE_START;
+                        c.gridx = 0;
+                        c.gridy = i + 1;
+                        l = new Label();
+                        players.add(l);
+                        playerListPanel.add(l, c);
+                    } else {
+                        l = players.get(i + 1);
+                    }
+                    Color c = new Color(cols[idx[i]]);
                     l.setBackground(c);
                     l.setForeground(brightness(c) < 130 ? Color.WHITE
                             : Color.BLACK);
-                    String t=(i+1)+"";
-                    for(int j=t.length();j<maxPlaceSize;j++)
-                    {
-                        t=" "+t;
+                    String t = (i + 1) + "";
+                    for (int j = t.length(); j < maxPlaceSize; j++) {
+                        t = " " + t;
                     }
-                    t+=". ";
-                    String tmp=data.getSnakes().get(idx[i]).getCoordinates().size()+"";
-                    for(int j=tmp.length();j<maxPointSize;j++)
-                    {
-                        t+=" ";
+                    t += ". ";
+                    String tmp = getPoints(data.getSnakes().get(idx[i]))+"";
+                    for (int j = tmp.length(); j < maxPointSize; j++) {
+                        t += " ";
                     }
-                    t+=tmp+" "+data.getSnakes().get(idx[i]).getName();
+                    t += tmp + " " + data.getSnakes().get(idx[i]).getName();
                     l.setText(t);
                     l.setVisible(true);
                 }
-                for (int i = idx.length+2; i < players.size(); i++) {
+                for (int i = idx.length + 2; i < players.size(); i++) {
                     players.get(i).setVisible(false);
                 }
             } else {
                 int ind = 1;
                 int maxPriority = 0;
                 int maxNextPriority = 0;
-                int maxNickSize=0;
+                int maxNickSize = 0;
                 for (ISnake s : data.getSnakes()) {
                     if (s.getPriority() > maxPriority) {
                         maxPriority = s.getPriority();
@@ -379,9 +379,8 @@ public class GamePanel extends JPanel implements Observer {
                     if (s.getNextPriority() > maxNextPriority) {
                         maxNextPriority = s.getNextPriority();
                     }
-                    if(s.getName().length()>maxNickSize)
-                    {
-                        maxNickSize=s.getName().length();
+                    if (s.getName().length() > maxNickSize) {
+                        maxNickSize = s.getName().length();
                     }
                 }
                 int maxPriorityLength = (maxPriority + "").length();
@@ -432,6 +431,14 @@ public class GamePanel extends JPanel implements Observer {
                 for (int i = ind; i < players.size(); i++) {
                     players.get(i).setVisible(false);
                 }
+            }
+        }
+
+        private int getPoints(ISnake s) {
+            if (s.isDead()) {
+                return 0;
+            } else {
+                return s.getCoordinates().size();
             }
         }
 
