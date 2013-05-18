@@ -131,10 +131,13 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
 
     @Override
     public void run() {
+        //Thread thisThread = Thread.currentThread();
+        //while(serverThread!=thisThread)
         try {
             MultiSnakeServer.main(soptions);
-        } catch (InterruptedException e) {
-            System.out.println("Error!");
+            network.disconnect();
+        } catch (InterruptedException iex) {
+            throw new RuntimeException("Interrupted",iex);
         }
     }
 
@@ -142,10 +145,10 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     void startServer(String[] opt) {
         soptions = opt;
         saveServerSettings();
-        if (serverThread == null) {
+        if (true) {
             serverThread = new Thread(this);
             serverThread.start();
-        }
+        }            
     }
     
     private void saveServerSettings() {

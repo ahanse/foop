@@ -146,6 +146,11 @@ public class GamePanel extends JPanel implements Observer {
                     lblBoardCaption.setVisible(false);
                     calculateImage(network, cols);
                     break;
+                case FINISHED:
+                    //lblBoardInformation.setVisible(false);
+                    //lblBoardCaption.setVisible(false);
+                    calculateImage(network, cols);
+                    break;
                 default:
                     break;
 

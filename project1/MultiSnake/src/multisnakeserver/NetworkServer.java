@@ -33,6 +33,7 @@ public class NetworkServer {
         for(NetworkClient p: players) {
             p.disconnect();
         }
+        serverThread=null;
     }
     
     

@@ -56,7 +56,7 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
                     super.notifyObservers(); 
                 }
         } catch(IOException e) {
-            disconnect();
+            //disconnect();
         } catch(ClassNotFoundException e) {
             disconnect();
         }
@@ -70,8 +70,8 @@ public class NetworkClient extends Observable implements Runnable, IPlayer {
         state  = ConnectionState.DISCONNECTED;
         System.out.println("Disconnected client.");
         connection = null;
-        super.setChanged();
-        super.notifyObservers(); 
+        //super.setChanged();
+        //super.notifyObservers(); 
     }
     
     private void sendMessage(INetworkMessage m) {
