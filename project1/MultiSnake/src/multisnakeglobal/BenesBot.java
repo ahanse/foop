@@ -15,11 +15,13 @@ public class BenesBot extends Bot {
 
     private int Zaehler;
     private int oldPriority;
+    private double AntiHuman;
     
-    public BenesBot(IGameData gd, int ownID) {
+    public BenesBot(IGameData gd, int ownID, double AntiHuman) {
         super(gd, ownID);
         Zaehler=-10;
         oldPriority=-1;
+        this.AntiHuman=Math.abs(AntiHuman);
     }
 
     public Direction play() {
@@ -42,6 +44,7 @@ public class BenesBot extends Bot {
         
         if(oldPriority!=mySnake.getPriority())
         {
+            oldPriority=mySnake.getPriority();
             //Priorities just changed
             Zaehler=0;
         }
@@ -58,7 +61,7 @@ public class BenesBot extends Bot {
             
             if(snakes.get(i).isBot())
             {
-                weights[i]=weights[i]/1000;
+                weights[i]=weights[i]/AntiHuman;
             }
         }
         int ind = getMaxInd(weights);
@@ -69,12 +72,25 @@ public class BenesBot extends Bot {
         possibleDirections.add(Direction.LEFT);
         possibleDirections.add(Direction.RIGHT);
         for (int i = 0; i < possibleDirections.size(); i++) {
-            if (moveForbidden(snakes, mySnake, possibleDirections.get(i))) {
+            if (moveForbidden(snakes, mySnake, possibleDirections.get(i),2)) {
                 possibleDirections.remove(i);
                 i--;
             }
         }
 
+        
+        if (possibleDirections.isEmpty()) {
+            possibleDirections.add(Direction.UP);
+            possibleDirections.add(Direction.DOWN);
+            possibleDirections.add(Direction.LEFT);
+            possibleDirections.add(Direction.RIGHT);
+            for (int i = 0; i < possibleDirections.size(); i++) {
+                if (moveForbidden(snakes, mySnake, possibleDirections.get(i),1)) {
+                    possibleDirections.remove(i);
+                    i--;
+                }
+            }
+        }
         if (possibleDirections.isEmpty()) {
             possibleDirections.add(Direction.UP);
             possibleDirections.add(Direction.DOWN);
@@ -156,15 +172,31 @@ public class BenesBot extends Bot {
         return distX + distY;
     }
 
-    private boolean moveForbidden(List<ISnake> snakes, ISnake mySnake, Direction dir) {
+    private boolean moveForbidden(List<ISnake> snakes, ISnake mySnake, Direction dir, int AnzFelder) {
         Point newPos = mySnake.getHead().nextPoint(dir, gd_.getDimensions());
+        boolean stopSituation=false;
         for (ISnake s : snakes) {
-            //TODO: nextPriority!!!
             if(!s.isDead())
             {
-                if (s != mySnake && calculateDistance(newPos, s.getHead()) <= 2&& (s.getPriority() > mySnake.getPriority()|| (Zaehler>=9 && s.getNextPriority()>mySnake.getNextPriority()))) {
+                if (s != mySnake && calculateDistance(newPos, s.getHead()) <= AnzFelder&& (s.getPriority() > mySnake.getPriority()|| (Zaehler>=8 && s.getNextPriority()>mySnake.getNextPriority()))) {
                     return true;
                 }
+                else if(s != mySnake && calculateDistance(newPos, s.getHead()) <= 1&& (s.getPriority() == mySnake.getPriority()|| (Zaehler>=8 && s.getNextPriority()==mySnake.getNextPriority())))
+                {
+                    stopSituation=true;
+                }
+             }
+            
+        }
+        if(stopSituation)
+        {
+            for (ISnake s : snakes) {
+                if(!s.isDead())
+                {
+                    if (s != mySnake && calculateDistance(mySnake.getHead(), s.getHead()) <= AnzFelder&& (s.getPriority() > mySnake.getPriority()|| (Zaehler>=8 && s.getNextPriority()>mySnake.getNextPriority()))) {
+                        return true;
+                    }
+                 }
             }
         }
         return false;
