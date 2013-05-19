@@ -352,6 +352,7 @@ public class GamePanel extends JPanel implements Observer {
                     l.setBackground(c);
                     l.setForeground(brightness(c) < 130 ? Color.WHITE
                             : Color.BLACK);
+                    l.setFont(new Font("SansSerif", Font.PLAIN, 12));
                     String t=(i+1)+".";
                     for(int j=t.length();j<=maxPlaceSize;j++)
                     {
@@ -423,6 +424,7 @@ public class GamePanel extends JPanel implements Observer {
                     l.setBackground(col);
                     l.setForeground(brightness(col) < 130 ? Color.WHITE
                             : Color.BLACK);
+                    l.setFont(new Font("SansSerif", Font.PLAIN, 12));
                     pri = pri + s.getName();
                     if (s.isDead()) {
                         pri += " (+)";
@@ -450,6 +452,7 @@ public class GamePanel extends JPanel implements Observer {
             String com = e.getActionCommand();
             if (com.equals("")) {
             } else if (com.equals("Back")) {
+                backButton.setVisible(false);
                 parentFrame.drawPanel("MainMenu");
             } else {
             }
