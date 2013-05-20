@@ -108,7 +108,7 @@ public class GameData implements IGameData{
         
         for(int i = 0; i < number/2; ++i) {
             boolean isBot=i>numOfPlayers;
-            makeSnake(new Point(space/2 + space*i,length),length,Direction.DOWN,i,i,isBot);
+            makeSnake(new Point(space/2 + space*i,length),length,Direction.getRandom(),i,i,isBot);
         }
         
         for(int i = number/2; i < number; ++i) {

@@ -4,6 +4,7 @@
  */
 package multisnakeglobal;
 
+
 /**
  *
  * @author thb
@@ -12,5 +13,13 @@ public enum Direction {
     UP,
     DOWN,
     LEFT,
-    RIGHT    
+    RIGHT;
+    
+    /**
+     *
+     * @return random direction
+     */
+    public static Direction getRandom() {
+        return values()[(int) (Math.random() * values().length)];
+    }
 }
