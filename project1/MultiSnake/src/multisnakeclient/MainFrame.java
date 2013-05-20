@@ -175,7 +175,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
             return ret;
         } catch (Exception e) {
             if("soptions.dat".equals(filename)){
-                String[] standard = {"200","30","30","1","0","120"};
+                String[] standard = {"200","30","30","1","0","120","15"};
                 return standard;
             }
             else if("joptions.dat".equals(filename)){

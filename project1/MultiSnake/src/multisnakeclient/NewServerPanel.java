@@ -24,6 +24,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
     private JTextField txtNumOfPlayers;
     private JTextField txtNumOfAi;
     private JTextField txtPlaytime;
+    private JTextField txtNewPriority;
 
     public NewServerPanel(MainFrame parentFrame) {
     	super();
@@ -56,6 +57,9 @@ public class NewServerPanel extends JPanel implements ActionListener {
         JLabel lblPlaytime = new JLabel("Playtime in Seconds");
         txtPlaytime = new JTextField(10);
         txtPlaytime.setText(savedSettings[5]);
+        JLabel lblNewPriority = new JLabel("Ticks to new Priority");
+        txtNewPriority = new JTextField(10);
+        txtNewPriority.setText(savedSettings[6]);
         
         optPnl.add(lblTick);
         optPnl.add(txtTick);
@@ -69,6 +73,8 @@ public class NewServerPanel extends JPanel implements ActionListener {
         optPnl.add(txtNumOfAi);
         optPnl.add(lblPlaytime);
         optPnl.add(txtPlaytime);
+        optPnl.add(lblNewPriority);
+        optPnl.add(txtNewPriority);
         
         optPnl.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
 
@@ -103,7 +109,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this,"Einer der eingegebenen Werte stellt keinen gültigen Wert dar.","Fehler!",JOptionPane.OK_OPTION);
             }
             else{
-                String[] options={txtTick.getText(),txtDimX.getText(),txtDimY.getText(),txtNumOfPlayers.getText(),txtNumOfAi.getText(),txtPlaytime.getText()};
+                String[] options={txtTick.getText(),txtDimX.getText(),txtDimY.getText(),txtNumOfPlayers.getText(),txtNumOfAi.getText(),txtPlaytime.getText(),txtNewPriority.getText()};
                 parentFrame.startServer(options);
                 
                 //TODO: own IP and port
@@ -189,6 +195,18 @@ public class NewServerPanel extends JPanel implements ActionListener {
             return false;
         }
         if(playtime<=0)
+        {
+            return false;
+        }
+        
+        int newPriority;
+        try{
+            newPriority=Integer.parseInt(txtNewPriority.getText());
+        }
+        catch(NumberFormatException ex){
+            return false;
+        }
+        if(newPriority<=0)
         {
             return false;
         }

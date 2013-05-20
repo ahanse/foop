@@ -22,7 +22,8 @@ public class GameData implements IGameData{
     long timestamp_;
     int ticks_;
     int playtime_;
-    Random generator_;    
+    int ticksToNextPrio_;
+    Random generator_; 
 
     public GameData(Point dimensions) {
         timestamp_ = 0;
@@ -36,10 +37,11 @@ public class GameData implements IGameData{
         return snakes_;
     }
 
-    public void startGame(int numberOfSnakes, int numOfBots,int playtime) {
+    public void startGame(int numberOfSnakes, int numOfBots,int playtime, int ticksToNextPrio) {
         setState(GameState.TIMETOFIGHT);
         timestamp_ = System.currentTimeMillis() + 3000;
         playtime_ = playtime;
+        ticksToNextPrio_ = ticksToNextPrio;
 	ticks_ = 0;
         generateSnakes(numberOfSnakes,numOfBots);
 	shufflePriorities();
@@ -157,7 +159,7 @@ public class GameData implements IGameData{
             
         }
 
-	if(ticks_ % 15 == 0) {
+	if(ticks_ % ticksToNextPrio_ == 0) {
 		shufflePriorities();
 	}
 
