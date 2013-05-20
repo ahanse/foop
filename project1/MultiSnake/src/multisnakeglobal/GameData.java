@@ -102,7 +102,7 @@ public class GameData implements IGameData{
     
     // FIXME: should be private
     public void generateSnakes(int numOfPlayers, int numOfBots) {
-        int length = 5;
+        int length = Math.min(6,dimensions_.getX()*dimensions_.getY()/((numOfPlayers+numOfBots)*25));
         int number=numOfPlayers+numOfBots;
         int space = dimensions_.getX() / (1+number/2);
         
