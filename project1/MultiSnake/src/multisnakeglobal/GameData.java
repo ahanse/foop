@@ -105,15 +105,17 @@ public class GameData implements IGameData{
         int length = Math.min(6,dimensions_.getX()*dimensions_.getY()/((numOfPlayers+numOfBots)*25));
         int number=numOfPlayers+numOfBots;
         int space = dimensions_.getX() / (1+number/2);
+        int dimySpace = (dimensions_.getY() - 2*length)/4-1;
         
         for(int i = 0; i < number/2; ++i) {
             boolean isBot=i>numOfPlayers;
-            makeSnake(new Point(space/2 + space*i,length),length,Direction.getRandom(),i,i,isBot);
+            makeSnake(new Point(space/2 + space*i,length+(int)(Math.random()*dimySpace)),length,Direction.getRandom(),i,i,isBot);
         }
         
         for(int i = number/2; i < number; ++i) {
             boolean isBot=i>numOfPlayers;
-            makeSnake(new Point(space/2 + space*(i-number/2),dimensions_.getY() - length - 1),length,Direction.UP,i,number,isBot);
+            
+            makeSnake(new Point(space/2 + space*(i-number/2),(dimensions_.getY() - length - 1)-(int)(Math.random()*dimySpace)),length,Direction.getRandom(),i,number,isBot);
         }
     }
     
