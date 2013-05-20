@@ -28,7 +28,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     private NetworkClient network;
     private Thread serverThread;
     private GamePanel gamePanel;
-    private String[] soptions;
+    private String[] soptions; // new server options
 
     public MainFrame() {
         options = new Options();
@@ -144,37 +144,45 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     // start multisnakeserver in a new thread
     void startServer(String[] opt) {
         soptions = opt;
-        saveServerSettings();
+        saveSettings("soptions.dat",opt);
         if (true) {
             serverThread = new Thread(this);
             serverThread.start();
         }            
     }
     
-    private void saveServerSettings() {
+    public void saveSettings(String filename,String[] options) {
         try {
             //open a file to write to
-            FileOutputStream saveFile = new FileOutputStream("sOptions.dat");
+            FileOutputStream saveFile = new FileOutputStream(filename);
             //create an ObjectOutputStream to put objects into save file
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
             // write on Stream
-            save.writeObject(this.soptions);
+            save.writeObject(options);
             //close file
             save.close();
         } catch (Exception e) {
         }
     }
     
-    public String[] readServerSettings() {
+    public String[] readSettings(String filename) {
         try {
             //open file to read from
-            FileInputStream saveFile = new FileInputStream("sOptions.dat");
+            FileInputStream saveFile = new FileInputStream(filename);
             //create an ObjectInputStream to get objects from save file
             ObjectInputStream save = new ObjectInputStream(saveFile);
-            this.soptions = (String[]) save.readObject();
-            return this.soptions;
+            String[] ret = (String[]) save.readObject();
+            return ret;
         } catch (Exception e) {
-            String[] standard = {"200","30","30","1","0","120"};
+            if("soptions.dat".equals(filename)){
+                String[] standard = {"200","30","30","1","0","120"};
+                return standard;
+            }
+            else if("joptions.dat".equals(filename)){
+                String[] standard = {"127.0.0.1","1234"};
+                return standard;
+            }
+            String[] standard = {};
             return standard;
         }
     }

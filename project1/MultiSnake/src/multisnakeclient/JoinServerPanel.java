@@ -32,13 +32,14 @@ public class JoinServerPanel extends JPanel implements ActionListener {
 
         JPanel optPnl = new JPanel (new GridLayout(0,2,0,10));        
         
+        String[] joinServerOptions = parentFrame.readSettings("joptions.dat");
         // create Options
         JLabel lblIP = new JLabel("Server IP:");
         txtIP = new JTextField(10);
-        txtIP.setText("127.0.0.1");
+        txtIP.setText(joinServerOptions[0]);
         JLabel lblPort = new JLabel("Server Port:");
         txtPort = new JTextField(10);
-        txtPort.setText("1234");
+        txtPort.setText(joinServerOptions[1]);
         
         optPnl.add(lblIP);
         optPnl.add(txtIP);
@@ -78,6 +79,7 @@ public class JoinServerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this,"Einer der eingegebenen Werte stellt keinen gültigen Wert dar.","Fehler!",JOptionPane.OK_OPTION);
             }
             else{
+                parentFrame.saveSettings("joptions.dat",new String[]{txtIP.getText(),txtPort.getText()});
                 parentFrame.connectToServer(txtIP.getText(),Integer.parseInt(txtPort.getText()));
                 parentFrame.drawPanel("GamePanel");
             }

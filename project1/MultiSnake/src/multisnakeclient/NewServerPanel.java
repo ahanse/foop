@@ -36,7 +36,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
 
         JPanel optPnl = new JPanel (new GridLayout(0,2,0,10));        
         
-        String[] savedSettings = parentFrame.readServerSettings();
+        String[] savedSettings = parentFrame.readSettings("soptions.dat");
         // create Options
         JLabel lblTick = new JLabel("Game tick(ms)");
         txtTick = new JTextField(10);
