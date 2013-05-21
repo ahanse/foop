@@ -427,7 +427,7 @@ public class GamePanel extends JPanel implements Observer {
                     l.setFont(new Font("SansSerif", Font.PLAIN, 12));
                     pri = pri + s.getName();
                     if (s.isDead()) {
-                        pri += " (+)";
+                        pri += " (\u2020)";
                     }
                     l.setText(pri);
                     l.setVisible(true);
