@@ -4,6 +4,7 @@
  */
 package multisnakeserver;
 
+import java.io.IOException;
 import multisnakeglobal.IPlayer;
 import multisnakeglobal.NetworkClient;
 
@@ -13,7 +14,8 @@ import multisnakeglobal.NetworkClient;
  */
 public class NetworkServer {
     private NetworkClient[] players;
-    private Thread serverThread;
+    private NetworkServerThread serverThread;
+    private Thread thread;
     
     public NetworkServer(int numPlayers) {
         this(numPlayers, 1234);
@@ -21,8 +23,9 @@ public class NetworkServer {
     public NetworkServer(int numPlayers, int port){
         players = new NetworkClient[numPlayers];
         for(int i=0;i<numPlayers; i++) {players[i] = new NetworkClient();}
-        serverThread = new Thread(new NetworkServerThread(port, players));
-        serverThread.start();
+        serverThread = new NetworkServerThread(port, players);
+        thread = new Thread(serverThread);
+        thread.start();
     }
  
     public IPlayer[] getPlayers() {    
@@ -33,7 +36,10 @@ public class NetworkServer {
         for(NetworkClient p: players) {
             p.disconnect();
         }
-        serverThread=null;
+        try {
+            serverThread.close();
+        } catch(IOException e) {}
+        thread = null; 
     }
     
     

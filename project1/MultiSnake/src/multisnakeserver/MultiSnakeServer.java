@@ -89,6 +89,7 @@ public class MultiSnakeServer {
                 players[p].updateGameData(gd);
             }
         } while(gd.getStatus()!=GameState.FINISHED);
+        Thread.sleep(1000);
         ns.endGame();
     }
 }

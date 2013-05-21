@@ -18,6 +18,7 @@ public class NetworkServerThread implements Runnable {
     private int port;
     private NetworkClient[] players;
     private ServerSocket server;
+    private boolean running = true; 
     
     public NetworkServerThread(int port, NetworkClient[] players) {
         this.players = players;
@@ -32,9 +33,10 @@ public class NetworkServerThread implements Runnable {
         return null;
     }
     
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         if(server!=null) {
             server.close();
+            this.server=null;
         }
     }
     
@@ -42,7 +44,7 @@ public class NetworkServerThread implements Runnable {
     public void run() {
         try {
             server = new ServerSocket(port);
-            while(this!=null) {
+            while(this.server!=null) {
                 Socket clientSocket = server.accept();
                 System.out.println("Client connected to server.");
                 NetworkClient nrp = getFirstNOTREADYPlayer();
