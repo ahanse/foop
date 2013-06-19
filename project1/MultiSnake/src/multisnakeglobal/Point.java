@@ -5,7 +5,7 @@
 package multisnakeglobal;
 
 /**
- *
+ * Representation of a point in R^2
  * @author Benedikt
  */
 public class Point implements java.io.Serializable {

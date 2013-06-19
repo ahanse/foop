@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import multisnakeglobal.Point;
 
@@ -31,6 +30,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
     private JTextField[] txtDirections = new JTextField[4];
     private int[] directionKeys;
 
+    //Constructor adding components for client options
     public OptionsPanel(MainFrame parentFrame) {
         super();
         Dimension windowSize = parentFrame.getSize();
@@ -212,6 +212,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         this.add(btnPnl, BorderLayout.PAGE_END);
     }
 
+    // displays resultion list iff full screen is disabled
     private void toggleResolutionList() {
         if (chkFull.isSelected()) {
             lblRes.setVisible(false);
@@ -222,6 +223,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         }
     }
 
+    // displays colors colored
     private class CellColorRenderer extends JLabel implements ListCellRenderer {
 
         public CellColorRenderer() {
@@ -246,6 +248,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
         }
     }
 
+    //action listener for buttons and full screen toggle
     @Override
     public void actionPerformed(ActionEvent e) {
         String com = e.getActionCommand();

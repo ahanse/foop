@@ -4,9 +4,8 @@
  */
 package multisnakeserver;
 
-import multisnakeglobal.IPlayer;
-import java.net.*;
 import java.io.*;
+import java.net.*;
 import multisnakeglobal.*;
 
 /**

@@ -22,12 +22,14 @@ public class ImageProceedingData {
     private int numOfYFields = 0;
     private int numOfSnakes = 0;
 
+    //Constructor getting dimensions
     public ImageProceedingData(int numOfXFields, int numOfYFields) {
         rectangles = new Stack<RectangleData>();
         this.numOfXFields = numOfXFields;
         this.numOfYFields = numOfYFields;
     }
 
+    // adds all tiles from a snake as RectangleData to the rectangles stack
     public void addRectangleFromSnake(ISnake snake, Color color) {
         Point head = snake.getHead();
         Stack<Point> coords = new Stack<Point>();
@@ -40,20 +42,12 @@ public class ImageProceedingData {
         rectangles.push(new RectangleData(color, String.valueOf(snake.getPriority()), coords));
         numOfSnakes++;
     }
-
-    public void addRectangleFromList(List<Point> list, int number, Color color) {
-        Stack<Point> coords = new Stack<Point>();
-        for (int i = 0; i < list.size(); i++) {
-            coords.push(list.get(i));
-        }
-        rectangles.push(new RectangleData(color, String.valueOf(number), coords));
-        numOfSnakes++;
-    }
-
+    
     public Boolean isEmpty() {
         return rectangles.isEmpty();
     }
 
+    // gets the rectangle data of the next snake in the stack
     public RectangleData getNextRectangleData() {
         if (!rectangles.isEmpty()) {
             numOfSnakes--;

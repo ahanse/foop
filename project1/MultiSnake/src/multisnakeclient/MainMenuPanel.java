@@ -19,6 +19,7 @@ public class MainMenuPanel extends JPanel implements ActionListener {
     private ArrayList<JButton> menuButtonList;
     private MainFrame parentFrame;
 
+    //Constructor adds main menu buttons
     public MainMenuPanel(MainFrame parentFrame) {
     	super();
         Dimension windowSize = parentFrame.getSize();
@@ -61,6 +62,7 @@ public class MainMenuPanel extends JPanel implements ActionListener {
         }
     }
 
+    //action listener for the buttons, the action command equals the panel name
     @Override
     public void actionPerformed(ActionEvent e) {
         String com = e.getActionCommand();

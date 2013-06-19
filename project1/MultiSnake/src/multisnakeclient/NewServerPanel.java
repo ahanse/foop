@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.*;
 /**
  *
@@ -26,6 +25,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
     private JTextField txtPlaytime;
     private JTextField txtNewPriority;
 
+    // constructor adds server option components
     public NewServerPanel(MainFrame parentFrame) {
     	super();
         Dimension windowSize = parentFrame.getSize();
@@ -99,7 +99,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         this.add(btnPnl,BorderLayout.PAGE_END);
     }
     
-
+    //action listener for buttons
     @Override
     public void actionPerformed(ActionEvent e) {
         String com = e.getActionCommand();
@@ -112,7 +112,6 @@ public class NewServerPanel extends JPanel implements ActionListener {
                 String[] options={txtTick.getText(),txtDimX.getText(),txtDimY.getText(),txtNumOfPlayers.getText(),txtNumOfAi.getText(),txtPlaytime.getText(),txtNewPriority.getText()};
                 parentFrame.startServer(options);
                 
-                //TODO: own IP and port
                 parentFrame.connectToServer("127.0.0.1", 1234);
                 parentFrame.drawPanel("GamePanel");
                 
@@ -127,6 +126,7 @@ public class NewServerPanel extends JPanel implements ActionListener {
         }
     }
     
+    //checks user inputs
     private Boolean inputCorrect()
     {
         int tick;

@@ -4,18 +4,18 @@
  */
 package multisnakeclient;
 
-import multisnakeglobal.NetworkClient;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
-import javax.swing.*;
-import multisnakeglobal.Direction;
-import multisnakeserver.MultiSnakeServer;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import javax.swing.*;
+import multisnakeglobal.Direction;
+import multisnakeglobal.NetworkClient;
+import multisnakeserver.MultiSnakeServer;
 
 /**
  *
@@ -73,7 +73,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
         }
     }
 
-    // panels for each function, named with strings
+    // add panel for each function, named with a string
     public void addPanels() {
         mainPanel.add(new MainMenuPanel(this), "MainMenu");
         mainPanel.add(new OptionsPanel(this), "Options");
@@ -105,21 +105,28 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     public void keyTyped(KeyEvent e) {
     }
 
+    
+    //handles key events and send them to the network
     @Override
     public void keyPressed(KeyEvent e) {
         Direction key;
         int[] directionKeys = options.getDirectionKeys();
         int keycode = e.getKeyCode();
-        if(keycode == directionKeys[0])
+        if(keycode == directionKeys[0]) {
             key = Direction.LEFT;
-        else if (keycode == directionKeys[1])
+        }
+        else if (keycode == directionKeys[1]) {
             key = Direction.UP;
-        else if (keycode == directionKeys[2])
+        }
+        else if (keycode == directionKeys[2]) {
             key = Direction.RIGHT;
-        else if (keycode == directionKeys[3])
+        }
+        else if (keycode == directionKeys[3]) {
             key = Direction.DOWN;
-        else
+        }
+        else {
             key = null;
+        }
         if (network != null) {
             network.setChangedKey(key);
         }
@@ -129,6 +136,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
     public void keyReleased(KeyEvent e) {
     }
 
+    // starts a new server
     @Override
     public void run() {
         //Thread thisThread = Thread.currentThread();
@@ -151,6 +159,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
         }            
     }
     
+    //saves a string array to a file
     public void saveSettings(String filename,String[] options) {
         try {
             //open a file to write to
@@ -165,6 +174,7 @@ public final class MainFrame extends JFrame implements KeyListener, Runnable {
         }
     }
     
+    // reads options from file
     public String[] readSettings(String filename) {
         try {
             //open file to read from

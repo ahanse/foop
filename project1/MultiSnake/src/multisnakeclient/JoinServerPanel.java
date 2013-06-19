@@ -21,8 +21,11 @@ public class JoinServerPanel extends JPanel implements ActionListener {
     private JTextField txtIP;
     private JTextField txtPort;
 
+    //Constructor getting the parent frame
     public JoinServerPanel(MainFrame parentFrame) {
     	super();
+        
+        //setting panel properties and adding all needed components
         Dimension windowSize = parentFrame.getSize();
         this.parentFrame = parentFrame;
         this.setSize(windowSize);
@@ -70,6 +73,7 @@ public class JoinServerPanel extends JPanel implements ActionListener {
     }
     
 
+    //Event handler for buttons
     @Override
     public void actionPerformed(ActionEvent e) {
         String com = e.getActionCommand();
@@ -90,6 +94,7 @@ public class JoinServerPanel extends JPanel implements ActionListener {
         }
     }
     
+    //checks for correct port input
     private Boolean inputCorrect()
     {
         int port;

@@ -15,7 +15,7 @@ import multisnakeglobal.*;
 import multisnakeglobal.Point;
 
 /**
- *
+ * Represents a panel where the game is viewed.
  * @author Benedikt
  */
 public class GamePanel extends JPanel implements Observer {
@@ -24,24 +24,24 @@ public class GamePanel extends JPanel implements Observer {
     private BoardPanel boardPanel;
     private ArrayList<Label> players;
     private RightPanel rightPanel;
-    //private int Zaehler;
 
+    // Constructor, gets a reference to the parent frame.
     public GamePanel(MainFrame parent) {
         super();
         this.parentFrame = parent;
-        boardPanel = new BoardPanel(parentFrame, this);
-
-        //rightPanel.setBackground(Color.black);
-        //boardPanel.setPreferredSize(boardPanel.getPreferredSize());
+        
+        // set panel properties and add subpanels
         this.setLayout(new BorderLayout(0, 0));
-        rightPanel = new RightPanel();
+        boardPanel = new BoardPanel(parentFrame, this); // panel for the gameboard
+        rightPanel = new RightPanel();  //panel for the labels for statistics
         rightPanel.addRightPanelComponents();
         this.add(rightPanel, BorderLayout.CENTER);
         this.add(boardPanel, BorderLayout.LINE_START);
-        //Zaehler = 0;
 
     }
 
+    // update method of the observer pattern. Gets new gameboards from the 
+    // Network (IPlayer) and refreshs the boardPanel and the rightPanel
     @Override
     public void update(Observable o, Object arg) {
         if (!(o instanceof IPlayer)) {
@@ -51,10 +51,12 @@ public class GamePanel extends JPanel implements Observer {
         rightPanel.updateRightPanel((IPlayer) o, cols);
         boardPanel.update((IPlayer) o, cols);
         parentFrame.drawContent();
-        //Zaehler++;
-        //System.out.println(Zaehler + "");
     }
 
+    // calculates the colors of the snakes from the Colorpool from options. 
+    // Own snake gets the color set in options.
+    // Returns colors as int array and the the length of the 
+    // array is equal to the length of the snake array from network.
     int[] calculateColors(IPlayer network) {
         int ownID = network.getId();
         int nextColorInd = 0;
@@ -81,6 +83,7 @@ public class GamePanel extends JPanel implements Observer {
                 * c.getBlue() * .068);
     }
 
+    //class for displaying the game board
     private class BoardPanel extends JPanel {
 
         private ImageProceedingData currentImage;
@@ -91,14 +94,18 @@ public class GamePanel extends JPanel implements Observer {
         private Label lblBoardCaption;
         private Label lblBoardInformation;
 
+        // Constructor getting a reference tot main frame and to the parent panel
         public BoardPanel(MainFrame parent, GamePanel parentPanel) {
             super();
+            //initialise instance variables and panel properties
             currentImage = null;
             parentFrame = parent;
             this.parentPanel = parentPanel;
             parcelLength = parent.getOptions().getMaxParcelLength();
             this.setLayout(new GridBagLayout());
 
+            // adding two labels for displaying text before the 
+            // game starts and after the game ends
             GridBagConstraints c = new GridBagConstraints();
             c.anchor = GridBagConstraints.CENTER;
             c.gridx = 0;
@@ -115,9 +122,9 @@ public class GamePanel extends JPanel implements Observer {
             this.add(lblBoardInformation, c);
         }
 
+        // calculates the display of the new gameboard
         public void update(IPlayer network, int[] cols) {
             IGameData data = network.getGameData();
-
             switch (data.getStatus()) {
                 case WAITINGFORPLAYERS:
                     try {
@@ -157,6 +164,11 @@ public class GamePanel extends JPanel implements Observer {
             }
         }
 
+        
+        // calculates the new image of a new game panel
+        // creates a new ImageProceedingData instance and 
+        // adds rectangles for each snake and calculates 
+        // a optimal parcel size and panel size.
         private void calculateImage(IPlayer network, int[] cols) {
             IGameData data = network.getGameData();
             int i = 0;
@@ -177,17 +189,19 @@ public class GamePanel extends JPanel implements Observer {
             this.setPreferredSize(new Dimension(boardSizeX, boardSizeY));
         }
 
-        /**
-         * Custom painting codes on this JPanel
-         */
+        // paints the image to this panel
+        // each game cell is represented by a colored rectangle on the board
+        // rectangles of same color are copied
         @Override
         public void paintComponent(Graphics g) {
             if (currentImage != null) {
                 int boardCornerX = 1;
                 int boardCornerY = 1;
                 super.paintComponent(g);
-                // paint background
+                
+                // paint background of board 
                 g.setColor(Color.BLACK);
+               
                 g.drawRect(0, 0,
                         parcelLength * currentImage.getNumOfXFields() + 1,
                         parcelLength * currentImage.getNumOfYFields() + 1);
@@ -195,6 +209,7 @@ public class GamePanel extends JPanel implements Observer {
                 g.fillRect(1, 1,
                         parcelLength * currentImage.getNumOfXFields(),
                         parcelLength * currentImage.getNumOfYFields());
+                
                 // initiate some help variables
                 RectangleData currentSnake;
                 int firstRectX = 0;
@@ -247,6 +262,8 @@ public class GamePanel extends JPanel implements Observer {
             }
         }
 
+        
+        // sets the font of g, such that s is displayed in center and at right size.
         private void determineFontSize(int pX, int pY, Graphics g, String s) {
             FontMetrics fm = g.getFontMetrics();
             Font f = g.getFont();
@@ -261,11 +278,13 @@ public class GamePanel extends JPanel implements Observer {
         }
     }
 
+    // panel for displaying game statistics and priorities
     private class RightPanel extends JPanel implements ActionListener {
 
         private JPanel playerListPanel;
         private JButton backButton;
 
+        //Constructor
         public RightPanel() {
             this.setLayout(new BorderLayout());
             JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.TRAILING));
@@ -278,12 +297,14 @@ public class GamePanel extends JPanel implements Observer {
             btnPnl.add(backButton);
             backButton.addActionListener(this);
 
+            //panel for displaying the list of players
             playerListPanel = new JPanel();
 
             this.add(playerListPanel, BorderLayout.CENTER);
             this.add(btnPnl, BorderLayout.PAGE_END);
         }
 
+        // initializes the player list panel and adds one label
         public void addRightPanelComponents() {
             playerListPanel.setLayout(new GridBagLayout());
             players = new ArrayList<Label>();
@@ -298,6 +319,7 @@ public class GamePanel extends JPanel implements Observer {
             playerListPanel.add(newLabel, c);
         }
 
+        // sorts the snake list by points
         private Integer[] sortSnakes(final java.util.List<ISnake> snakes) {
             Integer[] idx = new Integer[snakes.size()];
             for (int i = 0; i < snakes.size(); i++) {
@@ -311,9 +333,11 @@ public class GamePanel extends JPanel implements Observer {
             });
             return idx;
         }
-
+        
+        // displays the new game statistics
+        // if the game state is finished, then it displays the end standings, 
+        // otherwise it displays the players list with priorities
         public void updateRightPanel(IPlayer network, int[] cols) {
-
             int ownID = network.getId();
             IGameData data = network.getGameData();
             if (data.getStatus() == GameState.FINISHED) {
@@ -439,6 +463,7 @@ public class GamePanel extends JPanel implements Observer {
             }
         }
 
+        // calculates the points of a snake
         private int getPoints(ISnake s) {
             if (s.isDead()) {
                 return 0;
@@ -447,6 +472,7 @@ public class GamePanel extends JPanel implements Observer {
             }
         }
 
+        // event handler for the back button
         @Override
         public void actionPerformed(ActionEvent e) {
             String com = e.getActionCommand();

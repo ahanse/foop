@@ -19,9 +19,7 @@ public class RectangleData {
     private String number;
     private Stack<Point> coords;
 
-    /**
-     *
-     */
+    
     public RectangleData(Color color, String number, Stack<Point> coords) {
         this.color = color;
         this.number = number;
