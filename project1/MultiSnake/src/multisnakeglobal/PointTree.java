@@ -11,8 +11,15 @@ import java.util.Iterator;
  *
  * @author thb
  */
+
+// This class represents a tree data structure where every node
+// contains a point.
+//
+// Empty trees are represent by containing a null point.
+
 public class PointTree implements java.io.Serializable {
     private Point root_;
+    // The child nodes, if empty this is a leaf
     private Vector<PointTree> children_;
     
     public Point getRoot() {
@@ -70,6 +77,7 @@ public class PointTree implements java.io.Serializable {
         return s;
     }
     
+    // Saves the list of nodes in in the nodes vector
     public void getNodes(Vector<Point> nodes) {
         nodes.add(root_);
         
@@ -79,6 +87,7 @@ public class PointTree implements java.io.Serializable {
         }
     }
     
+    // Check if the tree contains a certain point
     public boolean contains(Point p) {
         if(p.equals(root_)) {
             return true;
@@ -94,6 +103,11 @@ public class PointTree implements java.io.Serializable {
         return false;
     }
     
+    // If the tree contains a certain point this method will
+    // remove the subtree below the point and return it.
+    // Only the first point (of a depth first traversal) will be
+    // removed and returned.
+    // If the point is not found null will be returned.
     public PointTree findAndDeleteSubTree(Point p) {
         for(int i = 0; i < children_.size(); ++i) {
             PointTree t = children_.get(i);

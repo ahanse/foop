@@ -14,6 +14,12 @@ import java.util.Random;
  *
  * @author thb
  */
+
+// Represents the state of the game.
+// This object is updated each server tick and then sent to the clients.
+//
+// Contains all logic of snakes moving and eating each other
+
 public class GameData implements IGameData{
     Vector<ISnake> snakes_;
     
@@ -37,6 +43,7 @@ public class GameData implements IGameData{
         return snakes_;
     }
 
+    // initialise the game with number of players, etc.
     public void startGame(int numberOfSnakes, int numOfBots,int playtime, int ticksToNextPrio) {
         setState(GameState.TIMETOFIGHT);
         timestamp_ = System.currentTimeMillis() + 3000;
@@ -122,8 +129,6 @@ public class GameData implements IGameData{
     // Process player input: tell a snake in which direction the player
     // wants it to move
     public void setSnakeDirection(int snakeIndex, Direction direction) {
-        // Is this necessary? Or is an index out of bounds exception or
-        // whatever this throws enough
         if (snakeIndex >= snakes_.size() || snakeIndex < 0) {
             return;
         }
@@ -133,19 +138,19 @@ public class GameData implements IGameData{
     }
 
     public void setSnakeName(int snakeIndex, String nick) {
-        // Is this necessary? Or is an index out of bounds exception or
-        // whatever this throws enough
         if (snakeIndex >= snakes_.size() || snakeIndex < 0) {
             return;
         }
         ((Snake)(snakes_.get(snakeIndex))).setName(nick);
     }
     
+    // main worker method: this is executed at every server tick
     public void playTurn() {
 
         switch(state_) {
         case WAITINGFORPLAYERS:
         case FINISHED: return;
+        // Game goes live after 3 seconds
         case TIMETOFIGHT:
             if(System.currentTimeMillis() > timestamp_) {
                 setState(GameState.RUNNING);
@@ -153,6 +158,7 @@ public class GameData implements IGameData{
             else {
                 return;
             }
+        // Game ends after the set playtime
         case RUNNING:
 		if(System.currentTimeMillis() > timestamp_ + playtime_) { 
 			setState(GameState.FINISHED);
@@ -165,6 +171,7 @@ public class GameData implements IGameData{
 		shufflePriorities();
 	}
 
+        // Move all snakes
         for(Iterator<ISnake> i = snakes_.iterator(); i.hasNext();) {
             Snake s = (Snake)(i.next());
 

@@ -11,6 +11,11 @@ import java.util.Iterator;
  *
  * @author thb
  */
+
+// This class represents a snake.
+// It consists of a point tree representing the individual snake tiles
+// and some additional information such as priority, name, etc.
+
 public class Snake implements ISnake {
     private int priority_;
     private int next_priority_;
@@ -36,6 +41,7 @@ public class Snake implements ISnake {
         this.isBot=isBot;
     }
     
+    // Dead snakes are represented by an empty point tree
     public boolean isDead() {
         return tiles_.isEmpty();
     }
@@ -52,6 +58,7 @@ public class Snake implements ISnake {
         priority_ = priority;
     }
 
+    // Move next priority to priority and set next priority to something new
     public void updatePriority(int next_priority) {
 	priority_ = next_priority_;
 	next_priority_ = next_priority;
@@ -105,12 +112,16 @@ public class Snake implements ISnake {
         tiles_.deleteRightMostLeaf();
     }
     
+    // Takes a point tree to be appened to our root (= head) taken
+    // from the eaten snake
     public void eat(PointTree t) {
         PointTree tiles_old = tiles_;
         tiles_ = t;
         tiles_.addRightMostChild(tiles_old);
     }
     
+    // Delete the tree below the node we got eaten at
+    // If our head gets eaten we die
     public PointTree getEaten(Point p) {
         PointTree returntree;
         if(p.equals(getHead())){
