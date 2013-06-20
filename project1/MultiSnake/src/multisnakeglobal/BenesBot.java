@@ -15,9 +15,9 @@ public class BenesBot extends Bot {
     
     private int counter;
     private int oldPriority;
-    private double AntiHuman;
+    private double antiHuman;
     
-    //constructor, gets a reference to the game data, which doesn't get changed, 
+    // constructor, gets a reference to the game data, which doesn't get changed, 
     // the ID of the computer-controlled snake and a factor, which indicates how 
     // strong the bots play together against the human players. 1 means the bot 
     // plays against human and against other bots. Bigger than 1 means, that the 
@@ -26,7 +26,7 @@ public class BenesBot extends Bot {
         super(gd, ownID);
         counter=-10;
         oldPriority=-1;
-        this.AntiHuman=Math.abs(AntiHuman);
+        this.antiHuman=Math.abs(AntiHuman);
     }
 
     // calculates one move of the bot and returns dthe direction to move
@@ -70,7 +70,7 @@ public class BenesBot extends Bot {
             
             if(snakes.get(i).isBot()) //changing bot snake weights with AntHuman-factor
             {
-                weights[i]=weights[i]/AntiHuman;
+                weights[i]=weights[i]/antiHuman;
             }
         }
         
